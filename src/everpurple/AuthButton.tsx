@@ -11,7 +11,6 @@ const AuthButton = (props) => {
     return (
         <a href={props.logout ? "/api/auth/logout" : "/api/auth/login"}>
         <Button 
-            marginRight={16} 
             height={56}
             width={majorScale(35)}
             background="purple600"
