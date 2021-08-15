@@ -5,7 +5,9 @@ export default handleAuth({
       // Pass custom parameters to login
       await handleLogin(req, res, {
         authorizationParams: {
-          connection: 'Princeton-CAS'
+          audience: 'https://hoagieauth', // or AUTH0_AUDIENCE
+          // Add the `offline_access` scope to also get a Refresh Token
+          connection: 'Princeton-CAS',
         },
         returnTo: '/'
       });

@@ -10,17 +10,6 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
 export default function RichTextEditor(props) {
 
 
-  // const modules = {
-  //   toolbar: [
-  //     [{size: [ 'small', false, 'large', 'huge' ]}, {font: ['sans-serif', 
-  //   'serif']}],
-  //     ['bold', 'italic', 'underline','strike'],
-  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-  //     ['link', 'image', 'video'],
-  //     ['clean']
-  //   ],
-  // };
-
   const options = {
     buttonList: [
       ['undo', 'redo'],
