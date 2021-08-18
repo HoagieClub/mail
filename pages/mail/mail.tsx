@@ -8,7 +8,7 @@ It is recommended that you do not change this. However, you could change this to
 the name of the club advertising the event. Note that your real NetID will be included 
 at the bottom of the email regardless of your display name.`;
 
-export default function Mail({ onSend }) {
+export default function Mail({ onSend, errorMessage }) {
   const { user, isLoading } = useUser();
   if (isLoading)
     return <Spinner />
@@ -96,6 +96,13 @@ export default function Mail({ onSend }) {
           paddingTop={majorScale(2)}
           paddingBottom={majorScale(4)}>
           <h2>Send an Email</h2>
+        { errorMessage && <Alert
+          intent="danger"
+          title="Error occured with your email"
+          marginY={20}
+          >
+            { errorMessage }
+          </Alert> }
         <TextInputField
           label="Email Header"
           isInvalid={headerInvalid}
@@ -127,12 +134,13 @@ export default function Mail({ onSend }) {
         <Button onClick={()=>setShowConfirm(true)} size="large" appearance="primary" float="right">
           Send Email
         </Button>
-        <Dialog
+      <Dialog
         isShown={showConfirm}
         hasHeader={false}
         hasClose={false}
-        onConfirm={() => {
-          onSend({sender, header, body});
+        onConfirm={async () => {
+          await onSend({sender, header, body});
+          setShowConfirm(false);
         }}
         onCloseComplete={() => setShowConfirm(false)}
         confirmLabel="Send Email"
