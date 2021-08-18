@@ -126,7 +126,6 @@ export default function Mail({ onSend, errorMessage }) {
         <RichTextEditor 
           label="Body Content"
           required
-          isInvalid={true}
           description={`This is the content of your email. You may write it right in the editor or copy-paste it from a different email application.`}
           placeholder={"The body text of your email."}
           onChange={e => setBody(e)}

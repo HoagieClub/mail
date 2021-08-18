@@ -12,6 +12,6 @@ export default withApiAuthRequired(async function products(req, res) {
     },
     body: req.body,
   });
-  const products = await response.text();
-  res.status(200).send(products);
+  const sendStatus = await response.text();
+  res.status(response.status).send(sendStatus);
 });
