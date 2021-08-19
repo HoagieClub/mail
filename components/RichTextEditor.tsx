@@ -1,6 +1,5 @@
 import { FormField, Pane } from 'evergreen-ui'
 import { useQuill } from 'react-quilljs';
-import 'quill/dist/quill.snow.css';
 import { useEffect } from 'react';
 
 interface ImageResult {
