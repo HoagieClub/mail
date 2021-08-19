@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser } from '@auth0/nextjs-auth0'
-import { Pane, majorScale, Spinner, ChatIcon } from 'evergreen-ui'
+import { Pane, majorScale, Spinner, ChatIcon, Button } from 'evergreen-ui'
+import Link from 'next/link'
 import AuthButton from '../src/everpurple/AuthButton'
 
 export default function Index() {
@@ -10,9 +11,15 @@ export default function Index() {
   if (isLoading) Profile = <Spinner />;
   else if (error) Profile = <div>{error.message}</div>;
   else if (user) Profile = <Pane>
-      <hr/>
-      <h2>Welcome {user.name}!</h2>
-      <p>This is just a demo but thank you for trying it out.</p>
+      <Link href='/app'><Button
+        height={56}
+        width={majorScale(35)}
+        appearance="primary"
+        marginBottom={20}
+        iconBefore={ChatIcon}
+      >
+          Send a new Email
+      </Button></Link><br />
       <AuthButton logout={true} />
     </Pane>;
   else Profile = <AuthButton />
@@ -47,7 +54,7 @@ export default function Index() {
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
             <ChatIcon size={100} color="gray800"/>
-            <h1>Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
+            <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
           <div>
           <Pane 

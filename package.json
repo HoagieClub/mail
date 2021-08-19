@@ -13,8 +13,7 @@
     "next": "^10.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "suneditor": "^2.41.3",
-    "suneditor-react": "^3.2.0"
+    "react-quilljs": "^1.2.17"
   },
   "devDependencies": {
     "typescript": "^4.3.5"

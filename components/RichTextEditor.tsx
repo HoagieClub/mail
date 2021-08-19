@@ -1,59 +1,79 @@
-import { useState, useRef } from 'react'
-import { Pane, majorScale, FormField, PropertiesIcon } from 'evergreen-ui'
-import dynamic from "next/dynamic";
-import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import { FormField, Pane } from 'evergreen-ui'
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css';
+import { useEffect } from 'react';
 
-const SunEditor = dynamic(() => import("suneditor-react"), {
-  ssr: false,
-});
+interface ImageResult {
+  success: boolean;
+  data: {
+    link: string;
+    error: string;
+  }
+}
 
-export default function RichTextEditor(props) {
+export default function RichTextEditor({ onChange, onError, label, required, description }) {
+  const { quill, quillRef } = useQuill();
 
-
-  const options = {
-    buttonList: [
-      ['undo', 'redo'],
-      ['font', 'fontSize'], // 'formatBlock'
-      // ['paragraphStyle', 'blockquote'],
-      ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
-      ['fontColor', 'hiliteColor'], // 'textStyle'
-      // ['removeFormat'],
-      ['outdent', 'indent'],
-      ['align', 'list', 'lineHeight'], // 'horizontalRule'
-      ['link', 'image', 'video'], // You must add the 'katex' library at options to use the 'math' plugin.
-      ['fullScreen'], // 'codeview' 'showBlocks'
-      ['preview'],
-      // ['save', 'template'],
-      // '/', Line break
-    ],
-    showPathLabel: false,
-    resizingBar: false,
-    // colorList: [
-    //   ['#ccc', '#dedede', 'OrangeRed', 'Orange', 'RoyalBlue', 'SaddleBrown']
-    // ]
+  // Insert Image(selected by user) to quill
+  const insertToEditor = (url) => {
+    const range = quill.getSelection();
+    quill.insertEmbed(range.index, 'image', url);
   };
 
-  // const editor = useRef();
+  // Upload Image to Image Server such as AWS S3, Cloudinary, Cloud Storage, etc..
+  const saveToServer = async (file) => {
+    const body = new FormData();
+    body.append('image', file);
+    const res = await fetch('https://api.imgur.com/3/image', {
+          method: "POST",
+          headers: {
+            Authorization: 'Client-ID ' + process.env.NEXT_PUBLIC_IMGUR_API_ID,
+          },
+          body,
+    });
+    const imageResult:ImageResult = await res.json();
+    if (imageResult.success) {
+      insertToEditor(imageResult.data.link); 
+    } else {
+      onError(`Hoagie Mail is having trouble uploading your image: ${imageResult.data.error}`);
+    }
+  };
 
-  // const getSunEditorInstance = (sunEditor) => {
-  //     editor.current = sunEditor;
-  // };
-  
+  // Open Dialog to select Image File
+  const selectLocalImage = () => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+    input.click();
+
+    input.onchange = () => {
+      const file = input.files[0];
+      saveToServer(file);
+    };
+  };
+
+  useEffect(() => {
+    if (quill) {
+      quill.getModule('toolbar').addHandler('image', selectLocalImage);
+      quill.on('text-change', (delta, oldDelta, source) => {
+        const plainText = quill.getText();
+        const htmlContent = quillRef.current.firstChild.innerHTML;
+        onChange({plainText, htmlContent});
+      });
+
+    }
+  }, [quill]);
 
   return (
     <FormField
-        label={props.label}
-        isRequired={props.required}
-        description={props.description}
+        label={label}
+        isRequired={required}
+        description={description}
         marginBottom='24px'
-        > 
-        <SunEditor 
-        setOptions={options} 
-        onChange={props.onChange}
-        placeholder={props.placeholder}
-        autoFocus={false} 
-        disable={props.disable}
-        />    
+    > 
+    <Pane width="100%">
+      <div ref={quillRef} />
+    </Pane>
     </FormField>
   );
-}
+};

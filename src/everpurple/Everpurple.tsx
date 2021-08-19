@@ -5,6 +5,10 @@ function Everpurple(props) {
 
     const everPurple = {
       ...defTheme,
+      colors: {
+        ...defTheme.colors,
+        hoagie: '#DE7548',
+      },
       components: {
         ...defTheme.components,
         
@@ -21,16 +25,18 @@ function Everpurple(props) {
             paddingX: 12,
             paddingY: 8,
             borderRadius: 5,
+            color: 'white',
+            background: '#272727',
           },
           appearances: {
               primary: {
               color: 'white',
-              backgroundColor: '#6459ab',
+              backgroundColor: '#DE7548',
               _hover: {
-                backgroundColor: '#595099',
+                backgroundColor: '#EE703B',
               },
               _active: {
-                backgroundColor: '#4b418a',
+                backgroundColor: '#CE6C42',
               },
               _focus: {
                 boxShadow: '0 0 0 2px #E7E4F9',

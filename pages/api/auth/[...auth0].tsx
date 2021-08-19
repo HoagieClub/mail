@@ -9,7 +9,7 @@ export default handleAuth({
           // Add the `offline_access` scope to also get a Refresh Token
           connection: 'Princeton-CAS',
         },
-        returnTo: '/'
+        returnTo: '/app'
       });
     } catch (error) {
       res.status(error.status || 400).end(error.message);
