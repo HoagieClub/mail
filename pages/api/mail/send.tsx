@@ -4,7 +4,7 @@ export default withApiAuthRequired(async function products(req, res) {
   // If your Access Token is expired and you have a Refresh Token
   // `getAccessToken` will fetch you a new one using the `refresh_token` grant
   const { accessToken } = await getAccessToken(req, res);
-  await fetch('http://localhost:8080/mail/send', {
+  await fetch(process.env.HOAGIE_API_URL + '/mail/send', {
     method: "POST",
     headers: {
       ContentType: 'application/json',
