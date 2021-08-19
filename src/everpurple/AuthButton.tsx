@@ -3,7 +3,7 @@ import { Button, Pane, majorScale, minorScale } from "evergreen-ui"
 const AuthButton = (props) => {
     const logo = <h2 style={{
         fontSize:"30px", 
-        paddingRight: 20}} className="hoagie-logo">h</h2>
+        paddingRight: 20}} className="h2">h</h2>
     const hoagieProfile = <Pane marginLeft={minorScale(1)} className="hoagie">
         hoagie<b>profile</b></Pane>
 
@@ -11,11 +11,9 @@ const AuthButton = (props) => {
     return (
         <a href={props.logout ? "/api/auth/logout" : "/api/auth/login"}>
         <Button 
-            marginRight={16} 
             height={56}
             width={majorScale(35)}
-            background="purple600"
-            appearance="primary" 
+            appearance={props.logout ? "default" : "primary" }
         >
             { logo }
             {!props.logout && <Pane display="flex">Login using {hoagieProfile}
