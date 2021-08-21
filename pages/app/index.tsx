@@ -12,7 +12,8 @@ export default withPageAuthRequired(() => {
       });
     
     if (!response.ok) { 
-      setErrorMessage(await response.text());
+      const errorText = await response.text();
+      setErrorMessage(`There was an issue with your email. ${errorText}`);
     } else {
       setSuccess(true);
     }

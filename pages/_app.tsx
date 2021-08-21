@@ -1,8 +1,8 @@
 import React from 'react';
 import { UserProvider } from '@auth0/nextjs-auth0';
-import Layout from '../src/everpurple/Layout';
-import Everpurple from '../src/everpurple/Everpurple';
-import '../src/everpurple/style.css';
+import Layout from '../lib/hoagie-ui/Layout';
+import Theme from '../lib/hoagie-ui/Theme';
+import "../lib/hoagie-ui/theme.css"
 import "./mail.css"
 import './quill.snow.css';
 import Head from 'next/head';
@@ -13,11 +13,11 @@ export default function App({ Component, pageProps }) {
         <Head>
         <title>Mail by Hoagie</title>
       </Head>
-      <Everpurple>
-      <Layout>
+      <Theme>
+      <Layout name="mail">
       <Component {...pageProps} />
       </Layout>
-      </Everpurple>
+      </Theme>
     </UserProvider>
   );
 }

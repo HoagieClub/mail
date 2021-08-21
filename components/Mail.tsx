@@ -138,7 +138,6 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
       intent="warning"
     >
       <Pane
-        // color="#DE7548"
         marginTop={35}
         marginBottom={20}
         fontFamily="Nunito"

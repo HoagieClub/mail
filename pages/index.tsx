@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useUser } from '@auth0/nextjs-auth0'
 import { Pane, majorScale, Spinner, ChatIcon, Button } from 'evergreen-ui'
 import Link from 'next/link'
-import AuthButton from '../src/everpurple/AuthButton'
+import AuthButton from '../lib/hoagie-ui/AuthButton'
 
 export default function Index() {
   const { user, error, isLoading } = useUser();
@@ -20,7 +20,7 @@ export default function Index() {
       >
           Send a new Email
       </Button></Link><br />
-      <AuthButton logout={true} />
+      <AuthButton variant="logout" />
     </Pane>;
   else Profile = <AuthButton />
 
