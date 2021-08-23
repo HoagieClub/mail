@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react'
-import { Pane, majorScale, FormField, PropertiesIcon } from 'evergreen-ui'
+import { FormField } from 'evergreen-ui'
 import dynamic from "next/dynamic";
 import 'suneditor/dist/css/suneditor.min.css';
 import SetOptions from "suneditor-react/src/types/SetOptions";
+import { ButtonListItem } from "suneditor/src/options"
 
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
@@ -64,29 +64,19 @@ export default function RichTextEditor({
     }
   }; 
 
-  // const modules = {
-  //   toolbar: [
-  //     [{size: [ 'small', false, 'large', 'huge' ]}, {font: ['sans-serif', 
-  //   'serif']}],
-  //     ['bold', 'italic', 'underline','strike'],
-  //     [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-  //     ['link', 'image', 'video'],
-  //     ['clean']
-  //   ],
-  // };
-
+  const buttonList:ButtonListItem[] = [
+    ['undo', 'redo'],
+    ['font', 'fontSize'], 
+    ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
+    ['fontColor', 'hiliteColor'], // 'textStyle'
+    ['outdent', 'indent'],
+    ['align', 'list', 'lineHeight'],
+    ['link', 'image', 'video'],
+    ['fullScreen'],
+    ['preview'],
+  ]
   const options:SetOptions = {
-    buttonList: [
-      ['undo', 'redo'],
-      ['font', 'fontSize'], 
-      ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript'],
-      ['fontColor', 'hiliteColor'], // 'textStyle'
-      ['outdent', 'indent'],
-      ['align', 'list', 'lineHeight'],
-      ['link', 'image', 'video'],
-      ['fullScreen'],
-      ['preview'],
-    ],
+    buttonList,
     showPathLabel: false,
     height : 'auto',
     font: ['sans-serif', 'serif'],
