@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
-import RichTextEditor from "./RichTextEditor"
+import { useEffect, useState, createRef } from 'react'
+import RichTextEditor from "./RichSunEditor"
 import { useUser } from '@auth0/nextjs-auth0'
 import { Pane, majorScale, Spinner, Button, Alert, TextInputField, Dialog, Text, InfoSignIcon, TickCircleIcon } from 'evergreen-ui'
+import Link from 'next/link';
 
 const senderNameDesc = `This will be the name of the sender displayed in the email. 
 It is recommended that you do not change this. However, you could change this to e.g.
@@ -15,6 +16,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
 
   const [header, setHeader] = useState('Hi from Hoagie!')
   const [headerInvalid, setHeaderInvalid] = useState(false)
+  const [editorCore, seteditorCore] = useState({preview: null})
   const [sender, setSender] = useState(user.name)
   const [senderInvalid, setSenderInvalid] = useState(false)
   const [body, setBody] = useState('')
@@ -73,7 +75,9 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
   //       <Button marginBottom={20}>{selectedItemNamesState || 'Select multiple...'}</Button>
   //   </SelectMenu>
   // };
-
+  const getEditor = (sunEditor) => {
+    seteditorCore(sunEditor.core)
+  };
   useEffect( () => {
     setHeaderInvalid(header == "");
     setSenderInvalid(sender == "");
@@ -109,20 +113,35 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
         onChange={e => setSender(e.target.value)}
       />
       <RichTextEditor 
-        onChange={({htmlContent})=>setBody(htmlContent)}
+        onChange={(content)=>setBody(content)}
         onError={onError}
         label="Body Content"
         required
+        getEditor={getEditor}
+        placeholder="Hello there!"
         description={`
         This is the content of your email.
         Please use the "Image" icon below to add your images to make sure they appear in your email instead of
-        copy-pasting.
-        Note that images added to the email are uploaded to Imgur and are public.`}
+        copy-pasting. We also recommend keeping images small to make sure they do not appear gigantic in the email (the preview can be misleading).
+        Note that images added to the email are uploaded to Imgur and are public. `}
       />
       <Pane>
       <Button onClick={()=>setShowConfirm(true)} size="large" appearance="primary" float="right">
         Send Email
       </Button>
+      <Button 
+        disabled={!editorCore.preview} 
+        onClick={() => {editorCore.preview()}} 
+        size="large" 
+        appearance="default"
+        float="right"
+        marginRight="8px"
+      >
+        See Preview
+      </Button>
+      <Link href="/">
+        <Button size="large" float="left">Back</Button>
+      </Link>
       
       </Pane>
     <Dialog
