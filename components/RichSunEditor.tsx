@@ -2,8 +2,7 @@ import { useState, useRef } from 'react'
 import { Pane, majorScale, FormField, PropertiesIcon } from 'evergreen-ui'
 import dynamic from "next/dynamic";
 import 'suneditor/dist/css/suneditor.min.css';
-import { SunEditorOptions } from "suneditor/src/options";
-
+import SetOptions from "suneditor-react/src/types/SetOptions";
 
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
@@ -76,7 +75,7 @@ export default function RichTextEditor({
   //   ],
   // };
 
-  const options:SunEditorOptions = {
+  const options:SetOptions = {
     buttonList: [
       ['undo', 'redo'],
       ['font', 'fontSize'], 
