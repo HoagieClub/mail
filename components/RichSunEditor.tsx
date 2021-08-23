@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react'
 import { Pane, majorScale, FormField, PropertiesIcon } from 'evergreen-ui'
 import dynamic from "next/dynamic";
-import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+import 'suneditor/dist/css/suneditor.min.css';
+import { SunEditorOptions } from "suneditor/src/options";
+
 
 const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
@@ -74,7 +76,7 @@ export default function RichTextEditor({
   //   ],
   // };
 
-  const options = {
+  const options:SunEditorOptions = {
     buttonList: [
       ['undo', 'redo'],
       ['font', 'fontSize'], 
@@ -91,7 +93,6 @@ export default function RichTextEditor({
     font: ['sans-serif', 'serif'],
     defaultStyle: 'font-family:sans-serif',
   };
-  
 
   return (
     <FormField
