@@ -71,8 +71,8 @@ export default function Index() {
             marginTop={20}
             iconBefore={ArrowLeftIcon}
           >
-              Back to  <Pane marginLeft={minorScale(1)}>
-                    hoagie<b>profile</b>
+              Back to  <Pane marginLeft={minorScale(1)} marginTop="-3px">
+                    hoagie<b>platform</b>
                 </Pane>
           </Button></Link><br />
           </Pane>
