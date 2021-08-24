@@ -14,11 +14,12 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
   if (isLoading)
     return <Spinner />
 
-  const [header, setHeader] = useState('Hi from Hoagie!')
+  const [header, setHeader] = useState('')
   const [headerInvalid, setHeaderInvalid] = useState(false)
   const [editorCore, seteditorCore] = useState({preview: null})
   const [sender, setSender] = useState(user.name)
   const [senderInvalid, setSenderInvalid] = useState(false)
+  const [filled, setFilled] = useState(false);
   const [body, setBody] = useState('')
   const [showConfirm, setShowConfirm] = useState(false)
   const listservs = ['Butler', 'First', 'Forbes', 'Mathey', 'Rockefeller', 'Whitman'];
@@ -78,8 +79,10 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
   const getEditor = (sunEditor) => {
     seteditorCore(sunEditor.core)
   };
+
   useEffect( () => {
-    setHeaderInvalid(header == "");
+    if (header == "") setFilled(true);
+    if (filled) setHeaderInvalid(header == "");
     setSenderInvalid(sender == "");
   }, [header, sender]);
 
@@ -201,7 +204,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
 
   return (
     <Pane display="flex" justifyContent="center" alignItems="center" 
-    paddingBottom={majorScale(10)}
+    paddingBottom={majorScale(4)}
     paddingTop={majorScale(8)}
     >
       <Pane 
