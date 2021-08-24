@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser } from '@auth0/nextjs-auth0'
-import { Pane, majorScale, Spinner, ChatIcon, Button } from 'evergreen-ui'
+import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button } from 'evergreen-ui'
 import Link from 'next/link'
 import AuthButton from '../lib/hoagie-ui/AuthButton'
 
@@ -16,7 +16,7 @@ export default function Index() {
         width={majorScale(35)}
         appearance="primary"
         marginBottom={20}
-        iconBefore={ChatIcon}
+        iconBefore={EnvelopeIcon}
       >
           Send a new Email
       </Button></Link><br />
@@ -53,7 +53,7 @@ export default function Index() {
             paddingX="10px"
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
-            <ChatIcon size={100} color="gray800"/>
+            <EnvelopeIcon size={100} color="gray800"/>
             <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
           <div>
@@ -64,6 +64,17 @@ export default function Index() {
             marginTop="30px"
           >
           { Profile }
+          <Link href='https://hoagie.io'><Button
+            height={56}
+            width={majorScale(35)}
+            appearance="default"
+            marginTop={20}
+            iconBefore={ArrowLeftIcon}
+          >
+              Back to  <Pane marginLeft={minorScale(1)}>
+                    hoagie<b>profile</b>
+                </Pane>
+          </Button></Link><br />
           </Pane>
         </div>
         </Pane>
