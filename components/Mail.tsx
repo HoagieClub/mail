@@ -204,7 +204,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
 
   return (
     <Pane display="flex" justifyContent="center" alignItems="center" 
-    paddingBottom={majorScale(10)}
+    paddingBottom={majorScale(4)}
     paddingTop={majorScale(8)}
     >
       <Pane 

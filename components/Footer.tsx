@@ -1,21 +1,15 @@
-import { Pane, majorScale, Spinner, Button, Alert, TextInputField, Dialog, Paragraph, InfoSignIcon, TickCircleIcon } from 'evergreen-ui'
+import { Pane, majorScale } from 'evergreen-ui'
+import Link from 'next/link'
 
 
 export default function Footer() {
     return (
-        <Pane elevation={1}>
-        <Pane display="flex" justifyContent="center" width="100%" height={majorScale(9)} background="orange200">
-            <Pane 
-                display="flex" 
-                alignItems="center" 
-                width="100%" 
-                height="100%" 
-                maxWidth={1200} 
-                paddingX={20}
-            >
-               <Paragraph>Hoagie Apps are built and maintained by Princeton University students, for Princeton students.</Paragraph>
-            </Pane>
-        </Pane>
+    <Pane display="flex" justifyContent="center" alignItems="center"  width="100%" fontSize="16pt" marginX={majorScale(1)}> 
+        <Pane maxWidth="600px" >
+        <p>
+        Hoagie Mail was built by Princeton students as part of Hoagie Club. <b><u><Link href='https://tally.so/r/mRzdlm'>Have any feedback? Let us know.</Link></u></b>
+        </p>
+       </Pane>
     </Pane>
     )
 }

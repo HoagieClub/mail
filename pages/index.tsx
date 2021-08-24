@@ -39,7 +39,7 @@ export default function Index() {
     return (
       <Pane display="flex" justifyContent="center" alignItems="center" 
       marginX={majorScale(1)}
-      paddingBottom={majorScale(10)}
+      paddingBottom={majorScale(4)}
       paddingTop={majorScale(8)}
       >
         <Pane 
