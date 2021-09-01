@@ -53,6 +53,13 @@ export default function Index() {
             paddingX="10px"
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
+          <Alert
+        intent="warning"
+        title="Hoagie is having issues"
+        marginY={10}
+        >
+          Hoagie seems to be having issues with authentication right now for some users. We will work with OIT to get it fixed and send an email once it is back up. Thank you!
+        </Alert>
             <EnvelopeIcon size={100} color="gray800"/>
             <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
