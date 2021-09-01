@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser } from '@auth0/nextjs-auth0'
-import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button } from 'evergreen-ui'
+import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button, Alert } from 'evergreen-ui'
 import Link from 'next/link'
 import AuthButton from '../lib/hoagie-ui/AuthButton'
 
