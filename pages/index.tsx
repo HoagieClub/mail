@@ -53,13 +53,20 @@ export default function Index() {
             paddingX="10px"
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
-          <Alert
-        intent="warning"
-        title="Hoagie is having issues"
-        marginY={10}
+        <Pane
+          display="flex"
+          width="100%"
+          justifyContent="center"
         >
-          Hoagie seems to be having issues with authentication right now for some users. We will work with OIT to get it fixed and send an email once it is back up. Thank you!
+          <Alert
+            intent="info"
+            title="Hoagie Mail is back!"
+            marginY={10}
+            width="500px"
+            >
+          Authentication issues have been fixed and official support for First college's listserv has been added! Please use your Princeton email information during sign-in.
         </Alert>
+        </Pane>
             <EnvelopeIcon size={100} color="gray800"/>
             <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
