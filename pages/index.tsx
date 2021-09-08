@@ -59,12 +59,13 @@ export default function Index() {
           justifyContent="center"
         >
           <Alert
-            intent="info"
-            title="Hoagie Mail is back!"
+            intent="warning"
+            title="Some emails did not get sent after 7pm on September 7th."
             marginY={10}
             width="500px"
             >
-          Authentication issues have been fixed and official support for First college's listserv has been added! Please use your Princeton email information during sign-in.
+          Because of overwhelming amount of users on Sep 7th, we reached our mail sending limit and some emails were not sent despite the "Sucess" message they received. 
+          The issue is now fixed and we recommend sending any emails that were not forwarded to listservs on Sep 8th or later.
         </Alert>
         </Pane>
             <EnvelopeIcon size={100} color="gray800"/>
