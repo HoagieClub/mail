@@ -23,13 +23,13 @@ export default function App({ Component, pageProps }) {
           justifyContent="center"
         >
           <Alert
-            intent="warning"
-            title="Hoagie Mail is possibly unavailable because of mail sending limtis."
+            intent="info"
+            title="Hoagie Mail was not working for some time. It is back up now."
             marginY={10}
             width="500px"
             marginBottom="-30px"
             >
-          Because of overwhelming amount of users, we reached our daily limit and are waiting for it to be reset. We cannot accurately estimate when exactly the service will come back, but we expect it to be after around 3pm. Thank you for bearing with us as we work on improving the platform and preventing future errors.
+          Because of overwhelming amount of users, the platform malfunctioned earlier today. If you have sent an email between 7pm on September 7th and 4pm on September 8th and never received anything, you may need to resend it. We fixed the issue now; thank you for bearing with us as the platform is early in its production.
         </Alert>
         </Pane>
       <Component {...pageProps} />
