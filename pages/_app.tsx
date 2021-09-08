@@ -23,13 +23,13 @@ export default function App({ Component, pageProps }) {
           justifyContent="center"
         >
           <Alert
-            intent="info"
-            title="Hoagie Mail was not working for some time. It is back up now."
+            intent="warning"
+            title="Please limit your use of Hoagie Mail for non-urgent manners."
             marginY={10}
             width="500px"
             marginBottom="-30px"
             >
-          Because of overwhelming amount of users, the platform malfunctioned earlier today. If you have sent an email between 7pm on September 7th and 4pm on September 8th and never received anything, you may need to resend it. We fixed the issue now; thank you for bearing with us as the platform is early in its production.
+          <b>We still have a daily limit in place for mail sending. For the time being, please do not use the platform for personal or non-urgent emails for the time being to allow clubs to advertise upcoming events. </b> Thank you for bearing with us as the platform is early in its production.
         </Alert>
         </Pane>
       <Component {...pageProps} />
