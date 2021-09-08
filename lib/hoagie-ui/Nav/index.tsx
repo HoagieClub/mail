@@ -25,7 +25,7 @@ const Nav = ({name, logoComponent}:NavProps) => {
                 >
                     <Link href="/">
                         <Pane cursor="pointer">
-                            {logoComponent ? logoComponent : <Pane>hoagie<b>{name}</b></Pane>}
+                            {logoComponent ? logoComponent : <Pane>hoagie<b>{name}</b><div className="beta">beta</div></Pane>}
                         </Pane>
                     </Link>
                 </Pane>

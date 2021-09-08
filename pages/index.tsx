@@ -53,21 +53,6 @@ export default function Index() {
             paddingX="10px"
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
-        <Pane
-          display="flex"
-          width="100%"
-          justifyContent="center"
-        >
-          <Alert
-            intent="warning"
-            title="Some emails did not get sent after 7pm on September 7th."
-            marginY={10}
-            width="500px"
-            >
-          Because of overwhelming amount of users on Sep 7th, we reached our mail sending limit and some emails were not sent despite the "Sucess" message they received. 
-          The issue is now fixed and we recommend sending any emails that were not forwarded to listservs on Sep 8th or later.
-        </Alert>
-        </Pane>
             <EnvelopeIcon size={100} color="gray800"/>
             <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
