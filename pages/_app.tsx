@@ -23,14 +23,13 @@ export default function App({ Component, pageProps }) {
           justifyContent="center"
         >
           <Alert
-            intent="warning"
-            title="Please limit your use of Hoagie Mail for non-urgent manners."
+            intent="info"
+            title="Mail sending limits should be lifted now."
             marginY={10}
             width="500px"
             marginBottom="-30px"
             >
-          We still have a daily limit in place for mail sending. For the time being, please do not use the platform for personal or non-urgent emails for the time being to allow clubs to advertise upcoming events. It is very possible that after 7pm we will not be able to send new emails. 
-          We are hoping to get rid of this limit this week. Thank you for bearing with us as the platform is early in its production.
+            We changed our mail service which has allowed us to significantly increase our daily limit. You may use the platform as normal now. If you notice any issues with the new service, please contact us.
         </Alert>
         </Pane>
       <Component {...pageProps} />
