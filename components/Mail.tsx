@@ -123,10 +123,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
         getEditor={getEditor}
         placeholder="Hello there!"
         description={`
-        This is the content of your email.
-        Please use the "Image" icon below to add your images to make sure they appear in your email instead of
-        copy-pasting. We also recommend keeping images small to make sure they do not appear gigantic in the email (the preview can be misleading).
-        Note that images added to the email are uploaded to Imgur and are public. `}
+        This is the content of your email. `}
       />
       <Pane>
       <Button onClick={()=>setShowConfirm(true)} size="large" appearance="primary" float="right">

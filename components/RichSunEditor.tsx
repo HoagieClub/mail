@@ -1,4 +1,4 @@
-import { FormField } from 'evergreen-ui'
+import { FormField, Pane, Text, Alert } from 'evergreen-ui'
 import dynamic from "next/dynamic";
 import 'suneditor/dist/css/suneditor.min.css';
 import SetOptions from "suneditor-react/src/types/SetOptions";
@@ -77,6 +77,7 @@ export default function RichTextEditor({
   ]
   const options:SetOptions = {
     buttonList,
+    imageWidth: '500px',
     showPathLabel: false,
     height : 'auto',
     font: ['sans-serif', 'serif'],
@@ -89,7 +90,21 @@ export default function RichTextEditor({
         required={required}
         description={description}
         marginBottom='24px'
-        > 
+    >
+        <Alert
+          marginBottom="20px"
+        >
+          <b>Guide to Email Formatting:</b>
+          <div className="small-text">
+            To make sure your email formattng does not get messed up:
+            <ol>
+              <li><b>Do not copy-paste images</b> and minimize copy-pasting text. Copy-pasted images are unlikely to appear in the actual email.</li>
+              <li><b>Resize images to be at most 600px width</b> and check the Preview before submitting. That being said, the preview can be misleading with regards to scale and images shown.
+              <br/><br />We recommend making posters around 400px to 600px in width and logos 100px to 200px.</li>
+            </ol>
+            We are working on ways to make this more seamless, thank you for bearing with us in the meantime.
+          </div>
+        </Alert>
         <SunEditor 
         setOptions={options} 
         onChange={onChange}

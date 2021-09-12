@@ -22,7 +22,7 @@ export default function App({ Component, pageProps }) {
           width="100%"
           justifyContent="center"
         >
-          <Alert
+          {/* <Alert
             intent="info"
             title="Mail sending limits should be lifted now."
             marginY={10}
@@ -30,7 +30,7 @@ export default function App({ Component, pageProps }) {
             marginBottom="-30px"
             >
             We changed our mail service which has allowed us to significantly increase our daily limit. You may use the platform as normal now. If you notice any issues with the new service, please contact us.
-        </Alert>
+        </Alert> */}
         </Pane>
       <Component {...pageProps} />
       <Footer />
