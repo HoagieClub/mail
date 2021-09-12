@@ -98,9 +98,9 @@ export default function RichTextEditor({
           <div className="small-text">
             To make sure your email formattng does not get messed up:
             <ol>
-              <li><b>Do not copy-paste images</b> and minimize copy-pasting text. Copy-pasted images are unlikely to appear in the actual email.</li>
+              <li><b>Do not copy-paste images</b> and minimize copy-pasting text. Copy-pasted images are unlikely to appear in the actual email. Use the Image icon in the editor to manually upload your images.</li>
               <li><b>Resize images to be at most 600px width</b> and check the Preview before submitting. That being said, the preview can be misleading with regards to scale and images shown.
-              <br/><br />We recommend making posters around 400px to 600px in width and logos 100px to 200px.</li>
+              <br/><br />We recommend making posters around 400px to 600px in width and logos 50px to 200px.</li>
             </ol>
             We are working on ways to make this more seamless, thank you for bearing with us in the meantime.
           </div>
