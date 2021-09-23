@@ -170,6 +170,13 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
       Your NetID will be included at the bottom of the email regardless of the content.
       </Text>
       <Alert
+        intent="danger"
+        marginTop={20}
+        >
+          Effective immediately, <b>you may not use Hoagie Mail to send emails about lost items or items you are selling.</b><br />
+          Violation of this rule will result in a ban.
+        </Alert>
+      <Alert
         intent="warning"
         title="Use this tool responsibly"
         marginTop={20}

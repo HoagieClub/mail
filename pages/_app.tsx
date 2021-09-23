@@ -22,15 +22,16 @@ export default function App({ Component, pageProps }) {
           width="100%"
           justifyContent="center"
         >
-          {/* <Alert
-            intent="info"
-            title="Mail sending limits should be lifted now."
+          <Alert
+            intent="danger"
             marginY={10}
             width="500px"
             marginBottom="-30px"
             >
-            We changed our mail service which has allowed us to significantly increase our daily limit. You may use the platform as normal now. If you notice any issues with the new service, please contact us.
-        </Alert> */}
+          <b>Effective immediately: New content rules.</b><br></br>
+           According to our survey, majority of students do not want to receive emails about lost/found and items you are selling. Until we implement a digest system, <b>you SHOULD NOT use Hoagie Mail to send emails about lost items and items you are selling</b>. Violation of this rule will result
+           in a ban.
+        </Alert>
         </Pane>
       <Component {...pageProps} />
       <Footer />
