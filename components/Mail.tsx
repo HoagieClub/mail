@@ -173,7 +173,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
         intent="danger"
         marginTop={20}
         >
-          Effective immediately, <b>you may not use Hoagie Mail to send emails about lost items or items you are selling.</b><br />
+          Effective immediately, <b>you SHOULD NOT use Hoagie Mail to send emails about lost and found items or items you are selling.</b><br />
           Violation of this rule will result in a ban.
         </Alert>
       <Alert
