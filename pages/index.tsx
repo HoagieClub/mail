@@ -15,7 +15,7 @@ export default function Index() {
         height={56}
         width={majorScale(35)}
         appearance="primary"
-        marginBottom={20}
+        marginBottom={majorScale(2)}
         iconBefore={EnvelopeIcon}
       >
           Send a new Email
@@ -64,17 +64,22 @@ export default function Index() {
             marginTop="30px"
           >
           { Profile }
-          <Link href='https://hoagie.io'><Button
+
+          <Link href='https://hoagie.io'><Button 
             height={56}
+            marginTop={majorScale(2)}
             width={majorScale(35)}
             appearance="default"
-            marginTop={20}
             iconBefore={ArrowLeftIcon}
-          >
-              Back to  <Pane marginLeft={minorScale(1)}>
+        >
+            <Pane display="flex">
+                Back to 
+                <Pane marginLeft={minorScale(1)}>
                     hoagie<b>profile</b>
                 </Pane>
-          </Button></Link><br />
+            </Pane>
+            </Button></Link>
+
           </Pane>
         </div>
         </Pane>
