@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser } from '@auth0/nextjs-auth0'
-import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button, Alert } from 'evergreen-ui'
+import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button } from 'evergreen-ui'
 import Link from 'next/link'
 import AuthButton from '../lib/hoagie-ui/AuthButton'
 
@@ -43,7 +43,7 @@ export default function Index() {
       paddingTop={majorScale(8)}
       >
         <Pane 
-            borderRadius={20} 
+            borderRadius={8}
             textAlign="center" 
             elevation={1} 
             background="white" 
@@ -71,9 +71,12 @@ export default function Index() {
             marginTop={20}
             iconBefore={ArrowLeftIcon}
           >
-              Back to  <Pane marginLeft={minorScale(1)} marginTop="-3px">
+              <Pane display="flex" className="hoagie">
+                Back to
+                <Pane marginLeft={minorScale(1)}>
                     hoagie<b>platform</b>
                 </Pane>
+            </Pane>
           </Button></Link><br />
           </Pane>
         </div>
