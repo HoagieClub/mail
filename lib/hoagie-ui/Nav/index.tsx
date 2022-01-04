@@ -19,7 +19,6 @@ const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
     const theme = useTheme();
     const router = useRouter();
 
-    console.log(user);
     return (
         <Pane elevation={1}>
             <Pane width="100%" height={20} background="blue500"></Pane>
