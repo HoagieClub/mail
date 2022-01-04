@@ -3,20 +3,25 @@ import { UserProvider } from '@auth0/nextjs-auth0';
 import Layout from '../lib/hoagie-ui/Layout';
 import Footer from '../components/Footer';
 import Theme from '../lib/hoagie-ui/Theme';
-import { Pane, Alert } from 'evergreen-ui';
+import { Pane, Alert, useTheme } from 'evergreen-ui';
 import "../lib/hoagie-ui/theme.css"
 import "./mail.css"
 import './quill.snow.css';
 import Head from 'next/head';
 
 export default function App({ Component, pageProps }) {
+  const tabs = [
+    {title: "Send Mail", href: "/app"},
+    {title: "Add to Digest", href: "/"}
+  ];
+
   return (
     <UserProvider>
-        <Head>
+      <Head>
         <title>Mail by Hoagie</title>
       </Head>
-      <Theme>
-      <Layout name="mail">
+      <Theme palette="purple">
+      <Layout name="mail" tabs={tabs}>
       <Pane
           display="flex"
           width="100%"
@@ -24,12 +29,12 @@ export default function App({ Component, pageProps }) {
         >
           <Alert
             intent="danger"
-            marginY={10}
+            marginY={24}
             width="500px"
-            marginBottom="-30px"
+            title="Effective immediately: New content rules"
+            marginBottom="-40px"
             >
-          <b>Effective immediately: New content rules.</b><br></br>
-           According to our survey, majority of students do not want to receive emails about lost and found items or items you are selling. Until we implement a digest system, <b>you SHOULD NOT use Hoagie Mail to send emails about lost and found items or items you are selling</b>. Violation of this rule will result
+           According to our survey, majority of students do not want to receive emails about lost and found items or items you are selling. Until we implement a digest system, you SHOULD NOT use Hoagie Mail to send emails about lost and found items or items you are selling. Violation of this rule will result
            in a ban. Thank you for your understanding.
         </Alert>
         </Pane>

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap');
 
 :root {
     --tint2: #F9FAFC;
@@ -9,13 +8,12 @@
 document, html, body {
     height: 100%;
 }
+
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Inter', sans-serif;
     padding: 0px;
     margin: 0 auto;
-    background: var(--purpletint);
-  }
-  
+}
 
 .h1, .h2 {
     font-family: 'Nunito', sans-serif;
@@ -32,14 +30,11 @@ a {
 } 
 
 .hoagie {
-    font-size: 14pt;
     font-family: 'Nunito', sans-serif !important;
     font-weight: 400;
 }
 
 .beta {
     display: inline-block;
-    font-size: 16px;
-    color: #DE7548;
-    transform: rotate(-10deg);
+    transform: rotate(-8deg) translatey(2px);
 }
