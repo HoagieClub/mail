@@ -1,7 +1,7 @@
 import { useEffect, useState, createRef } from 'react'
 import RichTextEditor from "./RichSunEditor"
 import { useUser } from '@auth0/nextjs-auth0'
-import { Pane, majorScale, Spinner, Button, Alert, TextInputField, Dialog, Text, InfoSignIcon, TickCircleIcon } from 'evergreen-ui'
+import { Pane, Heading, majorScale, Spinner, Button, Alert, TextInputField, Dialog, Text, InfoSignIcon, TickCircleIcon } from 'evergreen-ui'
 import Link from 'next/link';
 
 const senderNameDesc = `This will be the name of the sender displayed in the email. 
@@ -87,7 +87,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
   }, [header, sender]);
 
   const MailForm = <Pane>
-    <h2 className='h2'>Send an Email</h2>
+    <Heading size={800} marginY={majorScale(2)}>Send an Email</Heading>
       { errorMessage && <Alert
         intent="danger"
         title="Error occured."
@@ -212,7 +212,7 @@ export default function Mail({ onSend, onError, errorMessage, success }) {
     paddingTop={majorScale(8)}
     >
       <Pane 
-          borderRadius={20} 
+          borderRadius={8} 
           textAlign="left" 
           elevation={1} 
           background="white" 

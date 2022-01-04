@@ -20,10 +20,6 @@
  
 }
 
-.small-text {
-    font-size: 16px;
-}
-
 .checkmark__check {
     transform-origin: 50% 50%;
     stroke-dasharray: 48;
