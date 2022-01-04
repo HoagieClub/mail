@@ -1,5 +1,6 @@
 import { ThemeProvider, Pane, defaultTheme, classicTheme } from "evergreen-ui"
 import Button from "./Button"
+import Tab from "./Tab"
 import styles from "./Theme.module.css"
 
 function Theme(props) {
@@ -9,6 +10,7 @@ function Theme(props) {
 
   const hoagieUI = {
     ...defTheme,
+    title: "blue",
     colors: {
       //...defTheme.colors,
       gray900: "#000000",
@@ -121,8 +123,8 @@ function Theme(props) {
           backgroundColor: "#D3F5F7"
       },
       purple: {
-          color: "#6E62B6",
-          backgroundColor: "#E7E4F9"
+          color: "#6C47AE",
+          backgroundColor: "#E9DDFE"
       }
     },
     intents: {
@@ -190,12 +192,14 @@ function Theme(props) {
     },
     components: {
       ...defTheme.components,
+      Tab
       // Button,
     },
   }
 
   const hoagiePurple = {
     ...hoagieUI,  
+    title: "purple",
     colors: {
       ...hoagieUI.colors,
       blue900: "#190c30",
@@ -274,6 +278,8 @@ function Theme(props) {
     default:
       colorTheme = hoagieUI;
   }
+
+  // document.body.style.backgroundColor = colorTheme.colors.blue100;
 
   return (
     <ThemeProvider value={colorTheme}>

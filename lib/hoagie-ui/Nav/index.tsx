@@ -1,15 +1,25 @@
-import { majorScale, Pane, Text } from "evergreen-ui"
+import { majorScale, Pane, Text, Avatar, TabNavigation, Tab, useTheme } from "evergreen-ui"
 import { ComponentType } from "react"
+import { useUser } from '@auth0/nextjs-auth0'
 import Link from "next/link"
+import { useRouter } from "next/router"
+import Mail from "../../../components/Mail"
 
 interface NavProps {
     /** the name of the hoagie project */
     name:string;
     /** custom component in place of the logo */
     logoComponent?: ComponentType;
+     /** list of tab objects for navbar */
+    tabs?: Array<Object>;
 }
 
-const Nav = ({name, logoComponent}:NavProps) => {
+const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
+    // const { user, isLoading } = useUser();
+    const theme = useTheme();
+    const router = useRouter();
+
+    console.log(user);
     return (
         <Pane elevation={1}>
             <Pane width="100%" height={20} background="blue500"></Pane>
@@ -17,10 +27,11 @@ const Nav = ({name, logoComponent}:NavProps) => {
                 <Pane 
                     display="flex" 
                     alignItems="center" 
+                    justifyContent="space-between"
                     width="100%" 
                     height="100%" 
                     maxWidth={1200} 
-                    paddingX={20}
+                    paddingX={majorScale(5)}
                     fontSize={25}
                 >
                     <Link href="/">
@@ -29,6 +40,21 @@ const Nav = ({name, logoComponent}:NavProps) => {
                             <Text className="beta" color="blue400">beta</Text></Pane>}
                         </Pane>
                     </Link>
+                    <Pane display="flex" alignItems="center">
+                        <TabNavigation>
+                        {tabs.map((tab, index) => (
+                            <Link href={tab.href} passHref>
+                                <Tab key={tab.title} is="a" id={tab.title}
+                                isSelected={router.pathname === tab.href} appearance="navbar">
+                                {tab.title}
+                                </Tab>
+                            </Link>
+                        ))}
+                        </TabNavigation>
+                        <Avatar name={"Tammy Tiger"} color={theme.title} size={40} marginLeft={majorScale(4)}/>
+
+                        {/* <Avatar name={isLoading ? "Tammy Tiger" : user.name} color={theme.title} size={40} marginLeft={majorScale(4)}/> */}
+                    </Pane>
                 </Pane>
             </Pane>
         </Pane>

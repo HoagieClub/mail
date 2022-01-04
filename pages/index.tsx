@@ -54,7 +54,7 @@ export default function Index() {
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
             <EnvelopeIcon size={100} color="gray800"/>
-            <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
+            <h1 className="hoagie">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
           <div>
           <Pane 
