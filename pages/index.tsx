@@ -20,6 +20,15 @@ export default function Index() {
       >
           Send a new Email
       </Button></Link><br />
+      <Link href='/lostfound'><Button
+        height={56}
+        width={majorScale(35)}
+        appearance="primary"
+        marginBottom={20}
+        iconBefore={EnvelopeIcon}
+      >
+          Lost and Found
+      </Button></Link><br />
       <AuthButton variant="logout" />
     </Pane>;
   else Profile = <AuthButton />
