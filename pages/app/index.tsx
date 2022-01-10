@@ -7,7 +7,7 @@ export default withPageAuthRequired(() => {
   const [errorMessage, setErrorMessage] = useState("")
   const [success, setSuccess] = useState(false)
   const sendMail = async (mailData) => {
-    const response = await fetch('/api/mail/send', {
+    const response = await fetch('/api/hoagie/mail/send', {
         body: JSON.stringify(mailData),
         method: 'POST'
       });
