@@ -51,8 +51,41 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
     { label: sellabel, value: 'sell' },
     { label: miscLabel, value: 'misc' }
   ])
-  const [value, setValue] = useState('studentorg')
+  const [optionValue, setOptionValue] = useState('studentorg')
+
+  const [miscOptions] = useState([
+    { label: <b>Yes</b>, value: 'miscYes' },
+    { label: <b>No</b>, value: 'miscNo' },
+  ])
+  const [miscValue, setMiscValue] = useState('miscYes')
   
+  const misc = <Pane>
+  <Text 
+    size={500}
+  > Is the message <b>urgent</b> and <b>benefits from being sent to all listservs</b> as opposed to just your own?</Text>
+  <RadioGroup
+    size={16}
+    value={miscValue}
+    options={miscOptions}
+    isRequired
+    marginTop={majorScale(3)}
+    onChange={event => setMiscValue(event.target.value)}
+  />
+  <br/>
+</Pane>
+  const bottomButtons =    
+  <Pane>
+  <Link href="/app">
+    <Button size="large" appearance="primary" float="right">
+      Next
+    </Button>
+    </Link>
+    <Link href="/">
+      <Button size="large" float="left">Back</Button>
+    </Link>
+          
+  </Pane>
+
   useEffect( () => {
     if (name == "") setFilled(true);
     if (filled) setNameInvalid(name == "");
@@ -60,7 +93,7 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
     if (filledDesc) setDescInvalid(desc == "");
     setSenderInvalid(sender == "");
   }, [name, sender, desc]);
-
+  
   const MailForm = <Pane marginBottom={majorScale(2)}>
     <Heading 
       size={900} 
@@ -73,27 +106,14 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
 
     <RadioGroup
       size={16}
-      value={value}
+      value={optionValue}
       options={options}
       isRequired
       marginTop={majorScale(3)}
-      onChange={event => setValue(event.target.value)}
+      onChange={event => setOptionValue(event.target.value)}
     />
     <br/>
-    
-    <Pane>
-    <Link href="/app">
-      <Button size="large" appearance="primary" float="right">
-        Next
-      </Button>
-      </Link>
-      <Link href="/">
-        <Button size="large" float="left">Back</Button>
-      </Link>
-            
-    </Pane>
-    <br/>
-   
+  
   </Pane>
 
   const SuccessPage = <Pane 
@@ -132,6 +152,8 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
             paddingTop={majorScale(2)}
             paddingBottom={majorScale(4)}>
             { success ? SuccessPage : MailForm }
+            {optionValue == "misc" ? misc : null}
+            {bottomButtons}
         </Pane>
     </Pane>
   );
