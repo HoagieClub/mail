@@ -112,7 +112,7 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
       marginTop={majorScale(3)}
       onChange={event => setOptionValue(event.target.value)}
     />
-    <br/>
+
   
   </Pane>
 
