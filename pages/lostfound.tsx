@@ -2,10 +2,10 @@ import {React, useState, useEffect} from 'react';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import Layout from '../lib/hoagie-ui/Layout';
 import Footer from '../components/Footer';
-import { InfoSignIcon, Text, Dialog, Heading, Alert, TextInputField, Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button } from 'evergreen-ui'
+import { Strong, InfoSignIcon, Text, Dialog, Heading, Alert, TextInputField, Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button, Paragraph } from 'evergreen-ui'
 import Link from 'next/link';
 import Head from 'next/head';
-import { useUser } from '@auth0/nextjs-auth0'
+import { useUser } from '@auth0/nextjs-auth0';
 
 const senderNameDesc = `This will be the name of the sender displayed in the email. 
 It is recommended that you do not change this. However, you could change this to e.g.
@@ -36,6 +36,40 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
     if (filledDesc) setDescInvalid(desc == "");
     setSenderInvalid(sender == "");
   }, [name, sender, desc]);
+
+  const DigestWarning = <Pane>
+    <Heading 
+      size={800} 
+      marginY={majorScale(2)}>Your Current Digest Message:
+    </Heading>
+    <Text>
+    This message will be sent to all listservs at <b>12 pm January 20th, 2022</b>
+    </Text>
+    <Pane marginTop={20} display="flex" alignItems="center" justifyContent="center" border="default">
+    <Pane margin={20} >
+    <Text><b>Title:</b> Title Here.</Text>
+    <br />
+    <Text><b>Category:</b> Lost & Found</Text>
+    <br />
+    <Text><b>Contact:</b>  Name Lastname (test@princeton.edu)</Text>
+    <br />
+    <br />
+    <Text><b>Description:</b></Text>
+    <br />
+    <Text>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available</Text>
+    </Pane>
+    </Pane>
+    <Alert 
+      intent="none" 
+      title="Want to include another message?"
+      marginTop={20}
+      >
+      You can only have one digest email at a time. If you would like to
+      make a new one or edit it, you will need to delete the current
+      request and re-do it. After deletion, your current message will not
+      be sent but you may create a new Digest Message to be sent in a future  
+    </Alert>
+  </Pane>
 
   const MailForm = <Pane>
     <Heading 
@@ -90,8 +124,7 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
       </Button>
       <Link href="/">
         <Button size="large" float="left">Back</Button>
-      </Link>
-            
+      </Link>      
     </Pane>
     <br/>
     <Dialog
@@ -119,13 +152,6 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
       Once you click "Submit", Hoagie will append your message in the upcoming weekly digest email. This is sent to <b>all residential college listservs on your behalf</b>. 
       Your NetID will be included with your message regardless of the content.
       </Text>
-      <Alert
-        intent="danger"
-        marginTop={20}
-        >
-          Effective immediately, <b>you SHOULD NOT use Hoagie Mail to send emails about lost and found items or items you are selling.</b><br />
-          Violation of this rule will result in a ban.
-        </Alert>
       <Alert
         intent="warning"
         title="Use this tool responsibly"
@@ -173,7 +199,7 @@ export default function LostFound({ onSend, onError, errorMessage, success }) {
             paddingX={majorScale(4)}
             paddingTop={majorScale(2)}
             paddingBottom={majorScale(4)}>
-            { success ? SuccessPage : MailForm }
+            { MailForm }
         </Pane>
     </Pane>
   );
