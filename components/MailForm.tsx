@@ -69,6 +69,15 @@ export default function LostFound({ onSend, onError, errorMessage, success, dige
       request and re-do it. After deletion, your current message will not
       be sent but you may create a new Digest Message to be sent in a future  
     </Alert>
+    <br />
+    <Pane>
+      <Button size="large" appearance="primary" float="right">
+        Delete
+      </Button>
+      <Link href="/">
+        <Button size="large" float="left">Back</Button>
+      </Link>      
+    </Pane>
   </Pane>
 
   const MailForm = <Pane>
