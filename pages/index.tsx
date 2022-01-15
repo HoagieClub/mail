@@ -20,7 +20,16 @@ export default function Index() {
       >
           Send a new Email
       </Button></Link><br />
-      <AuthButton variant="logout" />
+      <AuthButton variant="logout" /><br />
+      <Link href='digest'><Button
+        height={56}
+        width={majorScale(35)}
+        appearance="primary"
+        marginBottom={20}
+        iconBefore={EnvelopeIcon}
+      >
+          Digest Test
+      </Button></Link>
     </Pane>;
   else Profile = <AuthButton />
 
