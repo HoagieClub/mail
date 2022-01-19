@@ -11,7 +11,7 @@ export default function Index() {
   if (isLoading) Profile = <Spinner />;
   else if (error) Profile = <div>{error.message}</div>;
   else if (user) Profile = <Pane>
-      <Link href='/app'><Button
+      <Link href='/startpage'><Button
         height={56}
         width={majorScale(35)}
         appearance="primary"
