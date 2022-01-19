@@ -95,8 +95,8 @@ export default function RichTextEditor({
           marginBottom="20px"
         >
           <b>Guide to Email Formatting:</b>
-          <div className="small-text">
-            To make sure your email formattng does not get messed up:
+          <div>
+            To make sure your email formatting does not get messed up:
             <ol>
               <li><b>Do not copy-paste images</b> and minimize copy-pasting text. Copy-pasted images are unlikely to appear in the actual email. Use the Image icon in the editor to manually upload your images.</li>
               <li><b>Resize images to be at most 600px width</b> and check the Preview before submitting. That being said, the preview can be misleading with regards to scale and images shown.

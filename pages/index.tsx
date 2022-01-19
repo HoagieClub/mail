@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { useUser } from '@auth0/nextjs-auth0'
-import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button, Alert } from 'evergreen-ui'
+import { Pane, majorScale, minorScale, Spinner, EnvelopeIcon, ArrowLeftIcon, Button } from 'evergreen-ui'
 import Link from 'next/link'
 import AuthButton from '../lib/hoagie-ui/AuthButton'
 
@@ -19,6 +19,15 @@ export default function Index() {
         iconBefore={EnvelopeIcon}
       >
           Send a new Email
+      </Button></Link><br />
+      <Link href='/lostfound'><Button
+        height={56}
+        width={majorScale(35)}
+        appearance="primary"
+        marginBottom={20}
+        iconBefore={EnvelopeIcon}
+      >
+          Lost and Found
       </Button></Link><br />
       <AuthButton variant="logout" />
     </Pane>;
@@ -43,7 +52,7 @@ export default function Index() {
       paddingTop={majorScale(8)}
       >
         <Pane 
-            borderRadius={20} 
+            borderRadius={8}
             textAlign="center" 
             elevation={1} 
             background="white" 
@@ -54,7 +63,7 @@ export default function Index() {
             paddingTop={majorScale(5)}
             paddingBottom={majorScale(7)}>
             <EnvelopeIcon size={100} color="gray800"/>
-            <h1 className="h1">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
+            <h1 className="hoagie">Send email to everyone<br></br>on campus, <b>instantly</b>.</h1>
           <p>No more mail forwarding necessary.</p>
           <div>
           <Pane 
@@ -71,9 +80,12 @@ export default function Index() {
             marginTop={20}
             iconBefore={ArrowLeftIcon}
           >
-              Back to  <Pane marginLeft={minorScale(1)} marginTop="-3px">
+              <Pane display="flex" className="hoagie">
+                Back to
+                <Pane marginLeft={minorScale(1)}>
                     hoagie<b>platform</b>
                 </Pane>
+            </Pane>
           </Button></Link><br />
           </Pane>
         </div>
