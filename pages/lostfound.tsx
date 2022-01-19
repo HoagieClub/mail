@@ -10,5 +10,5 @@ import MailForm from "../components/MailForm";
 
 export default function LostFound() {
   
-return <MailForm success={true} onError={false} onSend={false} errorMessage={false} digestWarn={false}/>
+return <MailForm success={true} onError={false} onSend={false} errorMessage={false} digestWarn={true}/>
 };
