@@ -119,6 +119,9 @@ export default function LostFound({ onSend, onError, errorMessage, success, dige
     value={desc}
     onChange={e => setDesc(e.target.value)}
     />
+
+    {/*Add functionality for onSend here*/}
+
     <Pane>
       <Button size="large" appearance="primary" float="right">
         Submit
