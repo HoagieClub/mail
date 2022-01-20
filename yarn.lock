@@ -3,6 +3,7 @@
 
 
 "@auth0/nextjs-auth0@^1.4.2":
+<<<<<<< HEAD
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.6.2.tgz#503e293ca62e5e287b84f460d087963af7f30039"
   integrity sha512-jmcWfZyJAil+XPt/yyT7zjV2tCdRdbJj4bw54Gbs8kyCAtRyCvSlJ3Q+qWCFEmH9megGuPY/T9qCYOEpMFsDEQ==
@@ -13,6 +14,18 @@
     futoin-hkdf "^1.4.2"
     http-errors "^1.8.1"
     joi "^17.4.1"
+=======
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@auth0/nextjs-auth0/-/nextjs-auth0-1.7.0.tgz#61af4e9315cf8e8b42ffcb2dad09ff92b7ce7cfa"
+  integrity sha512-twz4f1A94i2ShJ6jB3UsFuVhzE0vJ1M/Ukq5bNBm/gpvCK6E/P8Ew2wQloak73+mXcV7eg5S+HOlmiKpcSe6mw==
+  dependencies:
+    base64url "^3.0.1"
+    cookie "^0.4.1"
+    debug "^4.3.3"
+    futoin-hkdf "^1.4.2"
+    http-errors "^1.8.1"
+    joi "^17.5.0"
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
     jose "^2.0.5"
     on-headers "^1.0.2"
     openid-client "^4.9.1"
@@ -169,9 +182,15 @@
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
 "@sindresorhus/is@^4.0.0":
+<<<<<<< HEAD
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.0.tgz#667bfc6186ae7c9e0b45a08960c551437176e1ca"
   integrity sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==
+=======
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.2.1.tgz#b88b5724283db80b507cd612caee9a1947412a20"
+  integrity sha512-BrzrgtaqEre0qfvI8sMTaEvx+bayuhPmfe2rfeUGPPHYr/PLxCOqkOe4TQTDPb+qcqgNcsAtXV/Ew74mcDIE8w==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
@@ -203,9 +222,15 @@
     "@types/node" "*"
 
 "@types/node@*":
+<<<<<<< HEAD
   version "17.0.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.6.tgz#cc1589c9ee853b389e67e8fb4384e0f250a139b9"
   integrity sha512-+XBAjfZmmivILUzO0HwBJoYkAyyySSLg5KCGBDFLomJo0sV6szvVLAf4ANZZ0pfWzgEds5KmGLG9D5hfEqOhaA==
+=======
+  version "17.0.8"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.8.tgz#50d680c8a8a78fe30abe6906453b21ad8ab0ad7b"
+  integrity sha512-YofkM6fGv4gDJq78g4j0mMuGMkZVxZDgtU0JRdx6FgiJDG+0fY0GKVolOV8WqVmEhLCXkQRjwDdKyPxJp/uucg==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
 
 "@types/prop-types@*":
   version "15.7.4"
@@ -520,9 +545,15 @@ call-bind@^1.0.0, call-bind@^1.0.2:
     get-intrinsic "^1.0.2"
 
 caniuse-lite@^1.0.30001202, caniuse-lite@^1.0.30001219, caniuse-lite@^1.0.30001228:
+<<<<<<< HEAD
   version "1.0.30001295"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001295.tgz#68a60f8f0664f342b2835c5d8898b4faea7b3d51"
   integrity sha512-lSP16vcyC0FEy0R4ECc9duSPoKoZy+YkpGkue9G4D81OfPnliopaZrU10+qtPdT8PbGXad/PNx43TIQrOmJZSQ==
+=======
+  version "1.0.30001298"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001298.tgz#0e690039f62e91c3ea581673d716890512e7ec52"
+  integrity sha512-AcKqikjMLlvghZL/vfTHorlQsLDhGRalYf1+GmWCf5SCMziSGjRYQW/JEksj14NaYHIR6KIhrFAy0HV5C25UzQ==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
 
 chalk@2.4.2, chalk@^2.0.0:
   version "2.4.2"
@@ -754,7 +785,11 @@ debug@2:
   dependencies:
     ms "2.0.0"
 
+<<<<<<< HEAD
 debug@^4.3.2:
+=======
+debug@^4.3.3:
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
@@ -843,9 +878,15 @@ downshift@^5.2.0:
     react-is "^16.13.1"
 
 electron-to-chromium@^1.3.723:
+<<<<<<< HEAD
   version "1.4.31"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.31.tgz#8d5ccc3f8253cd142b07afaa84f200fd33a7f2a6"
   integrity sha512-t3XVQtk+Frkv6aTD4RRk0OqosU+VLe1dQFW83MDer78ZD6a52frgXuYOIsLYTQiH2Lm+JB2OKYcn7zrX+YGAiQ==
+=======
+  version "1.4.38"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.38.tgz#10ea58d73d36b13e78d5024f3b74a352d3958d01"
+  integrity sha512-WhHt3sZazKj0KK/UpgsbGQnUUoFeAHVishzHFExMxagpZgjiGYSC9S0ZlbhCfSH2L2i+2A1yyqOIliTctMx7KQ==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
 
 elliptic@^6.5.3:
   version "6.5.4"
@@ -950,9 +991,15 @@ events@^3.0.0:
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
 
 evergreen-ui@^6.1.0:
+<<<<<<< HEAD
   version "6.6.4"
   resolved "https://registry.yarnpkg.com/evergreen-ui/-/evergreen-ui-6.6.4.tgz#289920687248af889397d92707c80520f31395e1"
   integrity sha512-KLqbJwTVWpvg8il7tGqfNyr4DWfyNz6WiFWvuuU7iDBNfnHvpqBgdxnhyTqAKkL7+IVEuZrO4doJtnwxIanC+w==
+=======
+  version "6.6.5"
+  resolved "https://registry.yarnpkg.com/evergreen-ui/-/evergreen-ui-6.6.5.tgz#f8aef42c124e443618437dc5c342ac8c50751bf9"
+  integrity sha512-4uJ7PUV9q5MdGZa0lqRRApXgQys8KlA/340OWZhcPjcdFqgaqWXRmsxtSKf3biinqZzUTY07gGZFUyAxhDmWDQ==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
   dependencies:
     "@babel/runtime" "^7.1.2"
     "@segment/react-tiny-virtual-list" "^2.2.1"
@@ -1123,9 +1170,15 @@ got@^11.8.0:
     responselike "^2.0.0"
 
 graceful-fs@^4.1.2:
+<<<<<<< HEAD
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
+=======
+  version "4.2.9"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
+  integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
 
 has-bigints@^1.0.1:
   version "1.0.1"
@@ -1463,7 +1516,11 @@ jest-worker@27.0.0-next.5:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
+<<<<<<< HEAD
 joi@^17.4.1:
+=======
+joi@^17.5.0:
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
   version "17.5.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-17.5.0.tgz#7e66d0004b5045d971cf416a55fb61d33ac6e011"
   integrity sha512-R7hR50COp7StzLnDi4ywOXHrBrgNXuUUfJWIR5lPY5Bm/pOD3jZaTwpluUXVLRWcoWZxkrHBBJ5hLxgnlehbdw==
@@ -1499,9 +1556,15 @@ json5@^1.0.1:
     minimist "^1.2.0"
 
 keyv@^4.0.0:
+<<<<<<< HEAD
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/keyv/-/keyv-4.0.4.tgz#f040b236ea2b06ed15ed86fbef8407e1a1c8e376"
   integrity sha512-vqNHbAc8BBsxk+7QBYLW0Y219rWcClspR6WSeoHYKG5mnsSoOH+BL1pWq02DDCVdvvuUny5rkBlzMRzoqc+GIg==
+=======
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/keyv/-/keyv-4.0.5.tgz#bb12b467aba372fab2a44d4420c00d3c4ebd484c"
+  integrity sha512-531pkGLqV3BMg0eDqqJFI0R1mkK1Nm5xIP2mM6keP5P8WfFtCkg2IOwplTUmlGoTgIg9yQYZ/kdihhz89XH3vA==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
   dependencies:
     json-buffer "3.0.1"
 
@@ -1972,9 +2035,15 @@ prop-types@15.7.2:
     react-is "^16.8.1"
 
 prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.6.2, prop-types@^15.7.2:
+<<<<<<< HEAD
   version "15.8.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.0.tgz#d237e624c45a9846e469f5f31117f970017ff588"
   integrity sha512-fDGekdaHh65eI3lMi5OnErU6a8Ighg2KjcjQxO7m8VHyWjcPyj5kiOgV1LQDOOOgVy3+5FgjXvdSSX7B8/5/4g==
+=======
+  version "15.8.1"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
+  integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
+>>>>>>> 359659e34d5ae18caea12ecacf4d9e04c072fb5d
   dependencies:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"

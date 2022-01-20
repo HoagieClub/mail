@@ -1,9 +1,7 @@
 import { majorScale, Pane, Text, Avatar, TabNavigation, Tab, useTheme } from "evergreen-ui"
 import { ComponentType } from "react"
-import { useUser } from '@auth0/nextjs-auth0'
 import Link from "next/link"
 import { useRouter } from "next/router"
-import Mail from "../../../components/Mail"
 
 interface NavProps {
     /** the name of the hoagie project */
@@ -15,7 +13,6 @@ interface NavProps {
 }
 
 const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
-    // const { user, isLoading } = useUser();
     const theme = useTheme();
     const router = useRouter();
 
@@ -51,8 +48,6 @@ const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
                         ))}
                         </TabNavigation>
                         <Avatar name={"Tammy Tiger"} color={theme.title} size={40} marginLeft={majorScale(4)}/>
-
-                        {/* <Avatar name={isLoading ? "Tammy Tiger" : user.name} color={theme.title} size={40} marginLeft={majorScale(4)}/> */}
                     </Pane>
                 </Pane>
             </Pane>

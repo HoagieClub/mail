@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {React, useState, useEffect} from 'react';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import Layout from '../lib/hoagie-ui/Layout';
 import Footer from '../components/Footer';
@@ -119,7 +119,7 @@ export default function LostFound({ onSend, onError, errorMessage, success, dige
     value={desc}
     onChange={e => setDesc(e.target.value)}
     />
-    
+
     {/*Add functionality for onSend here*/}
 
     <Pane>

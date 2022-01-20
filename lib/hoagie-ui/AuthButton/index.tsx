@@ -19,7 +19,7 @@ const AuthButton = ({
         fontSize:"30px", 
         paddingRight: 20}} 
         className="hoagie">
-            h
+        <b>    h </b>
     </h2>
     const isLogout = variant === "logout";
 
