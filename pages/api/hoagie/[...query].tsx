@@ -29,7 +29,7 @@ export default withApiAuthRequired(async (req, res) => {
             if (response.status === 204) {
                 res.send({})
             } else {
-                const sendStatus = await response.text();
+                const sendStatus = await response.json();
                 res.status(response.status).send(sendStatus);
             }
         }).catch((e) => {
