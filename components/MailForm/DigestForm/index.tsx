@@ -19,7 +19,6 @@ export default function DigestForm({
     const [desc, setDesc] = useState('')
     const [name, setName] = useState('')
     const [link, setLink] = useState('')
-    const [thumbnail, setThumbnail] = useState('')
     // eslint-disable-next-line no-restricted-globals
     const queryParams = new URLSearchParams(location.search)
 
@@ -62,10 +61,10 @@ export default function DigestForm({
                     <LostAndFoundForm
                         name={name}
                         desc={desc}
-                        thumbnail={thumbnail}
+                        thumbnail={link}
                         setName={setName}
                         setDesc={setDesc}
-                        setThumbnail={setThumbnail}
+                        setThumbnail={setLink}
                     />
                 )
             }
@@ -104,6 +103,7 @@ export default function DigestForm({
                         title: name,
                         description: desc,
                         category: 'Lost and found',
+                        link,
                     });
                     setShowConfirm(false);
                 }}
