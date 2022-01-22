@@ -268,12 +268,86 @@ function Theme(props) {
     },
   }
 
+  const hoagieOrange = {
+    ...hoagieUI,  
+    title: "orange",
+    colors: {
+      ...hoagieUI.colors,
+      blue900: "#30170C",
+      blue800: "#5C311E",
+      blue700: "#85462B",
+      blue600: "#B25E3A",
+      blue500: "#DE7548",
+      blue400: "#FC9B72",
+      blue300: "#EBAC91",
+      blue200: "#EEBBA2",
+      blue100: "#F5D3C5",
+      blue50: "#F8E3DA",
+      blue25: "#FDF7F4",
+      selected: "#DE7548",
+      tint1: "#F8E3DA",
+      tint2: "#FCFAF9",
+      border: {
+          default: "#EEEEEE",
+          muted: "#F1F1F1"
+      },
+      icon: {
+          default: "#808080",
+          muted: "#D2D2D2",
+          disabled: "#D2D2D2",
+          selected: "#DE7548"
+      },
+      text: {
+          danger: "#D14343",
+          success: "#52BD95",
+          info: "#DE7548"
+      },
+    },
+    intents: {
+      info: {
+          background: "#FDF7F4",
+          border: "#DE7548",
+          text: "#B25E3A",
+          icon: "#DE7548"
+      },
+      success: {
+          background: "#F5FBF8",
+          border: "#52BD95",
+          text: "#317159",
+          icon: "#52BD95"
+      },
+      warning: {
+          background: "#FFFAF2",
+          border: "#FFB020",
+          text: "#996A13",
+          icon: "#FFB020"
+      },
+      danger: {
+          background: "#FDF4F4",
+          border: "#D14343",
+          text: "#A73636",
+          icon: "#D14343"
+      }
+    },
+    shadows: {
+      0: "0 0 1px rgba(100, 100, 100, 0.3)",
+      1: "0 0 1px rgba(100, 100, 100, 0.3), 0 2px 4px -2px rgba(100, 100, 100, 0.47)",
+      2: "0 0 1px rgba(100, 100, 100, 0.3), 0 5px 8px -4px rgba(100, 100, 100, 0.47)",
+      3: "0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)",
+      4: "0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)",
+      focusRing: "0 0 0 2px #F5D3C5"
+    },
+  }
+
   switch (palette) {
     case 'purple':
       colorTheme = hoagiePurple;
       break;
     case 'blue':
       colorTheme = hoagieUI;
+      break;
+    case 'orange':
+      colorTheme = hoagieOrange;
       break;
     default:
       colorTheme = hoagieUI;
