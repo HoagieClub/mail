@@ -1,5 +1,6 @@
 import {
     Button, Pane, Heading, Text, Alert, majorScale, TextInputField, Dialog, InfoSignIcon,
+    Spinner,
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -37,8 +38,11 @@ export default function DigestForm({
         setSenderInvalid(sender === '');
     }, [name, sender, desc]);
 
-    if (digest.status === 'used') {
+    if (digest.Status === 'used') {
         return <ExistingDigest digest={digest} />;
+    }
+    if (!digest.Status) {
+        return <Spinner />;
     }
     const Form = (
         <Pane>
@@ -88,7 +92,12 @@ export default function DigestForm({
             {/* Add functionality for onSend here */}
 
             <Pane>
-                <Button size="large" appearance="primary" float="right">
+                <Button
+                    onClick={() => setShowConfirm(true)}
+                    size="large"
+                    appearance="primary"
+                    float="right"
+                >
                     Submit
                 </Button>
                 <Button
@@ -109,7 +118,11 @@ export default function DigestForm({
                 hasHeader={false}
                 hasClose={false}
                 onConfirm={async () => {
-                    await onSend({ sender, name, desc });
+                    await onSend({
+                        title: name,
+                        description: desc,
+                        category: 'Lost and found',
+                    });
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}

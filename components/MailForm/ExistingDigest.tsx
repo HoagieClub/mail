@@ -30,7 +30,7 @@ export default function ExistingDigest({
                 justifyContent="center"
                 border="default"
             >
-                <Pane margin={20}>
+                <Pane margin={20} width="100%">
                     <Text><b>Title:</b> { Title }</Text>
                     <br />
                     <Text><b>Category:</b> { Category }</Text>
@@ -38,10 +38,10 @@ export default function ExistingDigest({
                     <Text><b>Contact:</b>  { Email } </Text>
                     <br />
                     <br />
-                    <Text><b>Description:</b> { Description } </Text>
+                    <Text><b>Description:</b>  </Text>
                     <br />
                     {/* eslint-disable-next-line max-len */}
-                    <Text>In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before the final copy is available</Text>
+                    <Text>{ Description }</Text>
                 </Pane>
             </Pane>
             <Alert

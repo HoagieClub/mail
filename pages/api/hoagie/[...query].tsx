@@ -26,7 +26,9 @@ export default withApiAuthRequired(async (req, res) => {
 
     await fetch(`${process.env.HOAGIE_API_URL}/${query}`, fetchReq)
         .then(async (response) => {
-            if (response.status === 204) {
+            if (!response.ok) {
+                res.status(response.status).send(await response.text())
+            } else if (response.status === 204) {
                 res.send({})
             } else {
                 const sendStatus = await response.json();

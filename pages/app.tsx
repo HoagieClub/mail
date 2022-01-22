@@ -57,7 +57,7 @@ export default function App() {
             <Text
                 size={500}
             > Is the message <b>urgent</b> and
-                <b>benefits from being sent to all listservs</b>
+                <b> benefits from being sent to all listservs </b>
                 as opposed to just your own?
             </Text>
             <RadioGroup
