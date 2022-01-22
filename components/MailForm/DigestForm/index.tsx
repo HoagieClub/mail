@@ -1,42 +1,27 @@
 import {
-    Button, Pane, Heading, Text, Alert, majorScale, TextInputField, Dialog, InfoSignIcon,
-    Spinner,
+    Button, Pane, Heading, Text, Alert,
+    majorScale, Dialog, InfoSignIcon, Spinner,
 } from 'evergreen-ui';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import SuccessPage from './SuccessPage';
-import ExistingDigest from './ExistingDigest';
-import ErrorMessage from '../ErrorMessage';
-
-const senderNameDesc = `This will be the name of the sender displayed in the email. 
-It is recommended that you do not change this. However, you could change this to e.g.
-the name of the club advertising the event. Note that your real NetID will be included 
-at the bottom of the email regardless of your display name.`;
+import { useState } from 'react';
+import SuccessPage from '../SuccessPage';
+import ExistingDigest from '../ExistingDigest';
+import ErrorMessage from '../../ErrorMessage';
+import { GenericForm, LostAndFoundForm, SaleForm } from './Forms';
 
 export default function DigestForm({
-    user,
     onSend,
     errorMessage,
     success,
     digest,
 }) {
-    const [desc, setDesc] = useState('')
-    const [descInvalid, setDescInvalid] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
+    const [desc, setDesc] = useState('')
     const [name, setName] = useState('')
-    const [nameInvalid, setNameInvalid] = useState(false)
-    const [sender, setSender] = useState(user.name)
-    const [senderInvalid, setSenderInvalid] = useState(false)
-    const [filled, setFilled] = useState(false);
-    const [filledDesc, setFilledDesc] = useState(false);
-
-    useEffect(() => {
-        if (name === '') setFilled(true);
-        if (filled) setNameInvalid(name === '');
-        if (desc === '') setFilledDesc(true);
-        if (filledDesc) setDescInvalid(desc === '');
-        setSenderInvalid(sender === '');
-    }, [name, sender, desc]);
+    const [link, setLink] = useState('')
+    const [thumbnail, setThumbnail] = useState('')
+    // eslint-disable-next-line no-restricted-globals
+    const queryParams = new URLSearchParams(location.search)
 
     if (digest.Status === 'used') {
         return <ExistingDigest digest={digest} />;
@@ -60,37 +45,42 @@ export default function DigestForm({
                 Earliest possible time this will be sent is at 12pm Jan 20th, 2021.
             </Alert>
             <br />
-            <TextInputField
-                label="Name of Item Lost"
-                isInvalid={nameInvalid}
-                required
-                placeholder="Item"
-                validationMessage={nameInvalid ? 'Must have an item name' : null}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <TextInputField
-                label="Displayed Sender Name"
-                required
-                isInvalid={senderInvalid}
-                description={senderNameDesc}
-                placeholder={user.name}
-                validationMessage={senderInvalid ? 'Must have sender name' : null}
-                value={sender}
-                onChange={(e) => setSender(e.target.value)}
-            />
-            <TextInputField
-                label="Description of Item"
-                isInvalid={descInvalid}
-                required
-                placeholder="Description"
-                validationMessage={descInvalid ? 'Must have a description' : null}
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-            />
-
-            {/* Add functionality for onSend here */}
-
+            {
+                queryParams.get('type') === 'sale' && (
+                    <SaleForm
+                        name={name}
+                        desc={desc}
+                        link={link}
+                        setName={setName}
+                        setDesc={setDesc}
+                        setLink={setLink}
+                    />
+                )
+            }
+            {
+                queryParams.get('type') === 'lost' && (
+                    <LostAndFoundForm
+                        name={name}
+                        desc={desc}
+                        thumbnail={thumbnail}
+                        setName={setName}
+                        setDesc={setDesc}
+                        setThumbnail={setThumbnail}
+                    />
+                )
+            }
+            {
+                (queryParams.get('type') === 'misc'
+                || !queryParams.has('type')
+                ) && (
+                    <GenericForm
+                        name={name}
+                        desc={desc}
+                        setName={setName}
+                        setDesc={setDesc}
+                    />
+                )
+            }
             <Pane>
                 <Button
                     onClick={() => setShowConfirm(true)}
@@ -100,15 +90,7 @@ export default function DigestForm({
                 >
                     Submit
                 </Button>
-                <Button
-                    size="large"
-                    appearance="default"
-                    float="right"
-                    marginRight="8px"
-                >
-                    Cancel
-                </Button>
-                <Link href="/">
+                <Link href="/app">
                     <Button size="large" float="left">Back</Button>
                 </Link>
             </Pane>

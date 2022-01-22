@@ -59,7 +59,7 @@ export default function ExistingDigest({
                 <Button size="large" appearance="primary" float="right">
                     Delete
                 </Button>
-                <Link href="/">
+                <Link href="/app">
                     <Button size="large" float="left">Back</Button>
                 </Link>
             </Pane>

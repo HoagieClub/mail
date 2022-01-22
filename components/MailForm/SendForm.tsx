@@ -95,7 +95,7 @@ export default function Mail({
                 >
                     See Preview
                 </Button>
-                <Link href="/">
+                <Link href="/app">
                     <Button size="large" float="left">Back</Button>
                 </Link>
 

@@ -11,24 +11,28 @@ export default function App() {
 
     const studentOrgLabel = (
         <Pane>
-            <Text size={500}> <b>Student organization event</b><br /></Text>
-            <Text size={500}> These include events organized by
-                registered clubs, departments, etc.
+            <Text size={500}>
+                <b>Student clubs or Departments</b>
+                <br />
+            </Text>
+            <Text size={500}> Announcements on behalf of
+                student clubs, departments, and
+                Princeton-affiliated organizations.
             </Text>
         </Pane>
     )
     const lostFoundLabel = (
         <Pane>
-            <Text size={500}> <b>Lost and Found or Stolen Items</b><br /></Text>
-            <Text size={500}> Items you have found or lost and want to
-                make an announcement about.
+            <Text size={500}> <b>Lost and Found Items</b><br /></Text>
+            <Text size={500}>
+                Announcements about found, lost, or stolen things.
             </Text>
         </Pane>
     )
     const sellabel = (
         <Pane>
-            <Text size={500}> <b>Selling or request to buy</b><br /></Text>
-            <Text size={500}> Items you are selling or want to buy. </Text>
+            <Text size={500}> <b>Student sales</b><br /></Text>
+            <Text size={500}> Announcements about items you are selling. </Text>
         </Pane>
     )
     const miscLabel = (
@@ -40,8 +44,8 @@ export default function App() {
 
     const [options] = useState([
         { label: studentOrgLabel, value: 'studentorg' },
-        { label: lostFoundLabel, value: 'lostfound' },
-        { label: sellabel, value: 'sell' },
+        { label: lostFoundLabel, value: 'lost' },
+        { label: sellabel, value: 'sale' },
         { label: miscLabel, value: 'misc' },
     ])
     const [optionValue, setOptionValue] = useState('studentorg')
@@ -73,7 +77,9 @@ export default function App() {
     )
     const bottomButtons = (
         <Pane>
-            <Link href={optionValue === 'studentorg' ? '/send' : '/digest'}>
+            <Link href={optionValue === 'studentorg'
+                ? '/send' : `/digest?type=${optionValue}`}
+            >
                 <Button size="large" appearance="primary" float="right">
                     Next
                 </Button>
@@ -94,7 +100,7 @@ export default function App() {
             </Heading>
             <Text
                 size={500}
-            > Tell use what you would like to send...
+            > I would like to send an email about...
             </Text>
 
             <RadioGroup

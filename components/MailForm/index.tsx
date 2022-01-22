@@ -36,7 +36,6 @@ export default function MailForm({
                 { isDigest
                     ? (
                         <DigestForm
-                            user={user}
                             onSend={onSend}
                             errorMessage={errorMessage}
                             success={success}
