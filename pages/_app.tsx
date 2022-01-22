@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }) {
             <Head>
                 <title>Mail by Hoagie</title>
             </Head>
-            <Theme palette="purple">
+            <Theme palette="orange">
                 <Layout name="mail" tabs={tabs}>
                     <Component {...pageProps} />
                     <Footer />
