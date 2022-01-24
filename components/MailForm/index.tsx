@@ -7,7 +7,7 @@ import SendForm from './SendForm';
 
 export default function MailForm({
     onSend, onError, errorMessage, success, isDigest,
-    digest = { status: 'unused' }, loading = false,
+    digest = { status: 'unused' }, onDelete,loading = false,
 }) {
     const { user, isLoading } = useUser();
     if (isLoading || loading) { return <Spinner /> }
@@ -40,6 +40,7 @@ export default function MailForm({
                             errorMessage={errorMessage}
                             success={success}
                             digest={digest}
+                            onDelete={onDelete}
                         />
                     )
                     : (

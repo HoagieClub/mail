@@ -28,6 +28,20 @@ export default withPageAuthRequired(() => {
         }
     }
 
+    const deleteDigest = async () => {
+        const response = await fetch('/api/hoagie/mail/digest', {
+            body: null,
+            method: 'DELETE',
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            setErrorMessage(`There was an issue while performing the deletion. ${errorText}`);
+        } else {
+            setSuccess(true);
+        }
+    }
+
     useEffect(() => {
         // eslint-disable-next-line no-restricted-globals
         const queryParams = new URLSearchParams(location.search)
@@ -54,6 +68,7 @@ export default withPageAuthRequired(() => {
             errorMessage={errorMessage}
             isDigest
             digest={data}
+            onDelete={deleteDigest}
         />
     );
 });

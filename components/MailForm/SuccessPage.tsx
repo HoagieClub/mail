@@ -1,6 +1,7 @@
 import { Button, Pane } from 'evergreen-ui';
 
 export default function SuccessPage() {
+    
     return (
         <Pane
             display="flex"
