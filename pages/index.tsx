@@ -10,7 +10,8 @@ import AuthButton from '../lib/hoagie-ui/AuthButton'
 export default function Index() {
     const { user, error, isLoading } = useUser();
     let Profile;
-    if (isLoading) Profile = <Spinner />;
+    // change
+    if (isLoading);
     else if (error) Profile = <div>{error.message}</div>;
     else if (user) {
         Profile = (

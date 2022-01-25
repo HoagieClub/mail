@@ -2,6 +2,7 @@ import {
     Pane, TextInputField,
     TextareaField, Image,
     FilePicker, FormField,
+    Checkbox, Text, Strong,
 } from 'evergreen-ui';
 import { useState, useEffect } from 'react';
 import ErrorMessage from '../../ErrorMessage';
@@ -41,6 +42,9 @@ function LostAndFoundForm({
         if (filled) setNameInvalid(name === '');
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
+        if (desc === '' || desc.length < 5 || desc.length > 200) {
+            setDescInvalid(desc === '');
+        }
     }, [name, desc]);
     return (
         <Pane>
@@ -77,7 +81,8 @@ function LostAndFoundForm({
                 my yellow leather wallet went missing. It has a WaWa membership
                 card and a sticker of a sandwich on it."
                 description="Some details about the item."
-                validationMessage={descInvalid ? 'Must have a description' : null}
+                validationMessage={descInvalid
+                    ? 'Name must be between 5 and 200 characters.' : null}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
             />
@@ -110,6 +115,17 @@ function SaleForm({
     const [descInvalid, setDescInvalid] = useState(false)
     const [filled, setFilled] = useState(false);
     const [filledDesc, setFilledDesc] = useState(false);
+
+    const [accessoriesChecked, setAccessoriesChecked] = useState(false)
+    const [beautyChecked, setBeautyChecked] = useState(false)
+    const [clothingChecked, setClothingChecked] = useState(false)
+    const [electronicsChecked, setElectronicsChecked] = useState(false)
+    const [ticketChecked, setTicketChecked] = useState(false)
+    const [foodChecked, setFoodChecked] = useState(false)
+    const [furnitureChecked, setFurnitureChecked] = useState(false)
+    const [schoolChecked, setSchoolChecked] = useState(false)
+    const [textbookChecked, setTextbookChecked] = useState(false)
+    const [otherChecked, setOtherChecked] = useState(false)
 
     useEffect(() => {
         if (name === '') setFilled(true);
@@ -149,6 +165,57 @@ function SaleForm({
                 validationMessage={descInvalid ? 'Must have a description' : null}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
+            />
+            <Text size={400}><Strong>Categories</Strong></Text>
+            <Checkbox
+                label="Accessories"
+                checked={accessoriesChecked}
+                onChange={(e) => setAccessoriesChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Beauty Supplies"
+                checked={beautyChecked}
+                onChange={(e) => setBeautyChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Clothing"
+                checked={clothingChecked}
+                onChange={(e) => setClothingChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Electronics"
+                checked={electronicsChecked}
+                onChange={(e) => setElectronicsChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Event Tickets"
+                checked={ticketChecked}
+                onChange={(e) => setTicketChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Food"
+                checked={foodChecked}
+                onChange={(e) => setFoodChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Furniture"
+                checked={furnitureChecked}
+                onChange={(e) => setFurnitureChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="School Supplies"
+                checked={schoolChecked}
+                onChange={(e) => setSchoolChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Textbooks"
+                checked={textbookChecked}
+                onChange={(e) => setTextbookChecked(e.target.checked)}
+            />
+            <Checkbox
+                label="Other"
+                checked={otherChecked}
+                onChange={(e) => setOtherChecked(e.target.checked)}
             />
         </Pane>
     )

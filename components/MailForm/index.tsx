@@ -10,7 +10,7 @@ export default function MailForm({
     digest = { status: 'unused' }, loading = false,
 }) {
     const { user, isLoading } = useUser();
-    if (isLoading || loading) { return <Spinner /> }
+    // if (isLoading || loading) { return <Spinner /> }
 
     return (
         <Pane
