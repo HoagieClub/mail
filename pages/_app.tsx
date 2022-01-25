@@ -10,7 +10,6 @@ import './quill.snow.css';
 export default function App({ Component, pageProps }) {
     const tabs = [
         { title: 'Send Mail', href: '/app' },
-        { title: 'Add to Digest', href: '/' },
     ];
 
     return (

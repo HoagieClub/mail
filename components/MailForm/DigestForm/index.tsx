@@ -22,6 +22,7 @@ export default function DigestForm({
     const [link, setLink] = useState('')
     // eslint-disable-next-line no-restricted-globals
     const queryParams = new URLSearchParams(location.search)
+    const category = queryParams.has('type') ? queryParams.get('type') : 'misc';
 
     if (digest.Status === 'used') {
         return (
@@ -52,7 +53,7 @@ export default function DigestForm({
             </Alert>
             <br />
             {
-                queryParams.get('type') === 'sale' && (
+                category === 'sale' && (
                     <SaleForm
                         name={name}
                         desc={desc}
@@ -64,7 +65,7 @@ export default function DigestForm({
                 )
             }
             {
-                queryParams.get('type') === 'lost' && (
+                category === 'lost' && (
                     <LostAndFoundForm
                         name={name}
                         desc={desc}
@@ -76,9 +77,7 @@ export default function DigestForm({
                 )
             }
             {
-                (queryParams.get('type') === 'misc'
-                || !queryParams.has('type')
-                ) && (
+                category === 'misc' && (
                     <GenericForm
                         name={name}
                         desc={desc}
@@ -109,7 +108,7 @@ export default function DigestForm({
                     await onSend({
                         title: name,
                         description: desc,
-                        category: 'Lost and found',
+                        category,
                         link,
                     });
                     setShowConfirm(false);
