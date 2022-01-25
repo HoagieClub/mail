@@ -114,7 +114,7 @@ export default function DigestForm({
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}
-                confirmLabel="Send Email"
+                confirmLabel="Add Message"
                 intent="warning"
             >
                 <Pane
@@ -132,7 +132,7 @@ export default function DigestForm({
                     Once you click <b>Submit</b>, Hoagie will append your
                     message in the upcoming weekly digest email.
                     This is sent to
-                    <b>all residential college listservs on your behalf</b>.
+                    <b> all residential college listservs on your behalf</b>.
                     Your NetID will be included with your message regardless
                     of the content.
                 </Text>
@@ -141,7 +141,7 @@ export default function DigestForm({
                     title="Use this tool responsibly"
                     marginTop={20}
                 >
-                    If Hoagie Mail Digest is used to send offensive,
+                    If Hoagie Digest is used to send offensive,
                     intentionally misleading or harmful messages,
                     the user will be banned from the platform
                     and, if necessary, reported to the University.
@@ -149,5 +149,5 @@ export default function DigestForm({
             </Dialog>
         </Pane>
     )
-    return success ? <SuccessPage /> : Form;
+    return success ? <SuccessPage digest /> : Form;
 }

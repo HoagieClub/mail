@@ -2,8 +2,8 @@ import {
     Button, Pane, Heading, Text, Alert, majorScale, Dialog, InfoSignIcon,
 } from 'evergreen-ui';
 import Link from 'next/link';
-import ErrorMessage from '../ErrorMessage';
 import { useState } from 'react';
+import ErrorMessage from '../ErrorMessage';
 
 export default function ExistingDigest({
     errorMessage,
@@ -27,8 +27,8 @@ export default function ExistingDigest({
             </Heading>
             <ErrorMessage text={errorMessage} />
             <Text>
-                This message will be sent to all listservs at
-                <b> 12 pm January 20th, 2022</b>
+                This message will be included in the next Hoagie Digest.<br />
+                Digest emails are sent <b>at noon every and Sunday</b>.
             </Text>
             <Pane
                 marginTop={20}
@@ -96,7 +96,8 @@ export default function ExistingDigest({
                     alignItems="center"
                 >
                     <InfoSignIcon marginRight={10} />
-                    Are you sure you want to delete your previous Hoagie Mail Digest message?
+                    Are you sure you want to delete your current
+                    Hoagie Digest message?
                 </Pane>
                 <Text>
                     This action <b>cannot be undone</b>.
