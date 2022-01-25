@@ -2,6 +2,7 @@ import {
     Pane, TextInputField,
     TextareaField, Image,
     FilePicker, FormField,
+    Checkbox,
 } from 'evergreen-ui';
 import { useState, useEffect } from 'react';
 import ErrorMessage from '../../ErrorMessage';
@@ -106,31 +107,50 @@ function SaleForm({
     desc, setDesc,
     link, setLink,
 }) {
-    const [nameInvalid, setNameInvalid] = useState(false)
     const [descInvalid, setDescInvalid] = useState(false)
-    const [filled, setFilled] = useState(false);
     const [filledDesc, setFilledDesc] = useState(false);
 
+    const salesCategories = [
+        'Accessories',
+        'Clothing',
+        'Tech',
+        'Furniture',
+        'School',
+        'Other',
+    ]
+
+    const [categories, setCategories] = useState({
+        Accessories: false,
+        Clothing: false,
+        Tech: false,
+        Furniture: false,
+        School: false,
+        Other: false,
+    })
+
+    const updateTitle = (newCategories) => {
+        const items = Object.entries(newCategories)
+        const selectedCategories = items.flatMap(
+            ([category, checked]) => {
+                if (checked) return [category]
+                return []
+            },
+        )
+        if (selectedCategories.length === 0) {
+            setName('Other')
+            return
+        }
+        setName(selectedCategories.join(', '))
+    }
+
     useEffect(() => {
-        if (name === '') setFilled(true);
-        if (filled) setNameInvalid(name === '');
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
     }, [name, desc]);
     return (
         <Pane>
             <TextInputField
-                label="Title"
-                isInvalid={nameInvalid}
-                required
-                placeholder="Closet sale of jackets and some shoes!"
-                description="For example: Closet sale of jackets and some shoes!"
-                validationMessage={nameInvalid ? 'Must have an item name' : null}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <TextInputField
-                label="Google Slides URL (optional)"
+                label="Google Slides URL (recommended)"
                 placeholder="https://docs.google.com/presentation/d/1234"
                 description="If your sale is on Google Slides,
                 you may copy paste your URL here.
@@ -150,6 +170,28 @@ function SaleForm({
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
             />
+            <FormField
+                marginTop={24}
+                label="Categories"
+                description="Select the categories of things you are selling."
+                required
+            />
+            {
+                salesCategories.map((category) => (
+                    <Checkbox
+                        label={category}
+                        checked={categories[category]}
+                        onChange={(e) => {
+                            const newCategories = {
+                                ...categories,
+                            }
+                            newCategories[category] = e.target.checked;
+                            setCategories(newCategories)
+                            updateTitle(newCategories)
+                        }}
+                    />
+                ))
+            }
         </Pane>
     )
 }

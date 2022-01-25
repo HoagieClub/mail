@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button,
 } from 'evergreen-ui'
 import Link from 'next/link';
 
-export default function App() {
+export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
     if (isLoading) { return <Spinner /> }
 
@@ -142,4 +142,4 @@ export default function App() {
             </Pane>
         </Pane>
     );
-}
+})
