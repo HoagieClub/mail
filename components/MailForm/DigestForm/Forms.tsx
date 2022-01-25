@@ -42,6 +42,9 @@ function LostAndFoundForm({
         if (filled) setNameInvalid(name === '');
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
+        if (desc === '' || desc.length < 5 || desc.length > 200) {
+            setDescInvalid(desc === '');
+        }
     }, [name, desc]);
     return (
         <Pane>
@@ -78,7 +81,8 @@ function LostAndFoundForm({
                 my yellow leather wallet went missing. It has a WaWa membership
                 card and a sticker of a sandwich on it."
                 description="Some details about the item."
-                validationMessage={descInvalid ? 'Must have a description' : null}
+                validationMessage={descInvalid
+                    ? 'Name must be between 5 and 200 characters.' : null}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
             />

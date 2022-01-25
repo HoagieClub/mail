@@ -7,7 +7,7 @@ import Link from 'next/link';
 
 export default function App() {
     const { user, isLoading } = useUser();
-    if (isLoading) { return <Spinner /> }
+    // if (isLoading) { return <Spinner /> }
 
     const studentOrgLabel = (
         <Pane>

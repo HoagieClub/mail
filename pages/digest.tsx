@@ -42,9 +42,9 @@ export default withPageAuthRequired(() => {
     }, [])
 
     // TODO: Handle error properly.
-    if (!data || error) {
-        <Spinner />
-    }
+    // if (!data || error) {
+    //     <Spinner />
+    // }
 
     return (
         <MailForm

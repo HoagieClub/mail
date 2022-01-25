@@ -25,9 +25,9 @@ export default function DigestForm({
     if (digest.Status === 'used') {
         return <ExistingDigest digest={digest} />;
     }
-    if (!digest.Status) {
-        return <Spinner />;
-    }
+    // if (!digest.Status) {
+    //     return <Spinner />;
+    // }
     const Form = (
         <Pane>
             <Heading
