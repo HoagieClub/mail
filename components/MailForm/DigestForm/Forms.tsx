@@ -2,7 +2,7 @@ import {
     Pane, TextInputField,
     TextareaField, Image,
     FilePicker, FormField,
-    Checkbox, Text, Strong,
+    Checkbox,
 } from 'evergreen-ui';
 import { useState, useEffect } from 'react';
 import ErrorMessage from '../../ErrorMessage';
@@ -107,42 +107,50 @@ function SaleForm({
     desc, setDesc,
     link, setLink,
 }) {
-    const [nameInvalid, setNameInvalid] = useState(false)
     const [descInvalid, setDescInvalid] = useState(false)
-    const [filled, setFilled] = useState(false);
     const [filledDesc, setFilledDesc] = useState(false);
 
-    const [accessoriesChecked, setAccessoriesChecked] = useState(false)
-    const [beautyChecked, setBeautyChecked] = useState(false)
-    const [clothingChecked, setClothingChecked] = useState(false)
-    const [electronicsChecked, setElectronicsChecked] = useState(false)
-    const [ticketChecked, setTicketChecked] = useState(false)
-    const [foodChecked, setFoodChecked] = useState(false)
-    const [furnitureChecked, setFurnitureChecked] = useState(false)
-    const [schoolChecked, setSchoolChecked] = useState(false)
-    const [textbookChecked, setTextbookChecked] = useState(false)
-    const [otherChecked, setOtherChecked] = useState(false)
+    const salesCategories = [
+        'Accessories',
+        'Clothing',
+        'Tech',
+        'Furniture',
+        'School',
+        'Other',
+    ]
+
+    const [categories, setCategories] = useState({
+        Accessories: false,
+        Clothing: false,
+        Tech: false,
+        Furniture: false,
+        School: false,
+        Other: false,
+    })
+
+    const updateTitle = (newCategories) => {
+        const items = Object.entries(newCategories)
+        const selectedCategories = items.flatMap(
+            ([category, checked]) => {
+                if (checked) return [category]
+                return []
+            },
+        )
+        if (selectedCategories.length === 0) {
+            setName('Other')
+            return
+        }
+        setName(selectedCategories.join(', '))
+    }
 
     useEffect(() => {
-        if (name === '') setFilled(true);
-        if (filled) setNameInvalid(name === '');
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
     }, [name, desc]);
     return (
         <Pane>
             <TextInputField
-                label="Title"
-                isInvalid={nameInvalid}
-                required
-                placeholder="Closet sale of jackets and some shoes!"
-                description="For example: Closet sale of jackets and some shoes!"
-                validationMessage={nameInvalid ? 'Must have an item name' : null}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-            />
-            <TextInputField
-                label="Google Slides URL (optional)"
+                label="Google Slides URL (recommended)"
                 placeholder="https://docs.google.com/presentation/d/1234"
                 description="If your sale is on Google Slides,
                 you may copy paste your URL here.
@@ -162,57 +170,28 @@ function SaleForm({
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
             />
-            <Text size={400}><Strong>Categories</Strong></Text>
-            <Checkbox
-                label="Accessories"
-                checked={accessoriesChecked}
-                onChange={(e) => setAccessoriesChecked(e.target.checked)}
+            <FormField
+                marginTop={24}
+                label="Categories"
+                description="Select the categories of things you are selling."
+                required
             />
-            <Checkbox
-                label="Beauty Supplies"
-                checked={beautyChecked}
-                onChange={(e) => setBeautyChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Clothing"
-                checked={clothingChecked}
-                onChange={(e) => setClothingChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Electronics"
-                checked={electronicsChecked}
-                onChange={(e) => setElectronicsChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Event Tickets"
-                checked={ticketChecked}
-                onChange={(e) => setTicketChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Food"
-                checked={foodChecked}
-                onChange={(e) => setFoodChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Furniture"
-                checked={furnitureChecked}
-                onChange={(e) => setFurnitureChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="School Supplies"
-                checked={schoolChecked}
-                onChange={(e) => setSchoolChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Textbooks"
-                checked={textbookChecked}
-                onChange={(e) => setTextbookChecked(e.target.checked)}
-            />
-            <Checkbox
-                label="Other"
-                checked={otherChecked}
-                onChange={(e) => setOtherChecked(e.target.checked)}
-            />
+            {
+                salesCategories.map((category) => (
+                    <Checkbox
+                        label={category}
+                        checked={categories[category]}
+                        onChange={(e) => {
+                            const newCategories = {
+                                ...categories,
+                            }
+                            newCategories[category] = e.target.checked;
+                            setCategories(newCategories)
+                            updateTitle(newCategories)
+                        }}
+                    />
+                ))
+            }
         </Pane>
     )
 }
