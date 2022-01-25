@@ -14,6 +14,7 @@ export default function DigestForm({
     errorMessage,
     success,
     digest,
+    onDelete,
 }) {
     const [showConfirm, setShowConfirm] = useState(false)
     const [desc, setDesc] = useState('')
@@ -23,7 +24,7 @@ export default function DigestForm({
     const queryParams = new URLSearchParams(location.search)
 
     if (digest.Status === 'used') {
-        return <ExistingDigest digest={digest} />;
+        return <ExistingDigest errorMessage={errorMessage} digest={digest} onDelete={onDelete}/>;
     }
     if (!digest.Status) {
         return <Spinner />;
