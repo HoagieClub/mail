@@ -12,7 +12,7 @@ export default withPageAuthRequired(() => {
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
-                <b>Student clubs or Departments</b>
+                <b>University clubs, departments, and organizations</b>
                 <br />
             </Text>
             <Text size={500}> Announcements on behalf of
@@ -31,8 +31,8 @@ export default withPageAuthRequired(() => {
     )
     const sellabel = (
         <Pane>
-            <Text size={500}> <b>Student sales</b><br /></Text>
-            <Text size={500}> Announcements about items you are selling. </Text>
+            <Text size={500}> <b>Student Sales</b><br /></Text>
+            <Text size={500}> Announcements about student sales. </Text>
         </Pane>
     )
     const miscLabel = (
@@ -44,39 +44,16 @@ export default withPageAuthRequired(() => {
 
     const [options] = useState([
         { label: studentOrgLabel, value: 'studentorg' },
-        { label: lostFoundLabel, value: 'lost' },
         { label: sellabel, value: 'sale' },
+        { label: lostFoundLabel, value: 'lost' },
         { label: miscLabel, value: 'misc' },
     ])
     const [optionValue, setOptionValue] = useState('studentorg')
 
-    const [miscOptions] = useState([
-        { label: <b>Yes</b>, value: 'miscYes' },
-        { label: <b>No</b>, value: 'miscNo' },
-    ])
-    const [miscValue, setMiscValue] = useState('miscYes')
-
-    const misc = (
-        <Pane>
-            <Text
-                size={500}
-            > Is the message <b>urgent</b> and
-                <b> benefits from being sent to all listservs </b>
-                as opposed to just your own?
-            </Text>
-            <RadioGroup
-                size={16}
-                value={miscValue}
-                options={miscOptions}
-                isRequired
-                marginTop={majorScale(3)}
-                onChange={(event) => setMiscValue(event.target.value)}
-            />
-            <br />
-        </Pane>
-    )
     const bottomButtons = (
-        <Pane>
+        <Pane
+            paddingTop={30}
+        >
             <Link href={optionValue === 'studentorg'
                 ? '/send' : `/digest?type=${optionValue}`}
             >
@@ -100,7 +77,7 @@ export default withPageAuthRequired(() => {
             </Heading>
             <Text
                 size={500}
-            > I would like to send an email about...
+            > Would you like to send an email about...
             </Text>
 
             <RadioGroup
@@ -137,7 +114,6 @@ export default withPageAuthRequired(() => {
                 paddingBottom={majorScale(4)}
             >
                 { SelectForm }
-                {optionValue === 'misc' ? misc : null}
                 {bottomButtons}
             </Pane>
         </Pane>

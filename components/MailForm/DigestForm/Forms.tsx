@@ -149,15 +149,6 @@ function SaleForm({
     }, [name, desc]);
     return (
         <Pane>
-            <TextInputField
-                label="Google Slides URL (recommended)"
-                placeholder="https://docs.google.com/presentation/d/1234"
-                description="If your sale is on Google Slides,
-                you may copy paste your URL here.
-                Make sure it starts with https://docs.google.com/"
-                value={link}
-                onChange={(e) => setLink(e.target.value)}
-            />
             <TextareaField
                 label="Description of Item"
                 isInvalid={descInvalid}
@@ -169,6 +160,15 @@ function SaleForm({
                 validationMessage={descInvalid ? 'Must have a description' : null}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
+            />
+            <TextInputField
+                label="Google Slides URL (recommended)"
+                placeholder="https://docs.google.com/presentation/d/1234"
+                description="If your sale is on Google Slides,
+                you may copy paste your URL here.
+                Make sure it starts with https://docs.google.com/"
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
             />
             <FormField
                 marginTop={24}

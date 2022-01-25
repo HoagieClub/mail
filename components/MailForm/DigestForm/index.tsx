@@ -24,7 +24,13 @@ export default function DigestForm({
     const queryParams = new URLSearchParams(location.search)
 
     if (digest.Status === 'used') {
-        return <ExistingDigest errorMessage={errorMessage} digest={digest} onDelete={onDelete}/>;
+        return (
+            <ExistingDigest
+                errorMessage={errorMessage}
+                digest={digest}
+                onDelete={onDelete}
+            />
+        );
     }
     if (!digest.Status) {
         return <Spinner />;

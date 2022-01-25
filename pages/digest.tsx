@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import router from 'next/router';
 import { Spinner } from 'evergreen-ui';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import MailForm from '../components/MailForm';
 
 export default withPageAuthRequired(() => {
+    const { mutate } = useSWRConfig()
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
+    const [loading, setLoading] = useState(false)
     const fetcher = (url: string) => fetch(url).then((r) => r.json())
     const { data, error } = useSWR(
         '/api/hoagie/mail/digest',
@@ -29,6 +31,8 @@ export default withPageAuthRequired(() => {
     }
 
     const deleteDigest = async () => {
+        setSuccess(false)
+        setLoading(true)
         const response = await fetch('/api/hoagie/mail/digest', {
             body: null,
             method: 'DELETE',
@@ -36,9 +40,14 @@ export default withPageAuthRequired(() => {
 
         if (!response.ok) {
             const errorText = await response.text();
-            setErrorMessage(`There was an issue while performing the deletion. ${errorText}`);
+            setErrorMessage(`There was an issue while performing the deletion. 
+            ${errorText}`);
+            setLoading(false)
         } else {
-            setSuccess(true);
+            // mutate causes useSWR to re-fetch the data,
+            // allowing the form to be updated after the digest is deleted
+            setLoading(false)
+            mutate('/api/hoagie/mail/digest')
         }
     }
 
@@ -67,6 +76,7 @@ export default withPageAuthRequired(() => {
             onSend={addDigest}
             errorMessage={errorMessage}
             isDigest
+            loading={loading}
             digest={data}
             onDelete={deleteDigest}
         />
