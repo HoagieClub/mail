@@ -1,20 +1,24 @@
-import { majorScale, Pane, Text, Avatar, TabNavigation, Tab, useTheme } from "evergreen-ui"
+import { majorScale, Pane, Text, Position, Popover, Avatar, TabNavigation, Tab, useTheme } from "evergreen-ui"
+import ProfileCard from '../ProfileCard'
 import { ComponentType } from "react"
 import Link from "next/link"
 import { useRouter } from "next/router"
 
 interface NavProps {
-    /** the name of the hoagie project */
+     /** name of app for hoagie{name} title */
     name:string;
     /** custom component in place of the logo */
     logoComponent?: ComponentType;
      /** list of tab objects for navbar */
     tabs?: Array<Object>;
+     /** authenticated user data */
+    user?: Object;
 }
 
-const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
+const Nav = ({name, logoComponent, tabs=[], user}:NavProps) => {
     const theme = useTheme();
     const router = useRouter();
+    const username = user.user ? (user.isLoading ? "Tammy Tiger" : user.user.name) : "Tammy Tiger";
 
     return (
         <Pane elevation={1}>
@@ -38,7 +42,7 @@ const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
                     </Link>
                     <Pane display="flex" alignItems="center">
                         <TabNavigation>
-                        {tabs.map((tab, index) => (
+                        {tabs.map((tab) => (
                             <Link href={tab.href} passHref>
                                 <Tab key={tab.title} is="a" id={tab.title}
                                 isSelected={router.pathname === tab.href} appearance="navbar">
@@ -47,7 +51,14 @@ const Nav = ({name, logoComponent, tabs=[]}:NavProps) => {
                             </Link>
                         ))}
                         </TabNavigation>
-                        <Avatar name={"Tammy Tiger"} color={theme.title} size={40} marginLeft={majorScale(4)}/>
+                        {user.user && <Popover
+                            content={
+                            <ProfileCard user={user}/>
+                            }
+                            position={Position.BOTTOM}
+                        >
+                             <Avatar name={username} style={{cursor:'pointer'}} color={theme.title} size={40} marginLeft={majorScale(4)}/>
+                        </Popover> }
                     </Pane>
                 </Pane>
             </Pane>

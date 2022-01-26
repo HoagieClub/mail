@@ -2,27 +2,38 @@ import Head from 'next/head';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import Layout from '../lib/hoagie-ui/Layout';
 import Footer from '../components/Footer';
+import { useUser } from '@auth0/nextjs-auth0';
 import Theme from '../lib/hoagie-ui/Theme';
+import Nav from '../lib/hoagie-ui/Nav'
 import '../lib/hoagie-ui/theme.css'
 import './mail.css'
 import './quill.snow.css';
 
-export default function App({ Component, pageProps }) {
+function Content({ Component, pageProps }) {
     const tabs = [
         { title: 'Send Mail', href: '/app' },
     ];
+    const user = useUser();
 
+    return (
+        <Theme palette="orange">
+            <Layout>
+                <Nav name="mail" tabs={tabs} user={user}/>
+                <Component {...pageProps} />
+                <Footer />
+            </Layout>
+        </Theme>
+    );
+}   
+
+
+export default function App({ Component, pageProps }) {
     return (
         <UserProvider>
             <Head>
                 <title>Mail by Hoagie</title>
             </Head>
-            <Theme palette="orange">
-                <Layout name="mail" tabs={tabs}>
-                    <Component {...pageProps} />
-                    <Footer />
-                </Layout>
-            </Theme>
+            <Content Component={Component} pageProps={pageProps} />
         </UserProvider>
     );
 }

@@ -12,10 +12,10 @@ export default withPageAuthRequired(() => {
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
-                <b>University clubs, departments, and organizations</b>
+                <b>University Clubs, Departments, and Organizations</b>
                 <br />
             </Text>
-            <Text size={500}> Announcements on behalf of
+            <Text size={400}> Announcements on behalf of
                 student clubs, departments, and
                 Princeton-affiliated organizations.
             </Text>
@@ -24,7 +24,7 @@ export default withPageAuthRequired(() => {
     const lostFoundLabel = (
         <Pane>
             <Text size={500}> <b>Lost and Found Items</b><br /></Text>
-            <Text size={500}>
+            <Text size={400}>
                 Announcements about found, lost, or stolen things.
             </Text>
         </Pane>
@@ -32,13 +32,13 @@ export default withPageAuthRequired(() => {
     const sellabel = (
         <Pane>
             <Text size={500}> <b>Student Sales</b><br /></Text>
-            <Text size={500}> Announcements about student sales. </Text>
+            <Text size={400}> Announcements about student sales. </Text>
         </Pane>
     )
     const miscLabel = (
         <Pane>
             <Text size={500}> <b>Miscellaneous</b><br /></Text>
-            <Text size={500}> Emails that do not fit into any of these categories </Text>
+            <Text size={400}> Emails that do not fit into any of these categories. </Text>
         </Pane>
     )
 
@@ -52,7 +52,7 @@ export default withPageAuthRequired(() => {
 
     const bottomButtons = (
         <Pane
-            paddingTop={30}
+
         >
             <Link href={optionValue === 'studentorg'
                 ? '/send' : `/digest?type=${optionValue}`}
@@ -68,7 +68,7 @@ export default withPageAuthRequired(() => {
         </Pane>
     )
     const SelectForm = (
-        <Pane marginBottom={majorScale(2)}>
+        <Pane marginBottom={majorScale(4)}>
             <Heading
                 size={900}
                 marginTop={majorScale(2)}
@@ -106,7 +106,7 @@ export default withPageAuthRequired(() => {
                 textAlign="left"
                 elevation={1}
                 background="white"
-                marginX={20}
+                marginX={majorScale(3)}
                 maxWidth="600px"
                 width="100%"
                 paddingX={majorScale(4)}
