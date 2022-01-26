@@ -52,7 +52,7 @@ export default withPageAuthRequired(() => {
 
     const bottomButtons = (
         <Pane
-            paddingTop={30}
+
         >
             <Link href={optionValue === 'studentorg'
                 ? '/send' : `/digest?type=${optionValue}`}
@@ -68,7 +68,7 @@ export default withPageAuthRequired(() => {
         </Pane>
     )
     const SelectForm = (
-        <Pane>
+        <Pane marginBottom={majorScale(4)}>
             <Heading
                 size={900}
                 marginTop={majorScale(2)}
