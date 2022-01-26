@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import {
-    RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button,
+    RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
 import Link from 'next/link';
 
@@ -51,9 +51,7 @@ export default withPageAuthRequired(() => {
     const [optionValue, setOptionValue] = useState('studentorg')
 
     const bottomButtons = (
-        <Pane
-
-        >
+        <Pane>
             <Link href={optionValue === 'studentorg'
                 ? '/send' : `/digest?type=${optionValue}`}
             >
@@ -114,6 +112,23 @@ export default withPageAuthRequired(() => {
                 paddingBottom={majorScale(4)}
             >
                 { SelectForm }
+                <Pane
+                    marginBottom={30}
+                >
+                    <Alert
+                        intent="warning"
+                        title="Choose the right email category."
+                        marginTop={20}
+                    >
+                        Hoagie Mail updated its system to prioritize
+                        University club, department, and organization
+                        announcements and added a new digest service for
+                        other types of emails.
+                        Users who abuse the system by selecting
+                        incorrect email categories will be restricted
+                        from the platform indefinitely.
+                    </Alert>
+                </Pane>
                 {bottomButtons}
             </Pane>
         </Pane>

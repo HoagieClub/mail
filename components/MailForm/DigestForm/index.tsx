@@ -46,10 +46,10 @@ export default function DigestForm({
             <ErrorMessage text={errorMessage} />
             <Alert
                 intent="none"
-                title="This message will be sent through the hoagiemail digest service."
+                title="This message will be sent through the Hoagie Digest service."
             >
                 Your message will be bundled with others in a weekly digest email.
-                Earliest possible time this will be sent is at 12pm Jan 20th, 2021.
+                Digest emails are sent at noon every Wednesday and Sunday.
             </Alert>
             <br />
             {

@@ -15,10 +15,10 @@ import RichTextEditor from '../RichSunEditor'
 import SuccessPage from './SuccessPage'
 import ErrorMessage from '../ErrorMessage';
 
-const senderNameDesc = `This will be the name of the sender displayed in the email. 
-It is recommended that you do not change this. However, you could change this to e.g.
-the name of the club advertising the event. Note that your real NetID will be included 
-at the bottom of the email regardless of your display name.`;
+const senderNameDesc = `This is the name of the sender displayed in the email.
+You can either keep it as your name or use the name of your club, department, or 
+organization if you have permission to do so. Your full name will be included in the
+footer of the email regardless of your sender name.`;
 
 export default function Mail({
     onSend, onError, errorMessage, success, user,
@@ -50,7 +50,7 @@ export default function Mail({
                 label="Email Header"
                 isInvalid={headerInvalid}
                 required
-                description="This the title of the email to the listservs."
+                description="This is the title of the email to the listservs."
                 placeholder="Hi from Hoagie!"
                 validationMessage={headerInvalid ? 'Must have subject line' : null}
                 value={header}
@@ -125,7 +125,7 @@ export default function Mail({
                 <Text>
                     Once you click <b>Send Email</b>, Hoagie will send the email to
                     <b> all residential college listservs on your behalf</b>.
-                    Your NetID will be included at the bottom of the email
+                    Your name and NetID will be included at the bottom of the email
                     regardless of the content.
                 </Text>
                 <Alert
@@ -138,6 +138,8 @@ export default function Mail({
                     intentionally misleading or harmful emails,
                     the user will be banned from the platform
                     and, if necessary, reported to the University.
+                    Note that instant email sending is reserved for
+                    clubs, departments, and organizations.
                 </Alert>
             </Dialog>
         </Pane>
