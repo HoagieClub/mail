@@ -28,7 +28,8 @@ export default function ExistingDigest({
             <ErrorMessage text={errorMessage} />
             <Text>
                 This message will be included in the next Hoagie Digest.<br />
-                Digest emails are sent <b>at noon every Wednesday and Sunday</b>.
+                Digest emails are sent
+                <b>at noon every Tuesday, Thursday and Saturday</b>.
             </Text>
             <Pane
                 marginTop={20}

@@ -49,7 +49,7 @@ export default function DigestForm({
                 title="This message will be sent through the Hoagie Digest service."
             >
                 Your message will be bundled with others in a weekly digest email.
-                Digest emails are sent at noon every Wednesday and Sunday.
+                Digest emails are sent at noon every Tuesday, Thursday and Saturday.
             </Alert>
             <br />
             {

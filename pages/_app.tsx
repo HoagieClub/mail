@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { UserProvider, useUser } from '@auth0/nextjs-auth0';
-import { Alert, Pane } from 'evergreen-ui';
 import Layout from '../lib/hoagie-ui/Layout';
 import Footer from '../components/Footer';
 import Theme from '../lib/hoagie-ui/Theme';
@@ -19,26 +18,6 @@ function Content({ Component, pageProps }) {
         <Theme palette="orange">
             <Layout>
                 <Nav name="mail" tabs={tabs} user={user} />
-                <Pane
-                    width="100%"
-                    display="flex"
-                    justifyContent="center"
-                    marginTop={40}
-                    marginBottom={-40}
-                >
-                    <Alert
-                        intent="danger"
-                        width={600}
-                    >
-                        <b>Please relogin to use the new Hoagie Mail. </b><br />
-                        Our team added new ways to send messages and improved the
-                        website! If were already logged in before the update, please
-                        <u>
-                            <b> <a href="/api/auth/logout">Click here to Logout</a> </b>
-                        </u>
-                        and relogin once to automatically update your account.
-                    </Alert>
-                </Pane>
                 <Component {...pageProps} />
                 <Footer />
             </Layout>

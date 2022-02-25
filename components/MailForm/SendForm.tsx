@@ -130,7 +130,7 @@ export default function Mail({
                 </Text>
                 <Alert
                     intent="warning"
-                    title="Use this tool responsibly"
+                    title="Use responsibly. Do not use this tool for personal messages."
                     marginTop={20}
                 >
                     Hoagie Mail sends out emails instantly,
