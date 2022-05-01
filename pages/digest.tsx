@@ -4,6 +4,8 @@ import router from 'next/router';
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
 import MailForm from '../components/MailForm';
+import ErrorMessage from '../components/ErrorMessage';
+import View from '../components/View';
 
 export default withPageAuthRequired(() => {
     const { mutate } = useSWRConfig()
@@ -12,12 +14,15 @@ export default withPageAuthRequired(() => {
     const [loading, setLoading] = useState(false)
     const fetcher = (url: string) => fetch(url).then((r) => r.json())
     const { data, error } = useSWR(
-        '/api/hoagie/mail/digest',
+        '/api/hoagie/stuff/user',
         fetcher,
     )
 
+    console.log(data)
+
     const addDigest = async (digestData) => {
-        const response = await fetch('/api/hoagie/mail/digest', {
+        console.log(digestData)
+        const response = await fetch('/api/hoagie/stuff/user', {
             body: JSON.stringify(digestData),
             method: 'POST',
         });
@@ -33,7 +38,7 @@ export default withPageAuthRequired(() => {
     const deleteDigest = async () => {
         setSuccess(false)
         setLoading(true)
-        const response = await fetch('/api/hoagie/mail/digest', {
+        const response = await fetch('/api/hoagie/stuff/user', {
             body: null,
             method: 'DELETE',
         });
@@ -47,7 +52,7 @@ export default withPageAuthRequired(() => {
             // mutate causes useSWR to re-fetch the data,
             // allowing the form to be updated after the digest is deleted
             setLoading(false)
-            mutate('/api/hoagie/mail/digest')
+            mutate('/api/hoagie/stuff/user')
         }
     }
 
@@ -65,10 +70,21 @@ export default withPageAuthRequired(() => {
     }, [])
 
     // TODO: Handle error properly.
-    if (!data || error) {
-        <Spinner />
+    if (!data) {
+        <View>
+            <Spinner />
+        </View>
     }
-
+    if (error) {
+        return (
+            <View>
+                <ErrorMessage text="Some issue occured connecting
+                to Hoagie Stuff Digest, try again later or contact hoagie@princeton.edu
+                if it does not get resolved."
+                />
+            </View>
+        )
+    }
     return (
         <MailForm
             success={success}

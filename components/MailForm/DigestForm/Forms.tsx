@@ -3,6 +3,7 @@ import {
     TextareaField, Image,
     FilePicker, FormField,
     Checkbox,
+    RadioGroup,
 } from 'evergreen-ui';
 import { useState, useEffect } from 'react';
 import ErrorMessage from '../../ErrorMessage';
@@ -11,12 +12,18 @@ function LostAndFoundForm({
     name, setName,
     desc, setDesc,
     thumbnail, setThumbnail,
+    setTags,
 }) {
     const [nameInvalid, setNameInvalid] = useState(false)
     const [descInvalid, setDescInvalid] = useState(false)
     const [filled, setFilled] = useState(false);
     const [filledDesc, setFilledDesc] = useState(false);
     const [errorText, setError] = useState('')
+    const [tag, setTag] = useState('lost');
+    const [tagOptions] = useState([
+        { label: 'Lost', value: 'lost' },
+        { label: 'Found', value: 'found' },
+    ])
 
     const uploadImage = async (files) => {
         const body = new FormData();
@@ -60,18 +67,36 @@ function LostAndFoundForm({
                     />
                 </Pane>
             )}
+            <FormField
+                marginTop={24}
+                label="Lost or Found?"
+                description="Did you lose or find an item?."
+                required
+            />
+            <RadioGroup
+                isRequired
+                size={16}
+                value={tag}
+                options={tagOptions}
+                onChange={(event) => {
+                    console.log(event.target.value)
+                    setTag(event.target.value)
+                    setTags([event.target.value])
+                }}
+            />
             <TextInputField
-                label="Title"
+                label="Item"
+                marginTop={20}
                 isInvalid={nameInvalid}
                 required
-                placeholder="Lost a yellow leather wallet."
-                description="For example, Lost a yellow leather wallet"
+                placeholder="A yellow leather wallet."
+                description="For example, A yellow leather wallet"
                 validationMessage={nameInvalid ? 'Must have an item name' : null}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
             />
             <TextareaField
-                label="Description of Item"
+                label="Details"
                 isInvalid={descInvalid}
                 required
                 placeholder="I was in the Whitman Dining Hall when
@@ -103,21 +128,12 @@ function LostAndFoundForm({
 }
 
 function SaleForm({
-    name, setName,
     desc, setDesc,
     link, setLink,
+    setTags,
 }) {
     const [descInvalid, setDescInvalid] = useState(false)
     const [filledDesc, setFilledDesc] = useState(false);
-
-    const salesCategories = [
-        'Accessories',
-        'Clothing',
-        'Tech',
-        'Furniture',
-        'School',
-        'Other',
-    ]
 
     const [categories, setCategories] = useState({
         Accessories: false,
@@ -125,32 +141,20 @@ function SaleForm({
         Tech: false,
         Furniture: false,
         School: false,
+        Tickets: false,
         Other: false,
     })
-
-    const updateTitle = (newCategories) => {
-        const items = Object.entries(newCategories)
-        const selectedCategories = items.flatMap(
-            ([category, checked]) => {
-                if (checked) return [category]
-                return []
-            },
-        )
-        if (selectedCategories.length === 0) {
-            setName('Other')
-            return
-        }
-        setName(selectedCategories.join(', '))
-    }
+    const salesCategories = Object.keys(categories)
 
     useEffect(() => {
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
-    }, [name, desc]);
+    }, [desc]);
+
     return (
         <Pane>
             <TextareaField
-                label="Description of Item"
+                label="Sale Details"
                 isInvalid={descInvalid}
                 required
                 placeholder="Selling some old jackets and some shoes that I
@@ -172,8 +176,8 @@ function SaleForm({
             />
             <FormField
                 marginTop={24}
-                label="Categories"
-                description="Select the categories of things you are selling."
+                label="Tags"
+                description="Select the tags of things you are selling."
                 required
             />
             {
@@ -187,7 +191,15 @@ function SaleForm({
                             }
                             newCategories[category] = e.target.checked;
                             setCategories(newCategories)
-                            updateTitle(newCategories)
+                            // Get selected categories by looking at object entites
+                            // as array of type [key, value], if value is true
+                            // then keep in the array and only consider [0] which is the
+                            // key
+                            const selectedCat = Object.entries(newCategories).filter(
+                                (c:[string, boolean]) => c[1],
+                            ).flatMap((c:[string, boolean]) => c[0].toLowerCase())
+                            console.log(selectedCat)
+                            setTags(selectedCat)
                         }}
                     />
                 ))
@@ -199,11 +211,19 @@ function SaleForm({
 function GenericForm({
     name, setName,
     desc, setDesc,
+    setTags,
 }) {
     const [nameInvalid, setNameInvalid] = useState(false)
     const [descInvalid, setDescInvalid] = useState(false)
     const [filled, setFilled] = useState(false);
     const [filledDesc, setFilledDesc] = useState(false);
+    // Only one tag for generic form
+    const [tag, setTag] = useState('announcement');
+    const [tagOptions] = useState([
+        { label: 'Announcement', value: 'announcement' },
+        { label: 'Opportunity', value: 'opportunity' },
+        { label: 'Request', value: 'request' },
+    ])
 
     useEffect(() => {
         if (name === '') setFilled(true);
@@ -230,6 +250,22 @@ function GenericForm({
                 validationMessage={descInvalid ? 'Must have a description' : null}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
+            />
+            <FormField
+                marginTop={24}
+                label="Tag"
+                description="Select what tag describes your message best."
+                required
+            />
+            <RadioGroup
+                isRequired
+                size={16}
+                value={tag}
+                options={tagOptions}
+                onChange={(event) => {
+                    setTag(event.target.value)
+                    setTags([event.target.value])
+                }}
             />
         </Pane>
     )

@@ -5,6 +5,7 @@ import { Alert } from 'evergreen-ui';
 export default function ErrorMessage({
     title = 'Error occured.',
     text,
+    width = '100%',
 }) {
     return (text
         && (
@@ -12,6 +13,7 @@ export default function ErrorMessage({
                 intent="danger"
                 title={title}
                 marginY={20}
+                width={width}
             >
                 { text }
             </Alert>

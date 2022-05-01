@@ -22,9 +22,16 @@ export default function DigestForm({
     const [link, setLink] = useState('')
     // eslint-disable-next-line no-restricted-globals
     const queryParams = new URLSearchParams(location.search)
-    const category = queryParams.has('type') ? queryParams.get('type') : 'misc';
+    const category = queryParams.has('type') ? queryParams.get('type') : 'bulletin';
 
-    if (digest.Status === 'used') {
+    const categoryDefaults = {
+        sale: [],
+        lost: ['lost'],
+        selling: [],
+        bulletin: ['announcement'],
+    }
+    const [tags, setTags] = useState(categoryDefaults[category])
+    if (digest.status === 'used') {
         return (
             <ExistingDigest
                 errorMessage={errorMessage}
@@ -33,7 +40,7 @@ export default function DigestForm({
             />
         );
     }
-    if (!digest.Status) {
+    if (!digest.status) {
         return <Spinner />;
     }
     const Form = (
@@ -46,7 +53,7 @@ export default function DigestForm({
             <ErrorMessage text={errorMessage} />
             <Alert
                 intent="none"
-                title="This message will be sent through the Hoagie Digest service."
+                title="This message will be sent through the Hoagie Stuff Digest service."
             >
                 Your message will be bundled with others in a weekly digest email.
                 Digest emails are sent at noon every Tuesday, Thursday and Saturday.
@@ -55,12 +62,11 @@ export default function DigestForm({
             {
                 category === 'sale' && (
                     <SaleForm
-                        name={name}
                         desc={desc}
                         link={link}
-                        setName={setName}
                         setDesc={setDesc}
                         setLink={setLink}
+                        setTags={setTags}
                     />
                 )
             }
@@ -73,20 +79,24 @@ export default function DigestForm({
                         setName={setName}
                         setDesc={setDesc}
                         setThumbnail={setLink}
+                        setTags={setTags}
                     />
                 )
             }
             {
-                category === 'misc' && (
+                category === 'bulletin' && (
                     <GenericForm
                         name={name}
                         desc={desc}
                         setName={setName}
                         setDesc={setDesc}
+                        setTags={setTags}
                     />
                 )
             }
-            <Pane>
+            <Pane
+                paddingTop={20}
+            >
                 <Button
                     onClick={() => setShowConfirm(true)}
                     size="large"
@@ -110,6 +120,7 @@ export default function DigestForm({
                         description: desc,
                         category,
                         link,
+                        tags,
                     });
                     setShowConfirm(false);
                 }}
@@ -141,7 +152,7 @@ export default function DigestForm({
                     title="Use this tool responsibly"
                     marginTop={20}
                 >
-                    If Hoagie Digest is used to send offensive,
+                    If Hoagie Stuff Digest is used to send offensive,
                     intentionally misleading or harmful messages,
                     the user will be banned from the platform
                     and, if necessary, reported to the University.

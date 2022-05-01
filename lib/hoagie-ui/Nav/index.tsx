@@ -10,9 +10,9 @@ interface NavProps {
     /** custom component in place of the logo */
     logoComponent?: ComponentType;
      /** list of tab objects for navbar */
-    tabs?: Array<Object>;
+    tabs?: Array<any>;
      /** authenticated user data */
-    user?: Object;
+    user?: any;
 }
 
 const Nav = ({name, logoComponent, tabs=[], user}:NavProps) => {

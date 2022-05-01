@@ -13,10 +13,11 @@ export default function ExistingDigest({
     const [showConfirm, setShowConfirm] = useState(false);
 
     const {
-        Title,
-        Category,
-        Description,
-        Email,
+        title,
+        category,
+        description,
+        user,
+        tags,
     } = digest;
     return (
         <Pane>
@@ -27,9 +28,9 @@ export default function ExistingDigest({
             </Heading>
             <ErrorMessage text={errorMessage} />
             <Text>
-                This message will be included in the next Hoagie Digest.<br />
+                This message will be included in the next Hoagie Stuff Digest.<br />
                 Digest emails are sent
-                <b>at noon every Tuesday, Thursday and Saturday</b>.
+                <b> at noon every Tuesday, Thursday and Saturday</b>.
             </Text>
             <Pane
                 marginTop={20}
@@ -39,17 +40,19 @@ export default function ExistingDigest({
                 border="default"
             >
                 <Pane margin={20} width="100%">
-                    <Text><b>Title:</b> { Title }</Text>
+                    <Text><b>Title:</b> { title }</Text>
                     <br />
-                    <Text><b>Category:</b> { Category }</Text>
+                    <Text><b>Category:</b> { category }</Text>
                     <br />
-                    <Text><b>Contact:</b>  { Email } </Text>
+                    <Text><b>Tags:</b> { tags.join(', ') }</Text>
+                    <br />
+                    <Text><b>Contact:</b>  { user.email } </Text>
                     <br />
                     <br />
                     <Text><b>Description:</b>  </Text>
                     <br />
                     {/* eslint-disable-next-line max-len */}
-                    <Text>{ Description }</Text>
+                    <Text>{ description }</Text>
                 </Pane>
             </Pane>
             <Alert
@@ -98,7 +101,7 @@ export default function ExistingDigest({
                 >
                     <InfoSignIcon marginRight={10} />
                     Are you sure you want to delete your current
-                    Hoagie Digest message?
+                    Hoagie Stuff Digest message?
                 </Pane>
                 <Text>
                     This action <b>cannot be undone</b>.

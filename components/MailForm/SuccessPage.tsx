@@ -40,7 +40,7 @@ export default function SuccessPage({
             { digest && (
                 <>
                     <Pane>
-                        Your message has been added to the Hoagie Digest, and will
+                        Your message has been added to the Hoagie Stuff Digest, and will
                         be included in the upcoming weekly digest email. Digest emails are
                         sent <b>at noon every Tuesday, Thursday, and Saturday</b> so
                         you can expect your message to be sent then.

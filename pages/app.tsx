@@ -4,6 +4,7 @@ import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
 import Link from 'next/link';
+import View from '../components/View';
 
 export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
@@ -32,12 +33,22 @@ export default withPageAuthRequired(() => {
     const sellabel = (
         <Pane>
             <Text size={500}> <b>Student Sales</b><br /></Text>
-            <Text size={400}> Announcements about student sales. </Text>
+            <Text size={400}>
+                Announcements about student sales of one or multiple items
+            </Text>
         </Pane>
     )
-    const miscLabel = (
+    // const sellOneLabel = (
+    //     <Pane>
+    //         <Text size={500}> <b>Selling or Buying</b><br /></Text>
+    //         <Text size={400}>
+    //             Announcements about selling one kind of item.
+    //         </Text>
+    //     </Pane>
+    // )
+    const bulletinLabel = (
         <Pane>
-            <Text size={500}> <b>Miscellaneous</b><br /></Text>
+            <Text size={500}> <b>Everything Else</b><br /></Text>
             <Text size={400}> Emails that do not fit into any of these categories. </Text>
         </Pane>
     )
@@ -45,8 +56,9 @@ export default withPageAuthRequired(() => {
     const [options] = useState([
         { label: studentOrgLabel, value: 'studentorg' },
         { label: sellabel, value: 'sale' },
+        // { label: sellOneLabel, value: 'selling' },
         { label: lostFoundLabel, value: 'lost' },
-        { label: miscLabel, value: 'misc' },
+        { label: bulletinLabel, value: 'bulletin' },
     ])
     const [optionValue, setOptionValue] = useState('studentorg')
 
@@ -91,46 +103,26 @@ export default withPageAuthRequired(() => {
     )
 
     return (
-        <Pane
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            marginX={majorScale(1)}
-            paddingBottom={majorScale(4)}
-            paddingTop={majorScale(8)}
-        >
+        <View>
+            { SelectForm }
             <Pane
-                borderRadius={8}
-                textAlign="left"
-                elevation={1}
-                background="white"
-                marginX={majorScale(3)}
-                maxWidth="600px"
-                width="100%"
-                paddingX={majorScale(4)}
-                paddingTop={majorScale(2)}
-                paddingBottom={majorScale(4)}
+                marginBottom={30}
             >
-                { SelectForm }
-                <Pane
-                    marginBottom={30}
+                <Alert
+                    intent="warning"
+                    title="Choose the right email category."
+                    marginTop={20}
                 >
-                    <Alert
-                        intent="warning"
-                        title="Choose the right email category."
-                        marginTop={20}
-                    >
-                        Hoagie Mail updated its system to prioritize
-                        University club, department, and organization
-                        announcements and added a new digest service for
-                        other types of emails.
-                        Users who abuse the system by selecting
-                        incorrect email categories will be restricted
-                        from the platform indefinitely.
-                    </Alert>
-                </Pane>
-                {bottomButtons}
+                    Hoagie Mail updated its system to prioritize
+                    University club, department, and organization
+                    announcements and added a new digest service for
+                    other types of emails.
+                    Users who abuse the system by selecting
+                    incorrect email categories will be restricted
+                    from the platform indefinitely.
+                </Alert>
             </Pane>
-        </Pane>
+            {bottomButtons}
+        </View>
     );
 })
