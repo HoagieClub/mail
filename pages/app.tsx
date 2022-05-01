@@ -1,15 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import View from '../components/View';
 
 export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
+    const router = useRouter()
     if (isLoading) { return <Spinner /> }
 
+    useEffect(() => {
+        // eslint-disable-next-line no-restricted-globals
+        const queryParams = new URLSearchParams(location.search)
+
+        if (queryParams.has('code')) {
+            queryParams.delete('code')
+            queryParams.delete('state')
+            // TODO: add support for other params to persist using
+            // queryParam.toString() or remove the queryParams method
+            router.replace('/app', undefined, { shallow: true })
+        }
+    }, [])
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
