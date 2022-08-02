@@ -1,10 +1,12 @@
-import { FC } from 'react'
-import { Pane } from "evergreen-ui"
+import { Pane } from 'evergreen-ui'
 
 interface LayoutProps {
+    /** React children (child components)
+    * @ignore */
+    children?: React.ReactNode
 }
 
-const Layout:FC<LayoutProps> = ({children}) => {
+function Layout({ children }:LayoutProps) {
     return (
         <Pane height="100%" minHeight="100vh" background="blue100">
             {children}

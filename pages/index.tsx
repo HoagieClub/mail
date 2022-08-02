@@ -66,7 +66,7 @@ export default function Index() {
                 paddingBottom={majorScale(7)}
             >
                 <EnvelopeIcon size={100} color="gray800" />
-                <Heading size={900} className="hoagie" >
+                <Heading size={900} className="hoagie">
                     Send emails to everyone<br />on campus, <b>instantly</b>.
                 </Heading>
                 <p>No more mail forwarding necessary.</p>

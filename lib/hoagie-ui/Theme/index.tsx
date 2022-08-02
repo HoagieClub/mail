@@ -1,5 +1,6 @@
-import { ThemeProvider } from "evergreen-ui"
-import { hoagiePurple, hoagieOrange, hoagieUI } from "./themes"
+import { ThemeProvider } from 'evergreen-ui'
+import { hoagiePurple, hoagieOrange, hoagieUI } from './themes'
+
 interface ThemeProps {
   /** alternate color theme, default is purple (current options: "purple", "blue", "orange") */
   palette?: string;
@@ -11,20 +12,20 @@ interface ThemeProps {
 /** Theme is an theme provider component meant for use as an app wrapper
  *  for all Hoagie applications.
  */
-function Theme({palette="purple", children}:ThemeProps) {
+function Theme({ palette = 'purple', children }:ThemeProps) {
     let colorTheme;
 
     switch (palette) {
-        case 'purple':
+    case 'purple':
         colorTheme = hoagiePurple;
         break;
-        case 'blue':
+    case 'blue':
         colorTheme = hoagieUI;
         break;
-        case 'orange':
+    case 'orange':
         colorTheme = hoagieOrange;
         break;
-        default:
+    default:
         colorTheme = hoagieUI;
     }
 
