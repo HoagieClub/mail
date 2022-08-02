@@ -1,40 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 
-:root {
-    --tint2: #F9FAFC;
-    --gray100: #F4F5F9;
-    --purpletint: #F8E3DA;
-}
 document, html, body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    padding: 0px;
-    margin: 0 auto;
-}
-
-.h1, .h2 {
-    font-family: 'Nunito', sans-serif;
-    font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
 }
 
 p {
-    font-size:14pt;
+  font-size:14pt;
 }
 
 a { 
-    color: inherit;
-    text-decoration: none;
+  color: inherit;
+  text-decoration: none;
 } 
 
 .hoagie {
-    font-family: 'Nunito', sans-serif !important;
-    font-weight: 400;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.logo {
+font-weight: 600 !important;
+font-size: 1.6rem !important;
 }
 
 .beta {
-    display: inline-block;
-    transform: rotate(-8deg) translatey(2px);
+  display: inline-block;
+  top: 22px;
+  right: -38px;
+  font-size: 10px !important;
+  font-weight: 700 !important;
 }

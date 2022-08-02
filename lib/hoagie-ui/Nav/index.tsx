@@ -5,24 +5,31 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 interface NavProps {
-     /** name of app for hoagie{name} title */
-    name:string;
-    /** custom component in place of the logo */
-    logoComponent?: ComponentType;
-     /** list of tab objects for navbar */
+    /** name of app for hoagie{name} title */
+    name: string;
+    /** custom component in place of hoagie logo */
+    LogoComponent?: ComponentType;
+    /** custom component in place of header color strip */
+    HeaderComponent?: ComponentType;
+    /** list of tab objects for navbar, with title and href fields */
     tabs?: Array<any>;
-     /** authenticated user data */
+    /** authenticated user data */
     user?: any;
+    /** show 'beta' development disclaimer on hoagie app logo  */
+    beta?: boolean;
 }
 
-const Nav = ({name, logoComponent, tabs=[], user}:NavProps) => {
+/** Nav is a navbar meant for internal navigations throughout
+ *  different Hoagie applications.
+ */
+const Nav = ({name, LogoComponent, HeaderComponent, tabs=[], user, beta=false}:NavProps) => {
     const theme = useTheme();
     const router = useRouter();
-    const username = user.user ? (user.isLoading ? "Tammy Tiger" : user.user.name) : "Tammy Tiger";
+    const username = user?.user ? (user.isLoading ? "Tammy Tiger" : user.user.name) : "Tammy Tiger";
 
     return (
         <Pane elevation={1}>
-            <Pane width="100%" height={20} background="blue500"></Pane>
+            {HeaderComponent ? <HeaderComponent /> : <Pane width="100%" height={20} background="blue500"></Pane>}
             <Pane display="flex" justifyContent="center" width="100%" height={majorScale(9)} background="white">
                 <Pane 
                     display="flex" 
@@ -35,9 +42,12 @@ const Nav = ({name, logoComponent, tabs=[], user}:NavProps) => {
                     fontSize={25}
                 >
                     <Link href="/">
-                        <Pane cursor="pointer" className="hoagie">
-                            {logoComponent ? logoComponent : <Pane>hoagie<b>{name}</b>
-                            <Text className="beta" color="blue400">beta</Text></Pane>}
+                        <Pane cursor="pointer" position="relative">
+                          {LogoComponent ? LogoComponent : <Pane>
+                          <Text is="h2" display="inline-block" className="hoagie logo" color="grey900">hoagie</Text>
+                          <Text is="h2" display="inline-block" className="hoagie logo" color="blue500">{name}</Text>
+                          {beta && <Text className="hoagie beta" position="absolute" color="grey900">(BETA)</Text>}
+                          </Pane>}
                         </Pane>
                     </Link>
                     <Pane display="flex" alignItems="center">
@@ -45,13 +55,13 @@ const Nav = ({name, logoComponent, tabs=[], user}:NavProps) => {
                         {tabs.map((tab) => (
                             <Link href={tab.href} passHref>
                                 <Tab key={tab.title} is="a" id={tab.title}
-                                isSelected={router.pathname === tab.href} appearance="navbar">
+                                isSelected={router?.pathname === tab.href} appearance="navbar">
                                 {tab.title}
                                 </Tab>
                             </Link>
                         ))}
                         </TabNavigation>
-                        {user.user && <Popover
+                        {user?.user && <Popover
                             content={
                             <ProfileCard user={user}/>
                             }

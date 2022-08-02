@@ -16,10 +16,10 @@ const AuthButton = ({
     }:AuthButtonProps) => {
     const logo = 
     <h2 style={{
-        fontSize:"30px", 
-        paddingRight: 20}} 
+        fontSize:"28px", 
+        paddingRight: 16}} 
         className="hoagie">
-        <b>    h </b>
+        h
     </h2>
     const isLogout = variant === "logout";
 
@@ -35,9 +35,9 @@ const AuthButton = ({
             appearance={isLogout ? "default" : "primary"}
         >
             { logo }
-            <Pane display="flex" className="hoagie">
+            <Pane display="flex">
                 { isLogout ? "Logout from" : "Login using" } 
-                <Pane marginLeft={minorScale(1)}>
+                <Pane marginLeft={minorScale(1)} className="hoagie">
                     hoagie<b>profile</b>
                 </Pane>
             </Pane>
