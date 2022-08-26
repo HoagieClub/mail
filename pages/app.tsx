@@ -48,7 +48,7 @@ export default withPageAuthRequired(() => {
         <Pane>
             <Text size={500}> <b>Student Sales</b><br /></Text>
             <Text size={400}>
-                Announcements about student sales of one or multiple items
+                Announcements about student sales of one or multiple items.
             </Text>
         </Pane>
     )

@@ -1,5 +1,5 @@
 import {
-    FormField, Pane, Text, Alert,
+    FormField, Alert,
 } from 'evergreen-ui'
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
@@ -28,18 +28,6 @@ export default function RichTextEditor({
     required = false,
     isDisabled = false,
 }) {
-    const onImageUploadBefore = (files, info, uploadHandler) => {
-        console.log(info, uploadHandler);
-        saveToServer(files[0]).then((res) => {
-            uploadHandler(res)
-        })
-        return undefined;
-    }
-    const onImageUploadError = (errorMessage, result) => {
-        onError(errorMessage)
-        return false;
-    }
-
     // Upload Image to Image Server such as AWS S3, Cloudinary, Cloud Storage, etc..
     const saveToServer = async (file:File) => {
         const body = new FormData();
@@ -51,18 +39,30 @@ export default function RichTextEditor({
             },
             body,
         });
-        const imageResult:ImageResult = await res.json();
-        if (imageResult.success) {
+        const image:ImageResult = await res.json();
+        if (image.success) {
             return {
                 result: [{
-                    url: imageResult.data.link,
+                    url: image.data.link,
                     name: file.name,
                     size: file.size,
                 }],
             }
         }
-        return `Hoagie Mail is having trouble uploading your image: ${imageResult.data.error}`
+        return `Hoagie Mail is having trouble uploading your image: ${image.data.error}`
     };
+
+    const onImageUploadBefore = (files, info, uploadHandler) => {
+        console.log(info, uploadHandler);
+        saveToServer(files[0]).then((res) => {
+            uploadHandler(res)
+        })
+        return undefined;
+    }
+    const onImageUploadError = (errorMessage, result) => {
+        onError(errorMessage)
+        return false;
+    }
 
     const buttonList:ButtonListItem[] = [
         ['undo', 'redo'],
@@ -84,6 +84,7 @@ export default function RichTextEditor({
         defaultStyle: 'font-family:sans-serif',
     };
 
+    /* eslint-disable */
     return (
         <FormField
             label={label}
@@ -98,12 +99,20 @@ export default function RichTextEditor({
                 <div>
                     To make sure your email formatting does not get messed up:
                     <ol>
-                        <li><b>Do not copy-paste images</b> and minimize copy-pasting text. Copy-pasted images are unlikely to appear in the actual email. Use the Image icon in the editor to manually upload your images.</li>
-                        <li><b>Resize images to be at most 600px width</b> and check the Preview before submitting. That being said, the preview can be misleading with regards to scale and images shown.
-                            <br /><br />We recommend making posters around 400px to 600px in width and logos 50px to 200px.
+                        <li><b>Do not copy-paste images</b> and minimize copy-pasting text.
+                            Copy-pasted images are unlikely to appear in the actual email.
+                            Use the Image icon in the editor to manually upload your images.
+                        </li>
+                        <li><b>Resize images to be at most 600px width</b> and check
+                            the Preview before submitting. That being said, the preview can
+                            be misleading with regards to scale and images shown.
+                        <br /><br />
+                            We recommend making posters around 400px to 600px in width and
+                            logos 50px to 200px.
                         </li>
                     </ol>
-                    We are working on ways to make this more seamless, thank you for bearing with us in the meantime.
+                    We are working on ways to make this more seamless,
+                    thank you for bearing with us in the meantime.
                 </div>
             </Alert>
             <SunEditor
@@ -118,4 +127,5 @@ export default function RichTextEditor({
             />
         </FormField>
     );
+     /* eslint-enable */
 }
