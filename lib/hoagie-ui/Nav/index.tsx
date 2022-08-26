@@ -29,12 +29,20 @@ function Nav({
 }:NavProps) {
     const theme = useTheme();
     const router = useRouter();
-    const username = user?.user ? (user.isLoading ? 'Tammy Tiger' : user.user.name) : 'Tammy Tiger';
+    const uName = user?.isLoading ? 'Tammy Tiger' : (user?.user?.name ?? 'Tammy Tiger');
 
     return (
         <Pane elevation={1}>
-            {HeaderComponent ? <HeaderComponent /> : <Pane width="100%" height={20} background="blue500" />}
-            <Pane display="flex" justifyContent="center" width="100%" height={majorScale(9)} background="white">
+            {HeaderComponent
+                ? <HeaderComponent />
+                : <Pane width="100%" height={20} background="blue500" />}
+            <Pane
+                display="flex"
+                justifyContent="center"
+                width="100%"
+                height={majorScale(9)}
+                background="white"
+            >
                 <Pane
                     display="flex"
                     alignItems="center"
@@ -47,15 +55,37 @@ function Nav({
                 >
                     <Link href="/">
                         <Pane cursor="pointer" position="relative">
-                            {LogoComponent ?
-                            <LogoComponent /> :
-                            (
-                                <Pane>
-                                    <Text is="h2" display="inline-block" className="hoagie logo" color="grey900">hoagie</Text>
-                                    <Text is="h2" display="inline-block" className="hoagie logo" color="blue500">{name}</Text>
-                                    {beta && <Text className="hoagie beta" position="absolute" color="grey900">(BETA)</Text>}
-                                </Pane>
-                            )}
+                            {LogoComponent
+                                ? <LogoComponent />
+                                : (
+                                    <Pane>
+                                        <Text
+                                            is="h2"
+                                            display="inline-block"
+                                            className="hoagie logo"
+                                            color="grey900"
+                                        >
+                                            hoagie
+                                        </Text>
+                                        <Text
+                                            is="h2"
+                                            display="inline-block"
+                                            className="hoagie logo"
+                                            color="blue500"
+                                        >{name}
+                                        </Text>
+                                        {beta
+                                        && (
+                                            <Text
+                                                className="hoagie beta"
+                                                position="absolute"
+                                                color="grey900"
+                                            >
+                                                (BETA)
+                                            </Text>
+                                        )}
+                                    </Pane>
+                                )}
                         </Pane>
                     </Link>
                     <Pane display="flex" alignItems="center">
@@ -81,7 +111,13 @@ function Nav({
                                 }
                                 position={Position.BOTTOM}
                             >
-                                <Avatar name={username} style={{ cursor: 'pointer' }} color={theme.title} size={40} marginLeft={majorScale(4)} />
+                                <Avatar
+                                    name={uName}
+                                    style={{ cursor: 'pointer' }}
+                                    color={theme.title}
+                                    size={40}
+                                    marginLeft={majorScale(4)}
+                                />
                             </Popover>
                         ) }
                     </Pane>

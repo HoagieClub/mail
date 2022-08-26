@@ -1,8 +1,10 @@
 import { ThemeProvider } from 'evergreen-ui'
+import React from 'react'
 import { hoagiePurple, hoagieOrange, hoagieUI } from './themes'
 
 interface ThemeProps {
-  /** alternate color theme, default is purple (current options: "purple", "blue", "orange") */
+  /** alternate color theme, default is purple
+   * (current options: "purple", "blue", "orange") */
   palette?: string;
   /** React children (child components)
    * @ignore */

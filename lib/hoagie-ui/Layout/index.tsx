@@ -1,4 +1,5 @@
 import { Pane } from 'evergreen-ui'
+import React from 'react'
 
 interface LayoutProps {
     /** React children (child components)

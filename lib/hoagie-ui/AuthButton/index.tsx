@@ -28,12 +28,10 @@ function AuthButton({
         </h2>
     )
     const isLogout = variant === 'logout';
+    const defHref = isLogout ? '/api/auth/logout' : '/api/auth/login';
 
-    if (href === '') {
-        href = isLogout ? '/api/auth/logout' : '/api/auth/login'
-    }
     return (
-        <a href={href}>
+        <a href={href === '' ? defHref : href}>
             <Button
                 height={56}
                 width={majorScale(35)}
