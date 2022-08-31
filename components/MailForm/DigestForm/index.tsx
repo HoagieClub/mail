@@ -131,7 +131,6 @@ export default function DigestForm({
                 <Pane
                     marginTop={35}
                     marginBottom={20}
-                    fontFamily="Nunito"
                     display="flex"
                     alignItems="center"
                 >
@@ -143,7 +142,7 @@ export default function DigestForm({
                     Once you click <b>Submit</b>, Hoagie will append your
                     message in the upcoming weekly digest email.
                     This is sent to
-                    <b> all residential college listservs on your behalf</b>.
+                    <b> all residential college listservs* on your behalf</b> (note Yeh/NCW disclaimer).
                     Your NetID will be included with your message regardless
                     of the content.
                 </Text>
@@ -156,6 +155,19 @@ export default function DigestForm({
                     intentionally misleading or harmful messages,
                     the user will be banned from the platform
                     and, if necessary, reported to the University.
+                </Alert>
+                <Alert
+                    intent="danger"
+                    title="*Emails are NOT sent to Yeh College or New College West."
+                    marginTop={20}>
+                    Hoagie Mail has not yet been granted listserv access
+                    to Yeh College or New College West, and so cannot send mail
+                    to these residential colleges. In the meantime, please forward
+                    emails to these colleges' listservs if you wish to reach all
+                    undergraduates. We are currently working with the offices of Yeh
+                    College and New College West to address this issue ASAP.
+                    If you have any information concerning listserv access,
+                    please email hoagie@princeton.edu.
                 </Alert>
             </Dialog>
         </Pane>
