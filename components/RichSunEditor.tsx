@@ -18,6 +18,7 @@ interface ImageResult {
     }
 }
 
+/* eslint-disable */
 export default function RichTextEditor({
     onError,
     onChange,
@@ -84,7 +85,6 @@ export default function RichTextEditor({
         defaultStyle: 'font-family:sans-serif',
     };
 
-    /* eslint-disable */
     return (
         <FormField
             label={label}
@@ -127,5 +127,5 @@ export default function RichTextEditor({
             />
         </FormField>
     );
-     /* eslint-enable */
 }
+/* eslint-enable */
