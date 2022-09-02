@@ -12,7 +12,7 @@ export default handleAuth({
                 },
                 returnTo: '/app',
             });
-        } catch (error) {
+        } catch (error:any) {
             res.status(error.status || 400).end(error.message);
         }
     },
