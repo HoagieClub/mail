@@ -123,7 +123,7 @@ export default function Mail({
                 </Pane>
                 <Text>
                     Once you click <b>Send Email</b>, Hoagie will send the email to
-                    <b> all residential college listservs* on your behalf</b> (note Yeh/NCW disclaimer).
+                    <b> all residential college listservs* on your behalf</b> (note NCW disclaimer).
                     Your name and NetID will be included at the bottom of the email
                     regardless of the content.
                 </Text>
@@ -142,14 +142,12 @@ export default function Mail({
                 </Alert>
                 <Alert
                     intent="danger"
-                    title="*Emails are NOT sent to Yeh College or New College West."
+                    title="*Emails are NOT sent to New College West."
                     marginTop={20}>
                     Hoagie Mail has not yet been granted listserv access
-                    to Yeh College or New College West, and so cannot send mail
-                    to these residential colleges. In the meantime, please forward
-                    emails to these colleges' listservs if you wish to reach all
-                    undergraduates. We are currently working with the offices of Yeh
-                    College and New College West to address this issue ASAP.
+                    New College West, and so cannot send mail to students in NCW. In the meantime, please forward
+                    emails to the NCW listserv, westwire@princeton.edu, if you wish to reach all
+                    undergraduates. We are currently working with the office of New College West to address this issue ASAP.
                     If you have any information concerning listserv access,
                     please email hoagie@princeton.edu.
                 </Alert>
