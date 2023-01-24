@@ -156,17 +156,6 @@ export default function DigestForm({
                     the user will be banned from the platform
                     and, if necessary, reported to the University.
                 </Alert>
-                <Alert
-                    intent="danger"
-                    title="*Emails are NOT sent to New College West."
-                    marginTop={20}>
-                    Hoagie Mail has not yet been granted listserv access
-                    New College West, and so cannot send mail to students in NCW. In the meantime, please forward
-                    emails to the NCW listserv, westwire@princeton.edu, if you wish to reach all
-                    undergraduates. We are currently working with the office of New College West to address this issue ASAP.
-                    If you have any information concerning listserv access,
-                    please email hoagie@princeton.edu.
-                </Alert>
             </Dialog>
         </Pane>
     )
