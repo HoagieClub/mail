@@ -142,7 +142,7 @@ export default function DigestForm({
                     Once you click <b>Submit</b>, Hoagie will append your
                     message in the upcoming weekly digest email.
                     This is sent to
-                    <b> all residential college listservs* on your behalf</b> (note NCW disclaimer).
+                    <b> all residential college listservs on your behalf</b>.
                     Your NetID will be included with your message regardless
                     of the content.
                 </Text>
