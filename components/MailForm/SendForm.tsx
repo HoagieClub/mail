@@ -123,7 +123,7 @@ export default function Mail({
                 </Pane>
                 <Text>
                     Once you click <b>Send Email</b>, Hoagie will send the email to
-                    <b> all residential college listservs* on your behalf</b> (note NCW disclaimer).
+                    <b> all residential college listservs on your behalf</b>.
                     Your name and NetID will be included at the bottom of the email
                     regardless of the content.
                 </Text>
