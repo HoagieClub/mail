@@ -9,6 +9,7 @@ import {
     Dialog,
     Text,
     InfoSignIcon,
+    SelectField,
 } from 'evergreen-ui'
 import Link from 'next/link';
 import RichTextEditor from '../RichSunEditor'
@@ -30,6 +31,7 @@ export default function Mail({
     const [senderInvalid, setSenderInvalid] = useState(false)
     const [filled, setFilled] = useState(false);
     const [body, setBody] = useState('')
+    const [schedule, setSchedule] = useState('now')
     const [showConfirm, setShowConfirm] = useState(false)
 
     const getEditor = (sunEditor) => {
@@ -46,6 +48,19 @@ export default function Mail({
         <Pane>
             <Heading size={800} marginY={majorScale(2)}>Send an Email</Heading>
             <ErrorMessage text={errorMessage} />
+            <SelectField
+                label="Schedule"
+                required
+                description="Placeholder description for scheduled send"
+                value={schedule}
+                onChange={(e) => setSchedule(e.target.value)}
+            >
+                {/* Hardcoded options for now */}
+                <option key="now" value="now" selected>Now</option>
+                <option key="morning" value="morning">Morning (8am) </option>
+                <option key="afternoon" value="afternoon">Afternoon (1pm) </option>
+                <option key="evening" value="evening">Evening (6pm) </option>
+            </SelectField>
             <TextInputField
                 label="Email Header"
                 isInvalid={headerInvalid}
@@ -105,7 +120,9 @@ export default function Mail({
                 hasHeader={false}
                 hasClose={false}
                 onConfirm={async () => {
-                    await onSend({ sender, header, body });
+                    await onSend({
+                        sender, header, body, schedule,
+                    });
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}
