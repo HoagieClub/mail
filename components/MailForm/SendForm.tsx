@@ -14,6 +14,7 @@ import Link from 'next/link';
 import RichTextEditor from '../RichSunEditor'
 import SuccessPage from './SuccessPage'
 import ErrorMessage from '../ErrorMessage';
+import ScheduleSelectField from './ScheduledSend/ScheduleSelectField';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
@@ -30,6 +31,7 @@ export default function Mail({
     const [senderInvalid, setSenderInvalid] = useState(false)
     const [filled, setFilled] = useState(false);
     const [body, setBody] = useState('')
+    const [schedule, setSchedule] = useState('now')
     const [showConfirm, setShowConfirm] = useState(false)
 
     const getEditor = (sunEditor) => {
@@ -44,8 +46,34 @@ export default function Mail({
 
     const MailForm = (
         <Pane>
-            <Heading size={800} marginY={majorScale(2)}>Send an Email</Heading>
+            <Pane display="flex" justifyContent="space-between">
+                <Heading
+                    size={800}
+                    marginY={majorScale(2)}
+                >
+                    Send an Email
+                </Heading>
+                <Link href="/scheduled">
+                    <Button
+                        size="large"
+                        appearance="default"
+                        marginY={majorScale(2)}
+                    >
+                        Scheduled Emails
+                    </Button>
+                </Link>
+            </Pane>
             <ErrorMessage text={errorMessage} />
+            <ScheduleSelectField
+                label="NEW FEATURE: Scheduled Time"
+                description="Send emails now or schedule them up to four days
+                in advance! Emails will be sent out in batches at 8am,
+                1pm, and 6pm EST. You may only schedule one email per time slot."
+                required
+                includeNow
+                schedule={schedule}
+                handleScheduleChange={(e) => setSchedule(e.target.value)}
+            />
             <TextInputField
                 label="Email Header"
                 isInvalid={headerInvalid}
@@ -98,14 +126,15 @@ export default function Mail({
                 <Link href="/app">
                     <Button size="large" float="left">Back</Button>
                 </Link>
-
             </Pane>
             <Dialog
                 isShown={showConfirm}
                 hasHeader={false}
                 hasClose={false}
                 onConfirm={async () => {
-                    await onSend({ sender, header, body });
+                    await onSend({
+                        sender, header, body, schedule,
+                    });
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}
