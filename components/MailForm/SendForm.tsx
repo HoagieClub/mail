@@ -9,12 +9,12 @@ import {
     Dialog,
     Text,
     InfoSignIcon,
-    SelectField,
 } from 'evergreen-ui'
 import Link from 'next/link';
 import RichTextEditor from '../RichSunEditor'
 import SuccessPage from './SuccessPage'
 import ErrorMessage from '../ErrorMessage';
+import ScheduleSelectField from './ScheduleSelectField';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
@@ -46,21 +46,27 @@ export default function Mail({
 
     const MailForm = (
         <Pane>
-            <Heading size={800} marginY={majorScale(2)}>Send an Email</Heading>
+            <Pane display="flex" justifyContent="space-between">
+                <Heading
+                    size={800}
+                    marginY={majorScale(2)}
+                >
+                    Send an Email
+                </Heading>
+                <Link href="/scheduled">
+                    <Button
+                        size="large"
+                        appearance="default"
+                        marginY={majorScale(2)}
+                    >
+                        View Scheduled Emails
+                    </Button>
+                </Link>
+            </Pane>
             <ErrorMessage text={errorMessage} />
-            <SelectField
-                label="Schedule"
-                required
-                description="Placeholder description for scheduled send"
-                value={schedule}
-                onChange={(e) => setSchedule(e.target.value)}
-            >
-                {/* Hardcoded options for now */}
-                <option key="now" value="now" selected>Now</option>
-                <option key="morning" value="morning">Morning (8am) </option>
-                <option key="afternoon" value="afternoon">Afternoon (1pm) </option>
-                <option key="evening" value="evening">Evening (6pm) </option>
-            </SelectField>
+            <ScheduleSelectField
+                handleScheduleChange={(e) => setSchedule(e.target.value)}
+            />
             <TextInputField
                 label="Email Header"
                 isInvalid={headerInvalid}
@@ -113,7 +119,6 @@ export default function Mail({
                 <Link href="/app">
                     <Button size="large" float="left">Back</Button>
                 </Link>
-
             </Pane>
             <Dialog
                 isShown={showConfirm}
