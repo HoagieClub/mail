@@ -11,7 +11,8 @@ import './quill.snow.css';
 function Content({ Component, pageProps }) {
     const tabs = [
         { title: 'Send Mail', href: '/app' },
-        { title: 'View Scheduled Emails', href: '/scheduled' },
+        { title: 'Scheduled Emails', href: '/scheduled' },
+        { title: 'Current Digest', href: '/digest' },
     ];
     const user = useUser();
 
