@@ -59,7 +59,7 @@ export default function Mail({
                         appearance="default"
                         marginY={majorScale(2)}
                     >
-                        View Scheduled Emails
+                        Scheduled Emails
                     </Button>
                 </Link>
             </Pane>
