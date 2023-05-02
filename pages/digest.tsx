@@ -28,6 +28,9 @@ export default withPageAuthRequired(() => {
         if (!response.ok) {
             const errorText = await response.text();
             setErrorMessage(`There was an issue with your email. ${errorText}`);
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
         } else {
             setSuccess(true);
         }
@@ -46,6 +49,9 @@ export default withPageAuthRequired(() => {
             setErrorMessage(`There was an issue while performing the deletion. 
             ${errorText}`);
             setLoading(false)
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
         } else {
             // mutate causes useSWR to re-fetch the data,
             // allowing the form to be updated after the digest is deleted
