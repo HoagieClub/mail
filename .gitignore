@@ -17,6 +17,7 @@
 
 # misc
 .DS_Store
+.editorconfig
 
 # debug
 npm-debug.log*
