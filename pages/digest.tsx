@@ -18,8 +18,6 @@ export default withPageAuthRequired(() => {
         fetcher,
     )
 
-    console.log(data)
-
     const addDigest = async (digestData) => {
         console.log(digestData)
         const response = await fetch('/api/hoagie/stuff/user', {
