@@ -64,6 +64,7 @@ export default function ExistingDigest({
                 make a new one or edit it, you will need to delete the current
                 request and re-do it. After deletion, your current message will not
                 be sent but you may create a new Digest Message to be sent in a future
+                email.
             </Alert>
             <br />
             <Pane>
