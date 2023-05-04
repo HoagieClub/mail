@@ -14,7 +14,7 @@ import Link from 'next/link';
 import RichTextEditor from '../RichSunEditor'
 import SuccessPage from './SuccessPage'
 import ErrorMessage from '../ErrorMessage';
-import ScheduleSelectField from './ScheduleSelectField';
+import ScheduleSelectField from './ScheduledSend/ScheduleSelectField';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
