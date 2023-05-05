@@ -18,7 +18,7 @@ export default function ScheduleSelectField({ handleScheduleChange }) {
             { hour: 8, label: times[0] },
             { hour: 13, label: times[1] },
             { hour: 18, label: times[2] },
-        ].filter(({ label }) => times.includes(label))
+        ]
 
         // get dates for 0, 1, 2, 3 days in the future
         const dates = Array.from({ length: 4 }, (_, i) => {
