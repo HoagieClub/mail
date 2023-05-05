@@ -750,6 +750,11 @@ dom-helpers@^5.0.1:
     "@babel/runtime" "^7.8.7"
     csstype "^3.0.2"
 
+dompurify@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.0.3.tgz#4b115d15a091ddc96f232bcef668550a2f6f1430"
+  integrity sha512-axQ9zieHLnAnHh0sfAamKYiqXMJAVwu+LM/alQ7WDagoWessyWvMSFyW65CqF3owufNu8HBcE4cM2Vflu7YWcQ==
+
 downshift@^5.2.0:
   version "5.4.7"
   resolved "https://registry.yarnpkg.com/downshift/-/downshift-5.4.7.tgz#2ab7b0512cad33011ee6f29630f9a7bb74dff2b5"
