@@ -1,4 +1,4 @@
-export default function formatDateString(dateString: string) : string {
+export default function formatDateString(dateString: string, created = false) : string {
     const EST = { timeZone: 'America/New_York' }
     const hourLabels = new Map(
         [
@@ -21,8 +21,8 @@ export default function formatDateString(dateString: string) : string {
         minute: '2-digit',
     });
 
-    if (hourLabels.get(hour)) {
+    if (!created && hourLabels.get(hour)) {
         return `${weekday}, ${formattedDate} ${hourLabels.get(hour)}`
     }
-    return `${weekday}, ${formattedDate}, ${timeString}`
+    return `${weekday}, ${formattedDate}, ${timeString} EST`
 }

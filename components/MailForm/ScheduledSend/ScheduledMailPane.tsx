@@ -1,6 +1,5 @@
 import {
-    Spinner, Button, Pane, Heading, Link, Text, Paragraph,
-    Alert, majorScale, Dialog, InfoSignIcon,
+    Button, Pane, Text, Paragraph, Dialog, InfoSignIcon,
 } from 'evergreen-ui';
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
@@ -45,7 +44,7 @@ function ScheduledMailListing({
                     </Pane>
                 )}
                 <Text>
-                    <b>Created time:</b> {`${formatDateString(listing.createdAt)} EST` }
+                    <b>Created time:</b> {` ${formatDateString(listing.createdAt, true)}`}
                 </Text>
                 <br />
                 <Text>

@@ -1,6 +1,5 @@
 import {
-    Spinner, Button, Pane, Heading, Link, Text, Paragraph,
-    Alert, majorScale, Dialog, InfoSignIcon,
+    Spinner, Button, Pane, Heading, Link, Alert, majorScale,
 } from 'evergreen-ui';
 // import Link from 'next/link';
 // import { useState } from 'react';
@@ -28,7 +27,8 @@ export default function ScheduledMailForm({
                 >
                     Emails relating to University Clubs, Departments, and Organizations
                     can be scheduled up to four days in advance. Other emails will be
-                    bundled into a Digest email.
+                    bundled into a Digest email. You can modify your scheduled
+                    emails here.
                 </Alert>
                 <br />
                 <Link href="/app">
