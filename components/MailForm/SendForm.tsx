@@ -172,5 +172,5 @@ export default function Mail({
             </Dialog>
         </Pane>
     );
-    return success ? <SuccessPage /> : MailForm;
+    return success ? <SuccessPage schedule={schedule} /> : MailForm;
 }
