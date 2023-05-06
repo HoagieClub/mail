@@ -22,7 +22,7 @@ function ScheduledMailListing({
             justifyContent="center"
             border="default"
         >
-            <Pane margin={20} width="100%">
+            <Pane margin={20} marginBottom={-2} width="100%">
                 <Button
                     float="right"
                     onClick={() => setBodyShown(!bodyShown)}
@@ -49,19 +49,21 @@ function ScheduledMailListing({
                 </Text>
                 <br />
                 <Text>
-                    <b>Scheduled time:</b> { formatDateString(listing.schedule) }
-                    <ScheduleSelectField
-                        handleScheduleChange={(e) => {
-                            onUpdate({
-                                schedule: listing.schedule,
-                                newSchedule: e.target.value,
-                            })
-                        }}
-                        schedule={listing.schedule}
-                    />
+                    <b>Scheduled time: </b>
                 </Text>
                 <br />
-                <br />
+                <ScheduleSelectField
+                    handleScheduleChange={(e) => {
+                        onUpdate({
+                            schedule: listing.schedule,
+                            newSchedule: e.target.value,
+                        })
+                    }}
+                    schedule={listing.schedule}
+                    float="left"
+                    marginTop="5px"
+                    display="flex"
+                />
                 <Button
                     onClick={() => setShowConfirm(true)}
                     size="large"
@@ -70,7 +72,6 @@ function ScheduledMailListing({
                 >
                     Delete
                 </Button>
-                <br />
                 <Dialog
                     isShown={showConfirm}
                     hasHeader={false}

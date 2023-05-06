@@ -4,7 +4,7 @@ import formatDateString from './formatDateString'
 
 export default function ScheduleSelectField({
     label = '', description = '', required = false, includeNow = false,
-    handleScheduleChange, schedule,
+    handleScheduleChange, schedule, ...selectOptions
 }) {
     const [optionTags, setOptionTags] = useState([])
 
@@ -83,6 +83,7 @@ export default function ScheduleSelectField({
             description={description}
             value={schedule}
             onChange={handleScheduleChange}
+            {...selectOptions}
         >
             {optionTags}
         </SelectField>
