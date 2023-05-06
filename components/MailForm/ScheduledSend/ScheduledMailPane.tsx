@@ -12,7 +12,6 @@ function ScheduledMailListing({
 }) {
     const [showConfirm, setShowConfirm] = useState(false)
     const [bodyShown, setBodyShown] = useState(false)
-    const [schedule, setSchedule] = useState(listing.schedule)
     const mailBody = DOMPurify.sanitize(listing.body)
 
     return (
@@ -50,16 +49,15 @@ function ScheduledMailListing({
                 </Text>
                 <br />
                 <Text>
-                    <b>Scheduled time:</b> { formatDateString(schedule) }
+                    <b>Scheduled time:</b> { formatDateString(listing.schedule) }
                     <ScheduleSelectField
                         handleScheduleChange={(e) => {
-                            setSchedule(e.target.value)
                             onUpdate({
-                                schedule: schedule,
+                                schedule: listing.schedule,
                                 newSchedule: e.target.value,
                             })
                         }}
-                        schedule={schedule}
+                        schedule={listing.schedule}
                     />
                 </Text>
                 <br />
