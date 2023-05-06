@@ -12,7 +12,7 @@ function Content({ Component, pageProps }) {
     const tabs = [
         { title: 'Send Mail', href: '/app' },
         { title: 'Scheduled Emails', href: '/scheduled' },
-        { title: 'Current Digest', href: '/digest' },
+        { title: 'Current Digest', href: '/digest?type=current' },
     ];
     const user = useUser();
 
