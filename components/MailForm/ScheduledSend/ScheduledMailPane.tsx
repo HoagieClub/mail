@@ -5,12 +5,16 @@ import {
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
 import formatDateString from './formatDateString'
+import ScheduleSelectField from './ScheduleSelectField';
 
 function ScheduledMailListing({
-    listing,
+    listing, onDelete, onUpdate,
 }) {
+    const [showConfirm, setShowConfirm] = useState(false)
     const [bodyShown, setBodyShown] = useState(false)
+    const [schedule, setSchedule] = useState(listing.schedule)
     const mailBody = DOMPurify.sanitize(listing.body)
+
     return (
         <Pane
             marginTop={20}
@@ -41,30 +45,80 @@ function ScheduledMailListing({
                         </Pane>
                     </Pane>
                 )}
-                <Text><b>Created time:</b> { formatDateString(listing.createdAt) }</Text>
+                <Text>
+                    <b>Created time:</b> {`${formatDateString(listing.createdAt)} EST` }
+                </Text>
                 <br />
-                <Text><b>Scheduled time:</b> { formatDateString(listing.schedule) }</Text>
+                <Text>
+                    <b>Scheduled time:</b> { formatDateString(schedule) }
+                    <ScheduleSelectField
+                        handleScheduleChange={(e) => {
+                            setSchedule(e.target.value)
+                            onUpdate({
+                                schedule: schedule,
+                                newSchedule: e.target.value,
+                            })
+                        }}
+                        schedule={schedule}
+                    />
+                </Text>
                 <br />
                 <br />
-                <Button size="large" appearance="primary" float="left">
-                    Set New Scheduled Time
-                </Button>
-                <Button size="large" appearance="primary" float="right">
+                <Button
+                    onClick={() => setShowConfirm(true)}
+                    size="large"
+                    appearance="primary"
+                    float="right"
+                >
                     Delete
                 </Button>
                 <br />
+                <Dialog
+                    isShown={showConfirm}
+                    hasHeader={false}
+                    hasClose={false}
+                    onConfirm={async () => {
+                        await onDelete({
+                            schedule: listing.schedule,
+                            newSchedule: null,
+                        })
+                        setShowConfirm(false)
+                    }}
+                    onCloseComplete={() => setShowConfirm(false)}
+                    confirmLabel="I understand"
+                    intent="warning"
+                >
+                    <Pane
+                        marginTop={35}
+                        marginBottom={20}
+                        fontFamily="Nunito"
+                        display="flex"
+                        alignItems="center"
+                    >
+                        <InfoSignIcon marginRight={10} />
+                        Are you sure you want to delete your email scheduled for
+                        {` ${formatDateString(listing.schedule)}`}?
+                    </Pane>
+                    <Text>
+                        This action <b>cannot be undone</b>.
+                    </Text>
+                </Dialog>
             </Pane>
         </Pane>
     )
 }
 
 export default function ScheduledMailPane({
-    scheduledMail,
+    scheduledMail, onDelete, onUpdate,
 }) {
     return (
         <Pane>{
             scheduledMail.map((listing) => (
-                <ScheduledMailListing listing={listing} />
+                <ScheduledMailListing
+                    listing={listing}
+                    onDelete={onDelete}
+                    onUpdate={onUpdate}
+                />
             ))
         }
         </Pane>

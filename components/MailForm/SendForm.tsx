@@ -65,6 +65,13 @@ export default function Mail({
             </Pane>
             <ErrorMessage text={errorMessage} />
             <ScheduleSelectField
+                label="NEW FEATURE: Scheduled Time"
+                description="Send emails now or schedule them up to four days
+                in advance! Emails will be sent out in batches at 8am,
+                1pm, and 6pm EST. You may only schedule one email per time slot."
+                required
+                includeNow
+                schedule={schedule}
                 handleScheduleChange={(e) => setSchedule(e.target.value)}
             />
             <TextInputField

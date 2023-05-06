@@ -4,14 +4,15 @@ import {
 } from 'evergreen-ui';
 // import Link from 'next/link';
 // import { useState } from 'react';
-import SuccessPage from '../SuccessPage';
 import ErrorMessage from '../../ErrorMessage';
 import ScheduledMailPane from './ScheduledMailPane';
 
 export default function ScheduledMailForm({
-    onError, errorMessage,
-    userScheduledMail,
+    errorMessage,
     loading,
+    userScheduledMail,
+    onDelete,
+    onUpdate,
 }) {
     if (userScheduledMail?.status === 'unused') {
         return (
@@ -51,12 +52,18 @@ export default function ScheduledMailForm({
                 intent="none"
             >
                 Reschedule your scheduled emails or delete them here. To change
-                the content of your email, simply delete it and send a new one.
-                Deleted emails will not be sent.
+                the content of your email or send it now, simply delete it
+                and make a new request. Deleted emails will not be sent.
             </Alert>
             <ScheduledMailPane
                 scheduledMail={userScheduledMail?.scheduledMail}
+                onDelete={onDelete}
+                onUpdate={onUpdate}
             />
+            <br />
+            <Link href="/app">
+                <Button size="large" float="left">Back</Button>
+            </Link>
         </Pane>
     )
 }

@@ -21,5 +21,8 @@ export default function formatDateString(dateString: string) : string {
         minute: '2-digit',
     });
 
-    return `${weekday}, ${formattedDate}, ${hourLabels.get(hour) || timeString}`
+    if (hourLabels.get(hour)) {
+        return `${weekday}, ${formattedDate} ${hourLabels.get(hour)}`
+    }
+    return `${weekday}, ${formattedDate}, ${timeString}`
 }

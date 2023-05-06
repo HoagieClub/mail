@@ -1,73 +1,88 @@
 import { useState, useEffect } from 'react'
 import { SelectField } from 'evergreen-ui'
+import formatDateString from './formatDateString'
 
-export default function ScheduleSelectField({ handleScheduleChange }) {
+export default function ScheduleSelectField({
+    label = '', description = '', required = false, includeNow = false,
+    handleScheduleChange, schedule,
+}) {
     const [optionTags, setOptionTags] = useState([])
-    const [schedule, setSchedule] = useState('now')
 
-    const handleSelectChange = (e) => {
-        setSchedule(e.target.value)
-        handleScheduleChange(e)
-    }
+    const hours = [8, 13, 18] // 8am, 1pm, 6pm
+    const daysToGenerate = 4
 
     // Generate dates and times for scheduled send based on user's time
     useEffect(() => {
-        const EST = { timeZone: 'America/New_York' }
-        const times = ['Morning (8am EST)', 'Afternoon (1pm EST)', 'Evening (6pm EST)']
-        const timeLabels = [
-            { hour: 8, label: times[0] },
-            { hour: 13, label: times[1] },
-            { hour: 18, label: times[2] },
-        ]
-
-        // get dates for 0, 1, 2, 3 days in the future
-        const dates = Array.from({ length: 4 }, (_, i) => {
-            const date = new Date();
-            date.setDate(date.getDate() + i);
-            const weekday = new Intl.DateTimeFormat('en-US', { ...EST, weekday: 'short' })
-                .format(date)
-            const formattedDate = date.toLocaleDateString('en-US', {
-                month: 'short',
-                day: 'numeric',
+        console.log(schedule)
+        const dates = []
+        const todayEST = new Date(new Date()
+            .toLocaleString('en-US', { timeZone: 'America/New_York' }))
+        for (let day = 0; day < daysToGenerate; day += 1) {
+            hours.forEach((hour) => {
+                const newDate = new Date(todayEST)
+                newDate.setDate(todayEST.getDate() + day)
+                newDate.setHours(hour, 0, 0, 0)
+                dates.push({
+                    date: newDate,
+                    dateLabel: formatDateString(newDate.toISOString()),
+                })
             })
-            return { date, label: `${weekday}, ${formattedDate}` };
-        })
+        }
 
-        // Map over the dates and add the times to each date
-        const options = dates.flatMap(({ date, label }) => (
-            timeLabels.map(({ hour, label: timeLabel }) => ({
-                date: new Date(date.setHours(hour, 0, 0, 0)),
-                label: `${label} ${timeLabel}`,
-            }))
         // Only include options with dates > the current time
-        ).filter((option) => {
+        const options = dates.filter((option) => {
             const estNow = new Date(new Date()
                 .toLocaleString('en-US', { timeZone: 'America/New_York' }))
             return option.date > estNow
-        }))
+        })
+
+        // Prepend the scheduled time to the front of options
+        if (!includeNow) {
+            const originalScheduleObj = {
+                date: new Date(new Date(schedule)
+                    .toLocaleString('en-US', { timeZone: 'America/New_York' })),
+                dateLabel: formatDateString(schedule),
+            }
+            const optionLabels = options.map((option) => option.dateLabel)
+            const index = optionLabels.indexOf(originalScheduleObj.dateLabel);
+            if (index !== -1) {
+                // Time already exists, move it to the front of the array
+                options.splice(0, 0, options.splice(index, 1)[0])
+            } else {
+                // Time doesn't exist, add it to the front of the array
+                options.unshift(originalScheduleObj)
+            }
+        }
 
         // Map over the options and create a JSX tag for each one
-        setOptionTags([
-            <option key="now" value="now">
-                Now
-            </option>,
-            ...options.map(({ date, label }) => (
-                <option key={date.toISOString()} value={date.toISOString()}>
-                    {label}
-                </option>
-            )),
-        ])
-    }, [])
+        setOptionTags(
+            includeNow
+                ? [
+                    <option key="now" value="now">
+                        Now
+                    </option>,
+                    ...options.map(({ date, dateLabel }) => (
+                        <option key={date.toISOString()} value={date.toISOString()}>
+                            {dateLabel}
+                        </option>
+                    )),
+                ] : [
+                    ...options.map(({ date, dateLabel }) => (
+                        <option key={date.toISOString()} value={date.toISOString()}>
+                            {dateLabel}
+                        </option>
+                    )),
+                ],
+        )
+    }, [schedule])
 
     return (
         <SelectField
-            label="NEW FEATURE: Scheduled Time"
-            required
-            description="Send emails now or schedule them up to four days
-             in advance! Emails will be sent out in batches at 8am,
-              1pm, and 6pm EST. You may only schedule one email per time slot."
+            label={label}
+            required={required}
+            description={description}
             value={schedule}
-            onChange={handleSelectChange}
+            onChange={handleScheduleChange}
         >
             {optionTags}
         </SelectField>
