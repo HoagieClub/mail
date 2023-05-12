@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0';
 import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useMockableUser, withMockablePageAuthRequired } from '../mock/User'
 import View from '../components/View';
 
-export default withPageAuthRequired(() => {
-    const { user, isLoading } = useUser();
+export default withMockablePageAuthRequired(() => {
+    const { user, isLoading } = useMockableUser();
     const router = useRouter()
     if (isLoading) { return <Spinner /> }
 

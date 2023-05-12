@@ -1,8 +1,6 @@
 import {
     Spinner, Button, Pane, Heading, Link, Alert, majorScale,
 } from 'evergreen-ui';
-// import Link from 'next/link';
-// import { useState } from 'react';
 import ErrorMessage from '../../ErrorMessage';
 import ScheduledMailPane from './ScheduledMailPane';
 

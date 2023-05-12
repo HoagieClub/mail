@@ -13,7 +13,6 @@ export default function ScheduleSelectField({
 
     // Generate dates and times for scheduled send based on user's time
     useEffect(() => {
-        console.log(schedule)
         const dates = []
         const todayEST = new Date(new Date()
             .toLocaleString('en-US', { timeZone: 'America/New_York' }))

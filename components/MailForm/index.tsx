@@ -1,17 +1,15 @@
-import {
-    Spinner,
-} from 'evergreen-ui'
-import { useUser } from '@auth0/nextjs-auth0';
+import { Spinner } from 'evergreen-ui'
 import DigestForm from './DigestForm';
 import SendForm from './SendForm';
 import View from '../View';
+import { useMockableUser } from '../../mock/User';
 
 export default function MailForm({
     onSend, onError, errorMessage, success, isDigest,
     digest = { status: 'unused' }, onDelete = (() => {}),
     loading = false,
 }) {
-    const { user, isLoading } = useUser();
+    const { user, isLoading } = useMockableUser();
     if (isLoading || loading) { return <Spinner /> }
 
     return (
