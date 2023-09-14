@@ -43,6 +43,27 @@ export default function DigestForm({
     if (!digest.status) {
         return <Spinner />;
     }
+    const NoDigest = (
+        <Pane>
+            <Heading
+                size={800}
+                marginY={majorScale(2)}
+            >No Current Digest
+            </Heading>
+            <ErrorMessage text={errorMessage} />
+            <Alert
+                intent="none"
+            >
+                Emails not relating to University Clubs, Departments,
+                and Organizations will be bundled into a Digest email.
+                You can modify your current Digest here.
+            </Alert>
+            <br />
+            <Link href="/app">
+                <Button size="large" float="left">Send an email</Button>
+            </Link>
+        </Pane>
+    )
     const Form = (
         <Pane>
             <Heading
@@ -159,5 +180,8 @@ export default function DigestForm({
             </Dialog>
         </Pane>
     )
-    return success ? <SuccessPage digest /> : Form;
+    if (success) {
+        return <SuccessPage digest />
+    }
+    return category !== 'current' ? Form : NoDigest
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 import router from 'next/router';
+import { withMockablePageAuthRequired } from '../mock/User';
 import MailForm from '../components/MailForm';
 
-export default withPageAuthRequired(() => {
+export default withMockablePageAuthRequired(() => {
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
     const sendMail = async (mailData) => {
@@ -15,6 +15,9 @@ export default withPageAuthRequired(() => {
         if (!response.ok) {
             const errorText = await response.text();
             setErrorMessage(`There was an issue with your email. ${errorText}`);
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
         } else {
             setSuccess(true);
         }
