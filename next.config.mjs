@@ -1,29 +1,16 @@
-// @ts-check
+import withPWA from 'next-pwa';
 
-/**
- * @type {import('next').NextConfig}
- */
 const nextConfig = {
-    output: 'standalone',
-    env: {
-        AUTH0_SECRET: process.env.AUTH0_SECRET,
-        AUTH0_BASE_URL: process.env.AUTH0_BASE_URL,
-        AUTH0_ISSUER_BASE_URL: process.env.AUTH0_ISSUER_BASE_URL,
-        AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
-        AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,
-    },
-    eslint: {
-        // Warning: This allows production builds to successfully complete even if
-        // your project has ESLint errors.
-        ignoreDuringBuilds: true,
-    },
-    typescript: {
-        // !! WARN !!
-        // Dangerously allow production builds to successfully complete even if
-        // your project has type errors.
-        // !! WARN !!
-        ignoreBuildErrors: true,
-    },
-}
+  reactStrictMode: true,
+  ...withPWA({
+    dest: 'public',
+    register: true,
+    skipWaiting: true,
+  }),
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
+  images: {
+    domains: ['github.com'],
+  },
+};
 
-export default nextConfig
+export default nextConfig;
