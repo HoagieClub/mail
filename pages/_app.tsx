@@ -6,7 +6,12 @@ import Nav from '../lib/hoagie-ui/Nav';
 import '../lib/hoagie-ui/theme.css'
 import './mail.css'
 import './quill.snow.css';
-import { MockableUserProvider, useMockableUser } from '../mock/User'
+import { UserProvider, useUser } from '@auth0/nextjs-auth0';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Mail by Hoagie'
+}
 
 function Content({ Component, pageProps }) {
     const tabs = [
@@ -14,7 +19,7 @@ function Content({ Component, pageProps }) {
         { title: 'Scheduled Emails', href: '/scheduled' },
         { title: 'Current Digest', href: '/digest?type=current' },
     ];
-    const user = useMockableUser();
+    const { user }  = useUser();
 
     return (
         <Theme palette="orange">
@@ -29,11 +34,8 @@ function Content({ Component, pageProps }) {
 
 export default function App({ Component, pageProps }) {
     return (
-        <MockableUserProvider>
-            <Head>
-                <title>Mail by Hoagie</title>
-            </Head>
+        <UserProvider>
             <Content Component={Component} pageProps={pageProps} />
-        </MockableUserProvider>
+        </UserProvider>
     );
 }

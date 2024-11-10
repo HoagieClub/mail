@@ -4,11 +4,11 @@ import {
     Pane, majorScale, minorScale, Heading, Spinner, EnvelopeIcon, ArrowLeftIcon, Button,
 } from 'evergreen-ui'
 import Link from 'next/link'
-import { useMockableUser } from '../mock/User'
 import AuthButton from '../lib/hoagie-ui/AuthButton'
+import { useUser } from '@auth0/nextjs-auth0'
 
 export default function Index() {
-    const { user, error, isLoading } = useMockableUser();
+    const { user, error, isLoading } = useUser();
     let Profile;
     if (isLoading) Profile = <Spinner />;
     else if (error) Profile = <div>{error.message}</div>;

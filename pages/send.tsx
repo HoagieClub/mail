@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import router from 'next/router';
-import { withMockablePageAuthRequired } from '../mock/User';
 import MailForm from '../components/MailForm';
 
-export default withMockablePageAuthRequired(() => {
+export default function Send() {
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
     const sendMail = async (mailData) => {
@@ -43,4 +42,4 @@ export default withMockablePageAuthRequired(() => {
             isDigest={false}
         />
     );
-});
+};

@@ -4,11 +4,11 @@ import {
 } from 'evergreen-ui'
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useMockableUser, withMockablePageAuthRequired } from '../mock/User'
 import View from '../components/View';
+import { useUser } from '@auth0/nextjs-auth0';
 
-export default withMockablePageAuthRequired(() => {
-    const { user, isLoading } = useMockableUser();
+export default function App() {
+    const { user, isLoading } = useUser();
     const router = useRouter()
     if (isLoading) { return <Spinner /> }
 
@@ -139,4 +139,4 @@ export default withMockablePageAuthRequired(() => {
             {bottomButtons}
         </View>
     );
-})
+}

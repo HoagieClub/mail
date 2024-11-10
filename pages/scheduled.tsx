@@ -2,12 +2,11 @@ import { useState, useEffect } from 'react';
 import router from 'next/router';
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
-import { withMockablePageAuthRequired } from '../mock/User';
 import ScheduledMailForm from '../components/MailForm/ScheduledSend/ScheduledMailForm';
 import ErrorMessage from '../components/ErrorMessage';
 import View from '../components/View';
 
-export default withMockablePageAuthRequired(() => {
+export default function Scheduled()  {
     const { mutate } = useSWRConfig()
     const [errorMessage, setErrorMessage] = useState('')
     const [loading, setLoading] = useState(false)
@@ -101,4 +100,4 @@ export default withMockablePageAuthRequired(() => {
             />
         </View>
     );
-});
+};
