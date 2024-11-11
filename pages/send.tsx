@@ -22,6 +22,22 @@ export default withMockablePageAuthRequired(() => {
             setSuccess(true);
         }
     }
+    const sendTestMail = async (mailData) => {
+        const response = await fetch('/api/hoagie/mail/sendTestMail', {
+            body: JSON.stringify(mailData),
+            method: 'POST',
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            setErrorMessage(`There was an issue with your email. ${errorText}`);
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 50);
+        } else {
+            setSuccess(true);
+        }
+    }
     useEffect(() => {
         // eslint-disable-next-line no-restricted-globals
         const queryParams = new URLSearchParams(location.search)
@@ -39,6 +55,7 @@ export default withMockablePageAuthRequired(() => {
             success={success}
             onError={setErrorMessage}
             onSend={sendMail}
+            onTestSend={sendTestMail}
             errorMessage={errorMessage}
             isDigest={false}
         />

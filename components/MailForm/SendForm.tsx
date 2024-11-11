@@ -22,7 +22,7 @@ organization if you have permission to do so. Your full name will be included in
 footer of the email regardless of your sender name.`;
 
 export default function Mail({
-    onSend, onError, errorMessage, success, user,
+    onSend, onTestSend, onError, errorMessage, success, user,
 }) {
     const [header, setHeader] = useState('')
     const [headerInvalid, setHeaderInvalid] = useState(false)
@@ -33,6 +33,8 @@ export default function Mail({
     const [body, setBody] = useState('')
     const [schedule, setSchedule] = useState('now')
     const [showConfirm, setShowConfirm] = useState(false)
+    const [showTestConfirm, setShowTestConfirm] = useState(false)
+
 
     const getEditor = (sunEditor) => {
         seteditorCore(sunEditor.core)
@@ -114,6 +116,15 @@ export default function Mail({
                     Send Email
                 </Button>
                 <Button
+                    onClick={() => setShowTestConfirm(true)}
+                    size="large"
+                    appearance="secondary"
+                    float="right"
+                    marginRight="8px"
+                >
+                    Send Test Email
+                </Button>
+                <Button
                     disabled={!editorCore.preview}
                     onClick={() => { editorCore.preview() }}
                     size="large"
@@ -170,6 +181,36 @@ export default function Mail({
                     clubs, departments, and organizations.
                 </Alert>
             </Dialog>
+            <Dialog
+                isShown={showTestConfirm}
+                hasHeader={false}
+                hasClose={false}
+                onConfirm={async () => {
+                    await onTestSend({
+                        sender, header, body, schedule,
+                    });
+                    setShowTestConfirm(false);
+                }}
+                onCloseComplete={() => setShowConfirm(false)}
+                confirmLabel="Send Test Email"
+                intent="warning"
+            >
+                <Pane
+                    marginTop={35}
+                    marginBottom={20}
+                    display="flex"
+                    alignItems="center"
+                >
+                    <InfoSignIcon marginRight={10} />
+                    You are about to send a test email to yourself.
+                </Pane>
+                <Text>
+                    Once you click <b>Send Email</b>, Hoagie will send the email to
+                    <b> your princeton email address </b>
+                </Text>
+                
+            </Dialog>
+
         </Pane>
     );
     return success ? <SuccessPage schedule={schedule} /> : MailForm;

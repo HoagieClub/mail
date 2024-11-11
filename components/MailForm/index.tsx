@@ -5,7 +5,7 @@ import View from '../View';
 import { useMockableUser } from '../../mock/User';
 
 export default function MailForm({
-    onSend, onError, errorMessage, success, isDigest,
+    onSend, onTestSend, onError, errorMessage, success, isDigest,
     digest = { status: 'unused' }, onDelete = (() => {}),
     loading = false,
 }) {
@@ -28,6 +28,7 @@ export default function MailForm({
                     <SendForm
                         user={user}
                         onSend={onSend}
+                        onTestSend={onTestSend}
                         onError={onError}
                         errorMessage={errorMessage}
                         success={success}
