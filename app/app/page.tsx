@@ -1,11 +1,13 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import View from '../components/View';
-import { useUser } from '@auth0/nextjs-auth0';
+import View from '../../components/View';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function App() {
     const { user, isLoading } = useUser();

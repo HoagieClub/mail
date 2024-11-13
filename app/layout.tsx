@@ -35,7 +35,7 @@ async function Content({ children }: { children: ReactNode }): Promise<JSX.Eleme
     );
 }
 
-export default function App({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang='en'>
             <UserProvider>
