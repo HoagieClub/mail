@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import MailForm from '../components/MailForm';
 
 export default function Send() {
+    const router = useRouter()
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
     const sendMail = async (mailData) => {
@@ -30,7 +31,7 @@ export default function Send() {
             queryParams.delete('state')
             // TODO: add support for other params to persist using
             // queryParam.toString() or remove the queryParams method
-            router.replace('/app', undefined, { shallow: true })
+            router.replace('/app')
         }
     }, [])
     return (

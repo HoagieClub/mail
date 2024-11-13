@@ -3,7 +3,7 @@ import {
 } from 'evergreen-ui'
 import { ComponentType } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation'
 import ProfileCard from '../ProfileCard'
 
 interface NavProps {
@@ -28,7 +28,7 @@ function Nav({
     name, LogoComponent, HeaderComponent, tabs = [], user, beta = false,
 }:NavProps) {
     const theme = useTheme();
-    const router = useRouter();
+    const pathname = usePathname();
     const uName = user?.isLoading ? 'Tammy Tiger' : (user?.user?.name ?? 'Tammy Tiger');
 
     return (
@@ -96,7 +96,7 @@ function Nav({
                                         key={tab.title}
                                         is="a"
                                         id={tab.title}
-                                        isSelected={router?.pathname === tab.href}
+                                        isSelected={pathname === tab.href}
                                         appearance="navbar"
                                     >
                                         {tab.title}

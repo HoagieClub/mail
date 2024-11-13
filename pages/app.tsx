@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import View from '../components/View';
 import { useUser } from '@auth0/nextjs-auth0';
@@ -21,7 +21,7 @@ export default function App() {
             queryParams.delete('state')
             // TODO: add support for other params to persist using
             // queryParam.toString() or remove the queryParams method
-            router.replace('/app', undefined, { shallow: true })
+            router.replace('/app')
         }
     }, [])
     const studentOrgLabel = (

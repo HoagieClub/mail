@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
 import MailForm from '../components/MailForm';
@@ -11,6 +11,7 @@ export default function Digest() {
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
+    const router = useRouter()
     const fetcher = (url: string) => fetch(url).then((r) => r.json())
     const { data, error } = useSWR(
         '/api/hoagie/stuff/user',
@@ -68,7 +69,7 @@ export default function Digest() {
             queryParams.delete('state')
             // TODO: add support for other params to persist using
             // queryParam.toString() or remove the queryParams method
-            router.replace('/app', undefined, { shallow: true })
+            router.replace('/app')
         }
     }, [])
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import router from 'next/router';
+import { useRouter} from 'next/navigation';
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
 import ScheduledMailForm from '../components/MailForm/ScheduledSend/ScheduledMailForm';
@@ -7,6 +7,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import View from '../components/View';
 
 export default function Scheduled()  {
+    const router = useRouter()
     const { mutate } = useSWRConfig()
     const [errorMessage, setErrorMessage] = useState('')
     const [loading, setLoading] = useState(false)
@@ -69,7 +70,7 @@ export default function Scheduled()  {
             queryParams.delete('state')
             // TODO: add support for other params to persist using
             // queryParam.toString() or remove the queryParams method
-            router.replace('/app', undefined, { shallow: true })
+            router.replace('/app')
         }
     }, [])
 
