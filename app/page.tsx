@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import {
@@ -5,7 +7,7 @@ import {
 } from 'evergreen-ui'
 import Link from 'next/link'
 import AuthButton from '../lib/hoagie-ui/AuthButton'
-import { useUser } from '@auth0/nextjs-auth0'
+import { useUser } from '@auth0/nextjs-auth0/client'
 
 export default function Index() {
     const { user, error, isLoading } = useUser();
