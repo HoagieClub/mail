@@ -1,6 +1,8 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import MailForm from '../components/MailForm';
+import MailForm from '../../components/MailForm';
 
 export default function Send() {
     const router = useRouter()
