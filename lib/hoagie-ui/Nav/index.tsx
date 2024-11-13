@@ -1,3 +1,5 @@
+'use client';
+
 import {
     majorScale, Pane, Text, Position, Popover, Avatar, TabNavigation, Tab, useTheme,
 } from 'evergreen-ui'

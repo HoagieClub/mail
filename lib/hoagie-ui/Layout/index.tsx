@@ -1,3 +1,5 @@
+'use client';
+
 import { Pane } from 'evergreen-ui'
 import React from 'react'
 

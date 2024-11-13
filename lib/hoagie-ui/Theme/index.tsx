@@ -1,3 +1,5 @@
+'use client';
+
 import { ThemeProvider } from 'evergreen-ui'
 import React from 'react'
 import { hoagiePurple, hoagieOrange, hoagieUI } from './themes'

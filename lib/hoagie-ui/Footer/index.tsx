@@ -1,3 +1,5 @@
+'use client';
+
 import { Pane, majorScale, useTheme } from 'evergreen-ui'
 
 /** Footer is a generic page footer meant for use throughout
