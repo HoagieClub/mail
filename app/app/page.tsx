@@ -8,8 +8,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import View from '../../components/View';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function App() {
+export default withPageAuthRequired(async () => {
     const { user, isLoading } = useUser();
     const router = useRouter()
     if (isLoading) { return <Spinner /> }
@@ -141,4 +142,4 @@ export default function App() {
             {bottomButtons}
         </View>
     );
-}
+});

@@ -3,8 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MailForm from '../../components/MailForm';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0';
 
-export default function Send() {
+export default withPageAuthRequired(async () => {
     const router = useRouter()
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)
@@ -45,4 +46,4 @@ export default function Send() {
             isDigest={false}
         />
     );
-};
+});
