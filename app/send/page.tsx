@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MailForm from '../../components/MailForm';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-export default withPageAuthRequired(async () => {
+export default withPageAuthRequired(() => {
     const router = useRouter()
     const [errorMessage, setErrorMessage] = useState('')
     const [success, setSuccess] = useState(false)

@@ -7,9 +7,9 @@ import useSWR, { useSWRConfig } from 'swr';
 import ScheduledMailForm from '../../components/MailForm/ScheduledSend/ScheduledMailForm';
 import ErrorMessage from '../../components/ErrorMessage';
 import View from '../../components/View';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-export default withPageAuthRequired(async () =>  {
+export default withPageAuthRequired(() =>  {
     const router = useRouter()
     const { mutate } = useSWRConfig()
     const [errorMessage, setErrorMessage] = useState('')

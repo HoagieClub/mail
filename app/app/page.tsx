@@ -7,10 +7,9 @@ import {
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import View from '../../components/View';
-import { useUser } from '@auth0/nextjs-auth0/client';
-import { withPageAuthRequired } from '@auth0/nextjs-auth0';
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-export default withPageAuthRequired(async () => {
+export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
     const router = useRouter()
     if (isLoading) { return <Spinner /> }
