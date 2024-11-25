@@ -6,7 +6,7 @@ import {
     Pane, majorScale, minorScale, Heading, Spinner, EnvelopeIcon, ArrowLeftIcon, Button,
 } from 'evergreen-ui'
 import Link from 'next/link'
-import AuthButton from '../lib/hoagie-ui/AuthButton'
+import AuthButton from '@/lib/hoagie-ui/AuthButton'
 import { useUser } from '@auth0/nextjs-auth0/client'
 
 export default function Index() {

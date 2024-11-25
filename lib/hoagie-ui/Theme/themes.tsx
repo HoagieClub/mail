@@ -1,5 +1,5 @@
 import { defaultTheme } from 'evergreen-ui'
-import Tab from './Tab'
+import Tab from '@/lib/hoagie-ui/Theme/Tab'
 
 const defTheme = defaultTheme;
 

@@ -6,7 +6,7 @@ import {
     RadioGroup,
 } from 'evergreen-ui';
 import { useState, useEffect } from 'react';
-import ErrorMessage from '../../ErrorMessage';
+import ErrorMessage from '@/components/ErrorMessage';
 
 function LostAndFoundForm({
     name, setName,

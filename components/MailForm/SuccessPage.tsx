@@ -1,6 +1,6 @@
 import { Button, Pane } from 'evergreen-ui';
 import Link from 'next/link';
-import formatDateString from './ScheduledSend/formatDateString';
+import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString';
 
 export default function SuccessPage({
     digest = false, schedule = 'now',

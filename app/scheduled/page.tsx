@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter} from 'next/navigation';
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
-import ScheduledMailForm from '../../components/MailForm/ScheduledSend/ScheduledMailForm';
-import ErrorMessage from '../../components/ErrorMessage';
-import View from '../../components/View';
+import ScheduledMailForm from '@/components/MailForm/ScheduledSend/ScheduledMailForm';
+import ErrorMessage from '@/components/ErrorMessage';
+import View from '@/components/View';
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 export default withPageAuthRequired(() =>  {

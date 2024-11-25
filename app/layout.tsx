@@ -1,10 +1,10 @@
-import '../lib/hoagie-ui/theme.css'
-import './mail.css'
-import './quill.snow.css';
+import '@/lib/hoagie-ui/theme.css'
+import '@/app/mail.css'
+import '@/app/quill.snow.css';
 import { UserProvider, useUser } from '@auth0/nextjs-auth0/client';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
-import Content from '../app/Content';
+import Content from '@/app/Content';
 
 export const metadata: Metadata = {
     title: 'Mail by Hoagie'

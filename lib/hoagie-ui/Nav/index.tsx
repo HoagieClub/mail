@@ -26,7 +26,7 @@ import {
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import ProfileCard from '../ProfileCard';
+import ProfileCard from '@/lib/hoagie-ui/ProfileCard';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
 
 export type Nav = {

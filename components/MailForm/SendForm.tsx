@@ -11,10 +11,10 @@ import {
     InfoSignIcon,
 } from 'evergreen-ui'
 import Link from 'next/link';
-import RichTextEditor from '../RichSunEditor'
-import SuccessPage from './SuccessPage'
-import ErrorMessage from '../ErrorMessage';
-import ScheduleSelectField from './ScheduledSend/ScheduleSelectField';
+import RichTextEditor from '@/components/RichSunEditor'
+import SuccessPage from '@/components/MailForm/SuccessPage'
+import ErrorMessage from '@/components/ErrorMessage';
+import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 

@@ -3,8 +3,8 @@ import {
 } from 'evergreen-ui';
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
-import formatDateString from './formatDateString'
-import ScheduleSelectField from './ScheduleSelectField';
+import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString'
+import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 
 function ScheduledMailListing({
     listing, onDelete, onUpdate,

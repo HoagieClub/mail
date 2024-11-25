@@ -2,7 +2,7 @@
 
 import { ThemeProvider } from 'evergreen-ui'
 import React from 'react'
-import { hoagiePurple, hoagieOrange, hoagieUI } from './themes'
+import { hoagiePurple, hoagieOrange, hoagieUI } from '@/lib/hoagie-ui/Theme/themes'
 
 interface ThemeProps {
   /** alternate color theme, default is purple

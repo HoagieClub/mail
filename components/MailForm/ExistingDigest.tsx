@@ -3,7 +3,7 @@ import {
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useState } from 'react';
-import ErrorMessage from '../ErrorMessage';
+import ErrorMessage from '@/components/ErrorMessage';
 
 export default function ExistingDigest({
     errorMessage,

@@ -1,7 +1,7 @@
 import { Spinner } from 'evergreen-ui'
-import DigestForm from './DigestForm';
-import SendForm from './SendForm';
-import View from '../View';
+import DigestForm from '@/components/MailForm/DigestForm';
+import SendForm from '@/components/MailForm/SendForm';
+import View from '@/components/View';
 import { useUser } from '@auth0/nextjs-auth0/client';
 
 export default function MailForm({

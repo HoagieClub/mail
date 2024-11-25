@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
-import MailForm from '../../components/MailForm';
-import ErrorMessage from '../../components/ErrorMessage';
-import View from '../../components/View';
+import MailForm from '@/components/MailForm';
+import ErrorMessage from '@/components/ErrorMessage';
+import View from '@/components/View';
 
 export default function Digest() {
     const { mutate } = useSWRConfig()

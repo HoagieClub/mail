@@ -1,8 +1,8 @@
 'use client';
 
-import Layout from '../lib/hoagie-ui/Layout';
-import Theme from '../lib/hoagie-ui/Theme';
-import Nav from '../lib/hoagie-ui/Nav';
+import Layout from '@/lib/hoagie-ui/Layout';
+import Theme from '@/lib/hoagie-ui/Theme';
+import Nav from '@/lib/hoagie-ui/Nav';
 import { ReactNode } from 'react';
 import { useUser } from '@auth0/nextjs-auth0/client';
 

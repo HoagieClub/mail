@@ -4,10 +4,10 @@ import {
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useState } from 'react';
-import SuccessPage from '../SuccessPage';
-import ExistingDigest from '../ExistingDigest';
-import ErrorMessage from '../../ErrorMessage';
-import { GenericForm, LostAndFoundForm, SaleForm } from './Forms';
+import SuccessPage from '@/components/MailForm/SuccessPage';
+import ExistingDigest from '@/components/MailForm/ExistingDigest';
+import ErrorMessage from '@/components/ErrorMessage';
+import { GenericForm, LostAndFoundForm, SaleForm } from '@/components/MailForm/DigestForm/Forms';
 
 export default function DigestForm({
     onSend,

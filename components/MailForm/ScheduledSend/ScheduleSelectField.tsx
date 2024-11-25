@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { SelectField } from 'evergreen-ui'
-import formatDateString from './formatDateString'
+import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString'
 
 export default function ScheduleSelectField({
     label = '', description = '', required = false, includeNow = false,

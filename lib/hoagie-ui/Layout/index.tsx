@@ -15,7 +15,7 @@
 import { Pane } from 'evergreen-ui';
 import { ReactNode } from 'react';
 import { useTheme } from 'evergreen-ui';
-import Footer from '../Footer';
+import Footer from '@/lib/hoagie-ui/Footer';
 
 function Layout({ children }: { children: ReactNode }) {
     const theme = useTheme();

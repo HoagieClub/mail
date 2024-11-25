@@ -6,7 +6,7 @@ import {
 } from 'evergreen-ui'
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import View from '../../components/View';
+import View from '@/components/View';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 export default withPageAuthRequired(() => {
