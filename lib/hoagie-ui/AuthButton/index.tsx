@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Button, Pane, majorScale, minorScale,
 } from 'evergreen-ui'
