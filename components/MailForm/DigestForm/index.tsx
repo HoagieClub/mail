@@ -8,6 +8,7 @@ import SuccessPage from '@/components/MailForm/SuccessPage';
 import ExistingDigest from '@/components/MailForm/ExistingDigest';
 import ErrorMessage from '@/components/ErrorMessage';
 import { GenericForm, LostAndFoundForm, SaleForm } from '@/components/MailForm/DigestForm/Forms';
+import { useSearchParams } from 'next/navigation';
 
 export default function DigestForm({
     onSend,
@@ -21,7 +22,7 @@ export default function DigestForm({
     const [name, setName] = useState('')
     const [link, setLink] = useState('')
     // eslint-disable-next-line no-restricted-globals
-    const queryParams = new URLSearchParams(location.search)
+    const queryParams = useSearchParams()
     const category = queryParams.has('type') ? queryParams.get('type') : 'bulletin';
 
     const categoryDefaults = {
