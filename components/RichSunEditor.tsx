@@ -3,8 +3,8 @@ import {
 } from 'evergreen-ui'
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
-import SetOptions from 'suneditor-react/src/types/SetOptions';
 import { ButtonListItem } from 'suneditor/src/options'
+import SetOptions from 'suneditor-react/src/types/SetOptions';
 
 const SunEditor = dynamic(() => import('suneditor-react'), {
     ssr: false,

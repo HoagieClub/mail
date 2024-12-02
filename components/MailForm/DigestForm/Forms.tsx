@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import {
     Pane, TextInputField,
     TextareaField, Image,
@@ -5,7 +7,7 @@ import {
     Checkbox,
     RadioGroup,
 } from 'evergreen-ui';
-import { useState, useEffect } from 'react';
+
 import ErrorMessage from '@/components/ErrorMessage';
 
 function LostAndFoundForm({
@@ -39,7 +41,6 @@ function LostAndFoundForm({
         if (imageRequest.success) {
             setThumbnail(imageRequest.data.link)
         } else {
-            // eslint-disable-next-line max-len
             setError('Error occured with your image upload. Please ensure your file is correct.')
         }
     }
@@ -49,7 +50,7 @@ function LostAndFoundForm({
         if (filled) setNameInvalid(name === '');
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
-    }, [name, desc]);
+    }, [name, desc, filled, filledDesc]);
     return (
         <Pane>
             <ErrorMessage text={errorText} />
@@ -79,7 +80,6 @@ function LostAndFoundForm({
                 value={tag}
                 options={tagOptions}
                 onChange={(event) => {
-                    console.log(event.target.value)
                     setTag(event.target.value)
                     setTags([event.target.value])
                 }}
@@ -149,7 +149,7 @@ function SaleForm({
     useEffect(() => {
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
-    }, [desc]);
+    }, [desc, filledDesc]);
 
     return (
         <Pane>
@@ -198,7 +198,6 @@ function SaleForm({
                             const selectedCat = Object.entries(newCategories).filter(
                                 (c:[string, boolean]) => c[1],
                             ).flatMap((c:[string, boolean]) => c[0].toLowerCase())
-                            console.log(selectedCat)
                             setTags(selectedCat)
                         }}
                     />
@@ -230,7 +229,7 @@ function GenericForm({
         if (filled) setNameInvalid(name === '');
         if (desc === '') setFilledDesc(true);
         if (filledDesc) setDescInvalid(desc === '');
-    }, [name, desc]);
+    }, [name, desc, filled, filledDesc]);
     return (
         <Pane>
             <TextInputField

@@ -1,6 +1,7 @@
 import {
     Spinner, Button, Pane, Heading, Link, Alert, majorScale,
 } from 'evergreen-ui';
+
 import ErrorMessage from '@/components/ErrorMessage';
 import ScheduledMailPane from '@/components/MailForm/ScheduledSend/ScheduledMailPane';
 

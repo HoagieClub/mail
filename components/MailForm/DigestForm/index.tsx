@@ -1,14 +1,17 @@
+import { useState } from 'react';
+
 import {
     Button, Pane, Heading, Text, Alert,
     majorScale, Dialog, InfoSignIcon, Spinner,
 } from 'evergreen-ui';
 import Link from 'next/link';
-import { useState } from 'react';
-import SuccessPage from '@/components/MailForm/SuccessPage';
-import ExistingDigest from '@/components/MailForm/ExistingDigest';
+import { useSearchParams } from 'next/navigation';
+
 import ErrorMessage from '@/components/ErrorMessage';
 import { GenericForm, LostAndFoundForm, SaleForm } from '@/components/MailForm/DigestForm/Forms';
-import { useSearchParams } from 'next/navigation';
+import ExistingDigest from '@/components/MailForm/ExistingDigest';
+import SuccessPage from '@/components/MailForm/SuccessPage';
+
 
 export default function DigestForm({
     onSend,
@@ -21,7 +24,6 @@ export default function DigestForm({
     const [desc, setDesc] = useState('')
     const [name, setName] = useState('')
     const [link, setLink] = useState('')
-    // eslint-disable-next-line no-restricted-globals
     const queryParams = useSearchParams()
     const category = queryParams.has('type') ? queryParams.get('type') : 'bulletin';
 

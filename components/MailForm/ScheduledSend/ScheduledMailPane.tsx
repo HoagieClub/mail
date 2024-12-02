@@ -1,8 +1,10 @@
+import { useState } from 'react';
+
+import DOMPurify from 'dompurify';
 import {
     Button, Pane, Text, Paragraph, Dialog, InfoSignIcon,
 } from 'evergreen-ui';
-import { useState } from 'react';
-import DOMPurify from 'dompurify';
+
 import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString'
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+
 import { SelectField } from 'evergreen-ui'
+
 import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString'
 
 export default function ScheduleSelectField({
@@ -8,11 +10,11 @@ export default function ScheduleSelectField({
 }) {
     const [optionTags, setOptionTags] = useState([])
 
-    const hours = [8, 13, 18] // 8am, 1pm, 6pm
-    const daysToGenerate = 4
-
     // Generate dates and times for scheduled send based on user's time
     useEffect(() => {
+        const hours = [8, 13, 18] // 8am, 1pm, 6pm
+        const daysToGenerate = 4
+
         const dates = []
         const todayEST = new Date(new Date()
             .toLocaleString('en-US', { timeZone: 'America/New_York' }))
@@ -73,7 +75,7 @@ export default function ScheduleSelectField({
                     )),
                 ],
         )
-    }, [schedule])
+    }, [schedule, includeNow])
 
     return (
         <SelectField

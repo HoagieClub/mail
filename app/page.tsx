@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+
+import { useUser } from '@auth0/nextjs-auth0/client'
 import {
     Pane, majorScale, minorScale, Heading, Spinner, EnvelopeIcon, ArrowLeftIcon, Button,
 } from 'evergreen-ui'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
 import AuthButton from '@/lib/hoagie-ui/AuthButton'
-import { useUser } from '@auth0/nextjs-auth0/client'
+
 
 export default function Index() {
     const { user, error, isLoading } = useUser();
@@ -35,7 +38,6 @@ export default function Index() {
 
     const router = useRouter()
     useEffect(() => {
-        // eslint-disable-next-line no-restricted-globals
         const queryParams = new URLSearchParams(location.search)
 
         if (queryParams.has('code')) {

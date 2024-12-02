@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import MailForm from '@/components/MailForm';
+
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/navigation';
+
+import MailForm from '@/components/MailForm';
 
 export default withPageAuthRequired(() => {
     const router = useRouter()
@@ -26,7 +28,6 @@ export default withPageAuthRequired(() => {
         }
     }
     useEffect(() => {
-        // eslint-disable-next-line no-restricted-globals
         const queryParams = new URLSearchParams(location.search)
 
         if (queryParams.has('code')) {

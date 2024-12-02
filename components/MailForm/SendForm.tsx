@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import {
     Pane,
     Heading,
@@ -11,10 +12,11 @@ import {
     InfoSignIcon,
 } from 'evergreen-ui'
 import Link from 'next/link';
-import RichTextEditor from '@/components/RichSunEditor'
-import SuccessPage from '@/components/MailForm/SuccessPage'
+
 import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
+import SuccessPage from '@/components/MailForm/SuccessPage'
+import RichTextEditor from '@/components/RichSunEditor'
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
@@ -42,7 +44,7 @@ export default function Mail({
         if (header === '') setFilled(true);
         if (filled) setHeaderInvalid(header === '');
         setSenderInvalid(sender === '');
-    }, [header, sender]);
+    }, [header, sender, filled]);
 
     const MailForm = (
         <Pane>

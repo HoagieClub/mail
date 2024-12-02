@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+
 import { Spinner } from 'evergreen-ui';
+import { useRouter } from 'next/navigation';
 import useSWR, { useSWRConfig } from 'swr';
-import MailForm from '@/components/MailForm';
+
 import ErrorMessage from '@/components/ErrorMessage';
+import MailForm from '@/components/MailForm';
 import View from '@/components/View';
 
 export default function Digest() {
@@ -21,7 +23,6 @@ export default function Digest() {
     )
 
     const addDigest = async (digestData) => {
-        console.log(digestData)
         const response = await fetch('/api/hoagie/stuff/user', {
             body: JSON.stringify(digestData),
             method: 'POST',
@@ -63,7 +64,6 @@ export default function Digest() {
     }
 
     useEffect(() => {
-        // eslint-disable-next-line no-restricted-globals
         const queryParams = new URLSearchParams(location.search)
 
         if (queryParams.has('code')) {

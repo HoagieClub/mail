@@ -12,9 +12,10 @@
 
 'use client';
 
-import { Pane } from 'evergreen-ui';
 import { ReactNode } from 'react';
-import { useTheme } from 'evergreen-ui';
+
+import { Pane , useTheme } from 'evergreen-ui';
+
 import Footer from '@/lib/hoagie-ui/Footer';
 
 function Layout({ children }: { children: ReactNode }) {

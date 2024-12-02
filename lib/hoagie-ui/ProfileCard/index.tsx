@@ -10,8 +10,8 @@
  * and/or sell copies of the software. This software is provided "as-is", without warranty of any kind.
  */
 
-import { majorScale, Button, Heading, Card, Avatar, useTheme, Text } from 'evergreen-ui';
 import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { majorScale, Button, Heading, Card, Avatar, useTheme, Text } from 'evergreen-ui';
 
 /**
 * ProfileCard is a profile card meant for display of user information

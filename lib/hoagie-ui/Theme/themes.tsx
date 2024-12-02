@@ -1,4 +1,5 @@
 import { defaultTheme } from 'evergreen-ui'
+
 import Tab from '@/lib/hoagie-ui/Theme/Tab'
 
 const defTheme = defaultTheme;
@@ -166,11 +167,9 @@ export const hoagieUI = {
         focusRing: '0 0 0 2px #D6E0FF',
     },
     fontFamilies: {
-        /* eslint-disable */
         display: '"Inter", "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI",Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         ui: '"Inter", "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         mono: '"JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace',
-        /* eslint-enable */
     },
     fontSizes: {
         0: '10px',

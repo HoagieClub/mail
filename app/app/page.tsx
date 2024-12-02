@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import {
     RadioGroup, Text, Heading, Pane, majorScale, Spinner, Button, Alert,
 } from 'evergreen-ui'
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import View from '@/components/View';
-import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
@@ -15,7 +17,6 @@ export default withPageAuthRequired(() => {
     if (isLoading) { return <Spinner /> }
 
     useEffect(() => {
-        // eslint-disable-next-line no-restricted-globals
         const queryParams = new URLSearchParams(location.search)
 
         if (queryParams.has('code')) {

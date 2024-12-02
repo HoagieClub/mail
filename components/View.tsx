@@ -11,6 +11,7 @@
  */
 
 import { ReactNode } from 'react';
+
 import { Pane } from 'evergreen-ui';
 
 // View is an extremely simple component to make sure that the layout is consistent

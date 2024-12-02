@@ -1,7 +1,9 @@
 'use client';
 
-import { ThemeProvider } from 'evergreen-ui'
 import React from 'react'
+
+import { ThemeProvider } from 'evergreen-ui'
+
 import { hoagiePurple, hoagieOrange, hoagieUI } from '@/lib/hoagie-ui/Theme/themes'
 
 interface ThemeProps {
