@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import {
     Pane,
@@ -24,8 +24,8 @@ function LostAndFoundForm({
 }) {
     const [nameInvalid, setNameInvalid] = useState(false);
     const [descInvalid, setDescInvalid] = useState(false);
-    const [filled, setFilled] = useState(false);
-    const [filledDesc, setFilledDesc] = useState(false);
+    const hasInteractedName = useRef(false);
+    const hasInteractedDesc = useRef(false);
     const [errorText, setError] = useState('');
     const [tag, setTag] = useState('lost');
     const [tagOptions] = useState([
@@ -54,11 +54,19 @@ function LostAndFoundForm({
     };
 
     useEffect(() => {
-        if (name === '') setFilled(true);
-        if (filled) setNameInvalid(name === '');
-        if (desc === '') setFilledDesc(true);
-        if (filledDesc) setDescInvalid(desc === '');
-    }, [name, desc, filled, filledDesc]);
+        if (!hasInteractedName.current && name !== '') {
+            hasInteractedName.current = true;
+        }
+        if (!hasInteractedDesc.current && desc !== '') {
+            hasInteractedDesc.current = true;
+        }
+        if (hasInteractedName.current) {
+            setNameInvalid(name === '');
+        }
+        if (hasInteractedDesc.current) {
+            setDescInvalid(desc === '');
+        }
+    }, [name, desc]);
     return (
         <Pane>
             <ErrorMessage text={errorText} />
@@ -137,7 +145,7 @@ function LostAndFoundForm({
 
 function SaleForm({ desc, setDesc, link, setLink, setTags }) {
     const [descInvalid, setDescInvalid] = useState(false);
-    const [filledDesc, setFilledDesc] = useState(false);
+    const hasInteractedDesc = useRef(false);
 
     const [categories, setCategories] = useState({
         Accessories: false,
@@ -151,9 +159,14 @@ function SaleForm({ desc, setDesc, link, setLink, setTags }) {
     const salesCategories = Object.keys(categories);
 
     useEffect(() => {
-        if (desc === '') setFilledDesc(true);
-        if (filledDesc) setDescInvalid(desc === '');
-    }, [desc, filledDesc]);
+        if (!hasInteractedDesc.current && desc !== '') {
+            hasInteractedDesc.current = true;
+        }
+
+        if (hasInteractedDesc.current) {
+            setDescInvalid(desc === '');
+        }
+    }, [desc]);
 
     return (
         <Pane>
@@ -216,8 +229,8 @@ function SaleForm({ desc, setDesc, link, setLink, setTags }) {
 function GenericForm({ name, setName, desc, setDesc, setTags }) {
     const [nameInvalid, setNameInvalid] = useState(false);
     const [descInvalid, setDescInvalid] = useState(false);
-    const [filled, setFilled] = useState(false);
-    const [filledDesc, setFilledDesc] = useState(false);
+    const hasInteractedName = useRef(false);
+    const hasInteractedDesc = useRef(false);
     // Only one tag for generic form
     const [tag, setTag] = useState('announcement');
     const [tagOptions] = useState([
@@ -227,11 +240,19 @@ function GenericForm({ name, setName, desc, setDesc, setTags }) {
     ]);
 
     useEffect(() => {
-        if (name === '') setFilled(true);
-        if (filled) setNameInvalid(name === '');
-        if (desc === '') setFilledDesc(true);
-        if (filledDesc) setDescInvalid(desc === '');
-    }, [name, desc, filled, filledDesc]);
+        if (!hasInteractedName.current && name !== '') {
+            hasInteractedName.current = true;
+        }
+        if (!hasInteractedDesc.current && desc !== '') {
+            hasInteractedDesc.current = true;
+        }
+        if (hasInteractedName.current) {
+            setNameInvalid(name === '');
+        }
+        if (hasInteractedDesc.current) {
+            setDescInvalid(desc === '');
+        }
+    }, [name, desc]);
     return (
         <Pane>
             <TextInputField

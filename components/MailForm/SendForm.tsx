@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
     Pane,
@@ -29,7 +29,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [editorCore, seteditorCore] = useState({ preview: null });
     const [sender, setSender] = useState(user.name);
     const [senderInvalid, setSenderInvalid] = useState(false);
-    const [filled, setFilled] = useState(false);
+    const hasInteracted = useRef(false);
     const [body, setBody] = useState('');
     const [schedule, setSchedule] = useState('now');
     const [showConfirm, setShowConfirm] = useState(false);
@@ -39,10 +39,15 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
     };
 
     useEffect(() => {
-        if (header === '') setFilled(true);
-        if (filled) setHeaderInvalid(header === '');
+        if (!hasInteracted.current && header !== '') {
+            hasInteracted.current = true;
+        }
+
+        if (hasInteracted.current) {
+            setHeaderInvalid(header === '');
+        }
         setSenderInvalid(sender === '');
-    }, [header, sender, filled]);
+    }, [header, sender]);
 
     const MailForm = (
         <Pane>
