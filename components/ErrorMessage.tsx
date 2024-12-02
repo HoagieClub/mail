@@ -7,16 +7,11 @@ export default function ErrorMessage({
     text,
     width = '100%',
 }) {
-    return (text
-        && (
-            <Alert
-                intent="danger"
-                title={title}
-                marginY={20}
-                width={width}
-            >
-                { text }
+    return (
+        text && (
+            <Alert intent='danger' title={title} marginY={20} width={width}>
+                {text}
             </Alert>
         )
-    )
+    );
 }

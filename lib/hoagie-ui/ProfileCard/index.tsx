@@ -1,6 +1,6 @@
 /**
  * @overview Profile card component for the HoagieMail app.
- * 
+ *
  * Copyright © 2021-2024 Hoagie Club and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -11,17 +11,27 @@
  */
 
 import { UserProfile } from '@auth0/nextjs-auth0/client';
-import { majorScale, Button, Heading, Card, Avatar, useTheme, Text } from 'evergreen-ui';
+import {
+    majorScale,
+    Button,
+    Heading,
+    Card,
+    Avatar,
+    useTheme,
+    Text,
+} from 'evergreen-ui';
 
 /**
-* ProfileCard is a profile card meant for display of user information
-*  throughout different Hoagie applications.
-*/
+ * ProfileCard is a profile card meant for display of user information
+ *  throughout different Hoagie applications.
+ */
 function ProfileCard({ user }: { user: UserProfile }) {
     const theme = useTheme();
     const name = user?.name;
-    const email = user?.email || (user?.sub?.includes('@') ? user.sub.split('|').pop() : 'N/A');
-    
+    const email =
+        user?.email ||
+        (user?.sub?.includes('@') ? user.sub.split('|').pop() : 'N/A');
+
     return (
         <Card
             elevation={1}
@@ -33,7 +43,11 @@ function ProfileCard({ user }: { user: UserProfile }) {
             flexDirection='column'
             alignItems='center'
         >
-            <Avatar name={name} backgroundColor={theme.colors.blue100} size={40} />
+            <Avatar
+                name={name}
+                backgroundColor={theme.colors.blue100}
+                size={40}
+            />
             <Heading size={500} marginTop={majorScale(1)}>
                 {name}
             </Heading>

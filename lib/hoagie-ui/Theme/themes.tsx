@@ -1,6 +1,6 @@
-import { defaultTheme } from 'evergreen-ui'
+import { defaultTheme } from 'evergreen-ui';
 
-import Tab from '@/lib/hoagie-ui/Theme/Tab'
+import Tab from '@/lib/hoagie-ui/Theme/Tab';
 
 const defTheme = defaultTheme;
 
@@ -8,7 +8,7 @@ export const hoagieUI = {
     ...defTheme,
     title: 'blue',
     colors: {
-    // ...defTheme.colors,
+        // ...defTheme.colors,
         gray900: '#000000',
         gray800: '#343434',
         gray700: '#808080',
@@ -167,7 +167,8 @@ export const hoagieUI = {
         focusRing: '0 0 0 2px #D6E0FF',
     },
     fontFamilies: {
-        display: '"Inter", "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI",Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+        display:
+            '"Inter", "SF UI Display", -apple-system, BlinkMacSystemFont, "Segoe UI",Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         ui: '"Inter", "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
         mono: '"JetBrains Mono", "SF Mono", "Monaco", "Inconsolata", "Fira Mono", "Droid Sans Mono", "Source Code Pro", monospace',
     },
@@ -193,9 +194,9 @@ export const hoagieUI = {
     components: {
         ...defTheme.components,
         Tab,
-    // Button,
+        // Button,
     },
-}
+};
 
 export const hoagiePurple = {
     ...hoagieUI,
@@ -266,7 +267,7 @@ export const hoagiePurple = {
         4: '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
         focusRing: '0 0 0 2px #E9DDFE',
     },
-}
+};
 
 export const hoagieOrange = {
     ...hoagieUI,
@@ -337,4 +338,4 @@ export const hoagieOrange = {
         4: '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
         focusRing: '0 0 0 2px #FFE3C6',
     },
-}
+};

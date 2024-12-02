@@ -8,9 +8,9 @@ import { useRouter } from 'next/navigation';
 import MailForm from '@/components/MailForm';
 
 export default withPageAuthRequired(() => {
-    const router = useRouter()
-    const [errorMessage, setErrorMessage] = useState('')
-    const [success, setSuccess] = useState(false)
+    const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState('');
+    const [success, setSuccess] = useState(false);
     const sendMail = async (mailData) => {
         const response = await fetch('/api/hoagie/mail/send', {
             body: JSON.stringify(mailData),
@@ -26,18 +26,18 @@ export default withPageAuthRequired(() => {
         } else {
             setSuccess(true);
         }
-    }
+    };
     useEffect(() => {
-        const queryParams = new URLSearchParams(location.search)
+        const queryParams = new URLSearchParams(location.search);
 
         if (queryParams.has('code')) {
-            queryParams.delete('code')
-            queryParams.delete('state')
+            queryParams.delete('code');
+            queryParams.delete('state');
             // TODO: add support for other params to persist using
             // queryParam.toString() or remove the queryParams method
-            router.replace('/app')
+            router.replace('/app');
         }
-    }, [])
+    }, []);
     return (
         <MailForm
             success={success}

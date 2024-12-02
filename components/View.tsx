@@ -1,6 +1,6 @@
 /**
  * @overview Simple styling component to ensure the layout is consistent.
- * 
+ *
  * Copyright © 2021-2024 Hoagie Club and affiliates.
  *
  * This source code is licensed under the MIT license found in the
@@ -18,26 +18,26 @@ import { Pane } from 'evergreen-ui';
 export default function View({ children }: { children: ReactNode }) {
     return (
         <Pane
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            marginX="8px"
-            paddingBottom="24px"
-            paddingTop="64px"
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+            marginX='8px'
+            paddingBottom='24px'
+            paddingTop='64px'
         >
             <Pane
                 borderRadius={8}
-                textAlign="left"
+                textAlign='left'
                 elevation={1}
-                background="white"
-                marginX="18px"
-                maxWidth="600px"
-                width="100%"
-                paddingX="32px"
-                paddingTop="8px"
-                paddingBottom="24px"
+                background='white'
+                marginX='18px'
+                maxWidth='600px'
+                width='100%'
+                paddingX='32px'
+                paddingTop='8px'
+                paddingBottom='24px'
             >
-                { children }
+                {children}
             </Pane>
         </Pane>
     );

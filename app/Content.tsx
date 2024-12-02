@@ -8,7 +8,11 @@ import Layout from '@/lib/hoagie-ui/Layout';
 import Nav from '@/lib/hoagie-ui/Nav';
 import Theme from '@/lib/hoagie-ui/Theme';
 
-export default function Content({ children }: { children: ReactNode }): React.JSX.Element {
+export default function Content({
+    children,
+}: {
+    children: ReactNode;
+}): React.JSX.Element {
     const tabs = [
         { title: 'Send Mail', href: '/app' },
         { title: 'Scheduled Emails', href: '/scheduled' },
@@ -18,9 +22,9 @@ export default function Content({ children }: { children: ReactNode }): React.JS
     const user = useUser();
 
     return (
-        <Theme palette="orange">
+        <Theme palette='orange'>
             <Layout>
-                <Nav name="mail" tabs={tabs} user={user?.user} />
+                <Nav name='mail' tabs={tabs} user={user?.user} />
                 {children}
             </Layout>
         </Theme>

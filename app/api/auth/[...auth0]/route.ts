@@ -33,7 +33,7 @@ export const GET = handleAuth({
                 },
                 returnTo: '/app',
             });
-        } catch (error:any) {
+        } catch (error: any) {
             res.status(error.status || 400).end(error.message);
         }
     },

@@ -55,7 +55,14 @@ export type Nav = {
  * Nav is a navbar meant for internal navigations throughout
  * different Hoagie applications.
  */
-function Nav({ name, LogoComponent, HeaderComponent, tabs = [], user, beta = false }: Nav) {
+function Nav({
+    name,
+    LogoComponent,
+    HeaderComponent,
+    tabs = [],
+    user,
+    beta = false,
+}: Nav) {
     const theme = useTheme();
     const router = useRouter();
     const pathname = usePathname();
@@ -66,7 +73,11 @@ function Nav({ name, LogoComponent, HeaderComponent, tabs = [], user, beta = fal
             {HeaderComponent ? (
                 <HeaderComponent />
             ) : (
-                <Pane width='100%' height={20} background={theme.colors.blue500} />
+                <Pane
+                    width='100%'
+                    height={20}
+                    background={theme.colors.blue500}
+                />
             )}
             <Pane
                 display='flex'
@@ -91,14 +102,28 @@ function Nav({ name, LogoComponent, HeaderComponent, tabs = [], user, beta = fal
                                 <LogoComponent />
                             ) : (
                                 <Pane>
-                                    <Text is='h2' display='inline-block' className='hoagie logo' color={theme.colors.gray900}>
+                                    <Text
+                                        is='h2'
+                                        display='inline-block'
+                                        className='hoagie logo'
+                                        color={theme.colors.gray900}
+                                    >
                                         hoagie
                                     </Text>
-                                    <Text is='h2' display='inline-block' className='hoagie logo' color={theme.colors.blue500}>
+                                    <Text
+                                        is='h2'
+                                        display='inline-block'
+                                        className='hoagie logo'
+                                        color={theme.colors.blue500}
+                                    >
                                         {name}
                                     </Text>
                                     {beta && (
-                                        <Text className='hoagie beta' position='absolute' color={theme.colors.gray900}>
+                                        <Text
+                                            className='hoagie beta'
+                                            position='absolute'
+                                            color={theme.colors.gray900}
+                                        >
                                             (BETA)
                                         </Text>
                                     )}
@@ -122,11 +147,14 @@ function Nav({ name, LogoComponent, HeaderComponent, tabs = [], user, beta = fal
                             ))}
                         </TabNavigation>
                         {user && (
-                            <Popover content={<ProfileCard user={user} />} position={Position.BOTTOM}>
+                            <Popover
+                                content={<ProfileCard user={user} />}
+                                position={Position.BOTTOM}
+                            >
                                 <Avatar
                                     name={username}
-                                    style={{ 
-                                        cursor: 'pointer', 
+                                    style={{
+                                        cursor: 'pointer',
                                         border: `2px solid ${theme.colors.blueTint}`,
                                     }}
                                     backgroundColor={theme.colors.blue100}

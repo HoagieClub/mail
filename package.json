@@ -1,39 +1,40 @@
 {
-  "name": "hoagie-mail",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start -p $PORT",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "prettier": "prettier --check ."
-  },
-  "dependencies": {
-    "@auth0/nextjs-auth0": "^3.5.0",
-    "dompurify": "^3.2.1",
-    "evergreen-ui": "^7.1.9",
-    "next": "14.2.15",
-    "next-pwa": "^5.6.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "suneditor": "^2.47.0",
-    "suneditor-react": "^3.6.1",
-    "swr": "^2.2.5"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.12",
-    "eslint": "^9.16.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.3",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "globals": "^15.12.0",
-    "prettier": "^3.4.1",
-    "typescript": "^5.7.2",
-    "typescript-eslint": "^8.16.0"
-  }
+    "name": "hoagie-mail",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start -p $PORT",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix .",
+        "prettier": "prettier --check .",
+        "prettier:fix": "prettier --write ."
+    },
+    "dependencies": {
+        "@auth0/nextjs-auth0": "^3.5.0",
+        "dompurify": "^3.2.1",
+        "evergreen-ui": "^7.1.9",
+        "next": "14.2.15",
+        "next-pwa": "^5.6.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "suneditor": "^2.47.0",
+        "suneditor-react": "^3.6.1",
+        "swr": "^2.2.5"
+    },
+    "devDependencies": {
+        "@types/react": "^18.3.12",
+        "eslint": "^9.16.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-import-resolver-typescript": "^3.6.3",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-react": "^7.37.2",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "globals": "^15.12.0",
+        "prettier": "^3.4.1",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.16.0"
+    }
 }
