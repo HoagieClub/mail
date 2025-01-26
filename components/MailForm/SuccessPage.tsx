@@ -20,7 +20,7 @@ export default function SuccessPage({
             { !digest && schedule === 'now' && (
                 <>
                     <Pane>
-                        Your email has been sent to all undergraduate students
+                        Your email has been sent to all students
                         and will be in your inbox shortly!
                         We ask that you do not send any additional emails
                         <b> for the next few days</b> to avoid spam.
@@ -42,7 +42,7 @@ export default function SuccessPage({
                 <>
                     <Pane>
                         Your email has been successfully scheduled! It
-                        will be sent to all undergraduate students on
+                        will be sent to all students on
                         {` ${formatDateString(schedule)}`}. You can modify
                         the scheduled time or delete the email on the
                         Scheduled Emails page.
