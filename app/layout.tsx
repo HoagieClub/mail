@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 
 import { UserProvider } from '@auth0/nextjs-auth0/client';
 import { Metadata } from 'next';
+import { hoagie } from "./hoagie";
 
 import Content from '@/app/Content';
 
@@ -15,6 +16,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang='en'>
+            <head>
+            <script
+                dangerouslySetInnerHTML={{
+                    __html: `(${hoagie.toString()})();`,
+                }}
+                />
+            </head>
             <UserProvider>
                 <body>
                     <Content>{children}</Content>
