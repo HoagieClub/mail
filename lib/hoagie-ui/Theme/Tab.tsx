@@ -1,6 +1,6 @@
-import { defaultTheme } from 'evergreen-ui'
+import { defaultTheme } from 'evergreen-ui';
 
-const defTheme:any = defaultTheme
+const defTheme: any = defaultTheme;
 
 const Tab = {
     ...defTheme.components.Tab,
@@ -11,6 +11,6 @@ const Tab = {
             fontSize: '14px',
         },
     },
-}
+};
 
 export default Tab;
