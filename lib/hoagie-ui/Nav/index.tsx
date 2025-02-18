@@ -155,7 +155,6 @@ function Nav({
                                     name={username}
                                     style={{
                                         cursor: 'pointer',
-                                        border: `2px solid ${theme.colors.blueTint}`,
                                     }}
                                     backgroundColor={theme.colors.blue100}
                                     size={40}
