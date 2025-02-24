@@ -161,8 +161,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                     alignItems='center'
                 >
                     <InfoSignIcon marginRight={10} />
-                    You are about to send an email to all undergraduates at
-                    Princeton.
+                    You are about to send an email to everyone at Princeton.
                 </Pane>
                 <Text>
                     Once you click <b>Send Email</b>, Hoagie will send the email

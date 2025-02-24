@@ -35,9 +35,9 @@ export default function SuccessPage({ digest = false, schedule = 'now' }) {
             {!digest && schedule === 'now' && (
                 <>
                     <Pane>
-                        Your email has been sent to all undergraduate students
-                        and will be in your inbox shortly! We ask that you do
-                        not send any additional emails
+                        Your email has been sent to all students
+                        and will be in your inbox shortly!
+                        We ask that you do not send any additional emails
                         <b> for the next few days</b> to avoid spam.
                         <br /> <br />
                         Thank you for using Hoagie Mail! If you would like to
@@ -60,11 +60,11 @@ export default function SuccessPage({ digest = false, schedule = 'now' }) {
             {!digest && schedule !== 'now' && (
                 <>
                     <Pane>
-                        Your email has been successfully scheduled! It will be
-                        sent to all undergraduate students on
-                        {` ${formatDateString(schedule)}`}. You can modify the
-                        scheduled time or delete the email on the Scheduled
-                        Emails page.
+                        Your email has been successfully scheduled! It
+                        will be sent to all students on
+                        {` ${formatDateString(schedule)}`}. You can modify
+                        the scheduled time or delete the email on the
+                        Scheduled Emails page.
                         <br /> <br />
                         Thank you for using Hoagie Mail! If you would like to
                         give feedback or are interested in our future projects,
