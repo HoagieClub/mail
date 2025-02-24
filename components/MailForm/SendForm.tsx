@@ -148,7 +148,7 @@ export default function Mail({
                     alignItems="center"
                 >
                     <InfoSignIcon marginRight={10} />
-                    You are about to send an email to all at Princeton.
+                    You are about to send an email to everyone at Princeton.
                 </Pane>
                 <Text>
                     Once you click <b>Send Email</b>, Hoagie will send the email to
