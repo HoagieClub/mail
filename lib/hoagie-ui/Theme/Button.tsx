@@ -1,6 +1,6 @@
-import { defaultTheme } from 'evergreen-ui'
+import { defaultTheme } from 'evergreen-ui';
 
-const defTheme:any = defaultTheme
+const defTheme: any = defaultTheme;
 
 const Button = {
     ...defTheme.components.Button,
@@ -40,6 +40,6 @@ const Button = {
             },
         },
     },
-}
+};
 
 export default Button;

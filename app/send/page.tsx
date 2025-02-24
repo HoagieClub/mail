@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
-import router from 'next/router';
-import { withMockablePageAuthRequired } from '../mock/User';
-import MailForm from '../components/MailForm';
+'use client';
 
-export default withMockablePageAuthRequired(() => {
-    const [errorMessage, setErrorMessage] = useState('')
-    const [success, setSuccess] = useState(false)
+import { useEffect, useState } from 'react';
+
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useRouter } from 'next/navigation';
+
+import MailForm from '@/components/MailForm';
+
+export default withPageAuthRequired(() => {
+    const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState('');
+    const [success, setSuccess] = useState(false);
     const sendMail = async (mailData) => {
         const response = await fetch('/api/hoagie/mail/send', {
             body: JSON.stringify(mailData),
@@ -21,19 +26,18 @@ export default withMockablePageAuthRequired(() => {
         } else {
             setSuccess(true);
         }
-    }
+    };
     useEffect(() => {
-        // eslint-disable-next-line no-restricted-globals
-        const queryParams = new URLSearchParams(location.search)
+        const queryParams = new URLSearchParams(location.search);
 
         if (queryParams.has('code')) {
-            queryParams.delete('code')
-            queryParams.delete('state')
+            queryParams.delete('code');
+            queryParams.delete('state');
             // TODO: add support for other params to persist using
             // queryParam.toString() or remove the queryParams method
-            router.replace('/app', undefined, { shallow: true })
+            router.replace('/app');
         }
-    }, [])
+    }, []);
     return (
         <MailForm
             success={success}
