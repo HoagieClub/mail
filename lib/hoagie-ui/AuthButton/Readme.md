@@ -1,8 +1,11 @@
 Default AuthButton
+
 ```js
-<AuthButton href="#" />
+<AuthButton href='#' />
 ```
+
 Logout AuthButton
+
 ```js
-<AuthButton variant="logout" href="#" />
+<AuthButton variant='logout' href='#' />
 ```
