@@ -204,7 +204,7 @@ export default function Mail({ onSend, onTestSend, onError, errorMessage, succes
                     });
                     setShowTestConfirm(false);
                 }}
-                onCloseComplete={() => setShowConfirm(false)}
+                onCloseComplete={() => setShowTestConfirm(false)}
                 confirmLabel="Send Test Email"
                 intent="warning"
             >
