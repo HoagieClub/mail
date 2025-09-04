@@ -6,6 +6,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useRouter } from 'next/navigation';
 
 import MailForm from '@/components/MailForm';
+import { toaster } from 'evergreen-ui';
 
 export default withPageAuthRequired(() => {
     const router = useRouter();
@@ -23,24 +24,10 @@ export default withPageAuthRequired(() => {
             setTimeout(() => {
                 window.scrollTo(0, 0);
             }, 50);
-        } else {
+        } else if (mailData.schedule != 'test') {
             setSuccess(true);
-        }
-    };
-    const sendTestMail = async (mailData) => {
-        const response = await fetch('/api/hoagie/mail/sendTestMail', {
-            body: JSON.stringify(mailData),
-            method: 'POST',
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            setErrorMessage(`There was an issue with your email. ${errorText}`);
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 50);
         } else {
-            setSuccess(true);
+            toaster.success('Test email sent! Check your inbox.');
         }
     };
     useEffect(() => {
@@ -59,7 +46,6 @@ export default withPageAuthRequired(() => {
             success={success}
             onError={setErrorMessage}
             onSend={sendMail}
-            onTestSend={sendTestMail}
             errorMessage={errorMessage}
             isDigest={false}
         />

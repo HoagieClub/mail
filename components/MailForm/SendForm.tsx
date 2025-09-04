@@ -24,7 +24,7 @@ organization if you have permission to do so. Your full name will be included in
 footer of the email regardless of your sender name.`;
 
 
-export default function Mail({ onSend, onTestSend, onError, errorMessage, success, user }) {
+export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [header, setHeader] = useState('');
     const [headerInvalid, setHeaderInvalid] = useState(false);
     const [editorCore, seteditorCore] = useState({ preview: null });
@@ -130,18 +130,6 @@ export default function Mail({ onSend, onTestSend, onError, errorMessage, succes
                 >
                     Send Test Email
                 </Button>
-                <Button
-                    disabled={!editorCore.preview}
-                    onClick={() => {
-                        editorCore.preview();
-                    }}
-                    size='large'
-                    appearance='default'
-                    float='right'
-                    marginRight='8px'
-                >
-                    See Preview
-                </Button>
                 <Link href='/app'>
                     <Button size='large' float='left'>
                         Back
@@ -199,8 +187,11 @@ export default function Mail({ onSend, onTestSend, onError, errorMessage, succes
                 hasHeader={false}
                 hasClose={false}
                 onConfirm={async () => {
-                    await onTestSend({
-                        sender, header, body, schedule,
+                    await onSend({
+                        sender,
+                        header,
+                        body,
+                        'schedule': 'test',
                     });
                     setShowTestConfirm(false);
                 }}
@@ -215,15 +206,15 @@ export default function Mail({ onSend, onTestSend, onError, errorMessage, succes
                     alignItems="center"
                 >
                     <InfoSignIcon marginRight={10} />
-                    You are about to send a test email to yourself.
+                    You are about to send a test email to yourself
                 </Pane>
                 <Text>
-                    Once you click <b>Send Email</b>, Hoagie will send the email to
-                    <b> your princeton email address </b>
+                    You can send a test email to yourself to ensure that the text, images,
+                    and other formatting appear as you intend.
+                    Once you click <b>Send Test Email</b>, Hoagie will send the email to
+                    <b> your Princeton email</b>.
                 </Text>
-                
             </Dialog>
-
         </Pane>
     );
     return success ? <SuccessPage schedule={schedule} /> : MailForm;

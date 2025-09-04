@@ -8,7 +8,6 @@ import View from '@/components/View';
 export default function MailForm({
     onSend,
     onError,
-    onTestSend,
     errorMessage,
     success,
     isDigest,
@@ -35,7 +34,6 @@ export default function MailForm({
                 <SendForm
                     user={user}
                     onSend={onSend}
-                    onTestSend={onTestSend}
                     onError={onError}
                     errorMessage={errorMessage}
                     success={success}
