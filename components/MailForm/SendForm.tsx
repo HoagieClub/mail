@@ -26,17 +26,12 @@ footer of the email regardless of your sender name.`;
 export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [header, setHeader] = useState('');
     const [headerInvalid, setHeaderInvalid] = useState(false);
-    const [editorCore, seteditorCore] = useState({ preview: null });
     const [sender, setSender] = useState(user.name);
     const [senderInvalid, setSenderInvalid] = useState(false);
     const hasInteracted = useRef(false);
     const [body, setBody] = useState('');
     const [schedule, setSchedule] = useState('now');
     const [showConfirm, setShowConfirm] = useState(false);
-
-    const getEditor = (sunEditor) => {
-        seteditorCore(sunEditor.core);
-    };
 
     useEffect(() => {
         if (!hasInteracted.current && header !== '') {
@@ -105,7 +100,6 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 onError={onError}
                 label='Body Content'
                 required
-                getEditor={getEditor}
                 placeholder='Hello there!'
                 description={`
         This is the content of your email. `}
@@ -118,18 +112,6 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                     float='right'
                 >
                     Send Email
-                </Button>
-                <Button
-                    disabled={!editorCore.preview}
-                    onClick={() => {
-                        editorCore.preview();
-                    }}
-                    size='large'
-                    appearance='default'
-                    float='right'
-                    marginRight='8px'
-                >
-                    See Preview
                 </Button>
                 <Link href='/app'>
                     <Button size='large' float='left'>
@@ -161,8 +143,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                     alignItems='center'
                 >
                     <InfoSignIcon marginRight={10} />
-                    You are about to send an email to all undergraduates at
-                    Princeton.
+                    You are about to send an email to everyone at Princeton.
                 </Pane>
                 <Text>
                     Once you click <b>Send Email</b>, Hoagie will send the email
