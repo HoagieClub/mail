@@ -35,7 +35,7 @@ export default withPageAuthRequired(() => {
             // queryParam.toString() or remove the queryParams method
             router.replace('/app');
         }
-    }, []);
+    }, [router]);
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
@@ -112,13 +112,16 @@ export default withPageAuthRequired(() => {
     );
     const SelectForm = (
         <Pane marginBottom={majorScale(4)}>
-            <Heading
-                size={900}
-                marginTop={majorScale(2)}
-                marginBottom={majorScale(1)}
-            >
-                Hi, {user.name}
-            </Heading>
+            {user &&
+                <Heading
+                    size={900}
+                    marginTop={majorScale(2)}
+                    marginBottom={majorScale(1)}
+                >
+                    Hi, {user.name}
+                </Heading>
+            }
+
             <Text size={500}> Would you like to send an email about...</Text>
 
             <RadioGroup

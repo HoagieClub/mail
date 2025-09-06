@@ -73,7 +73,7 @@ export default withPageAuthRequired(() => {
             // queryParam.toString() or remove the queryParams method
             router.replace('/app');
         }
-    }, []);
+    }, [router]);
 
     if (!data) {
         return (

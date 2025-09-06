@@ -1,8 +1,8 @@
 import { FormField, Alert } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
-import { ButtonListItem } from 'suneditor/src/options';
-import SetOptions from 'suneditor-react/src/types/SetOptions';
+import SunEditorCore from "suneditor/src/lib/core";
+import { ButtonListItem, SunEditorOptions } from 'suneditor/src/options';
 
 const SunEditor = dynamic(() => import('suneditor-react'), {
     ssr: false,
@@ -17,16 +17,27 @@ interface ImageResult {
 }
 
 /* eslint-disable */
+interface RichTextEditorProps {
+    onError: (error: string) => void;
+    onChange: (content: string) => void;
+    label: string;
+    placeholder?: string;
+    description?: string;
+    getEditor?: (sunEditor: SunEditorCore) => void;
+    required?: boolean;
+    isDisabled?: boolean;
+}
+
 export default function RichTextEditor({
     onError,
     onChange,
     label,
     placeholder,
     description,
-    getEditor = (editor) => {},
+    getEditor,
     required = false,
     isDisabled = false,
-}) {
+}: RichTextEditorProps) {
     // Upload Image to Image Server such as AWS S3, Cloudinary, Cloud Storage, etc..
     const saveToServer = async (file: File) => {
         const body = new FormData();
@@ -76,7 +87,7 @@ export default function RichTextEditor({
         ['fullScreen'],
         ['preview'],
     ];
-    const options: SetOptions = {
+    const options: SunEditorOptions = {
         buttonList,
         imageWidth: '500px',
         showPathLabel: false,
