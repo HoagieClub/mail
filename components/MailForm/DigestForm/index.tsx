@@ -35,9 +35,7 @@ export default function DigestForm({
     const [name, setName] = useState('');
     const [link, setLink] = useState('');
     const queryParams = useSearchParams();
-    const category = queryParams.has('type')
-        ? queryParams.get('type')
-        : 'bulletin';
+    const category = queryParams.get('type') ?? 'bulletin';
 
     const categoryDefaults = {
         sale: [],

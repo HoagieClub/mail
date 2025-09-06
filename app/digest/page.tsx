@@ -70,7 +70,7 @@ export default function Digest() {
             // queryParam.toString() or remove the queryParams method
             router.replace('/app');
         }
-    }, []);
+    }, [router]);
 
     // TODO: Handle error properly.
     if (!data) {

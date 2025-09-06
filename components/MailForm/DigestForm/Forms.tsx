@@ -201,6 +201,7 @@ function SaleForm({ desc, setDesc, link, setLink, setTags }) {
             />
             {salesCategories.map((category) => (
                 <Checkbox
+                    key={category}
                     label={category}
                     checked={categories[category]}
                     onChange={(e) => {

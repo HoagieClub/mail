@@ -54,7 +54,7 @@ export default function Index() {
             // queryParam.toString() or remove the queryParams method
             router.replace('/');
         }
-    }, []);
+    }, [router]);
     return (
         <Pane
             display='flex'

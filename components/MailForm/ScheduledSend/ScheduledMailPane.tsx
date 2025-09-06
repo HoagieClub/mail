@@ -122,8 +122,9 @@ export default function ScheduledMailPane({
 }) {
     return (
         <Pane>
-            {scheduledMail.map((listing) => (
+            {scheduledMail.map((listing, i) => (
                 <ScheduledMailListing
+                    key={i}
                     listing={listing}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
