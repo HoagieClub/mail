@@ -1,41 +1,49 @@
-import {
-    Button, Pane, Text, Paragraph, Dialog, InfoSignIcon,
-} from 'evergreen-ui';
 import { useState } from 'react';
-import DOMPurify from 'dompurify';
-import formatDateString from './formatDateString'
-import ScheduleSelectField from './ScheduleSelectField';
 
-function ScheduledMailListing({
-    listing, onDelete, onUpdate,
-}) {
-    const [showConfirm, setShowConfirm] = useState(false)
-    const [bodyShown, setBodyShown] = useState(false)
-    const mailBody = DOMPurify.sanitize(listing.body)
+import DOMPurify from 'dompurify';
+import {
+    Button,
+    Pane,
+    Text,
+    Paragraph,
+    Dialog,
+    InfoSignIcon,
+} from 'evergreen-ui';
+
+import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString';
+import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
+
+function ScheduledMailListing({ listing, onDelete, onUpdate }) {
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [bodyShown, setBodyShown] = useState(false);
+    const mailBody = DOMPurify.sanitize(listing.body);
 
     return (
         <Pane
             marginTop={20}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            border="default"
+            display='flex'
+            alignItems='center'
+            justifyContent='center'
+            border='default'
         >
-            <Pane margin={20} marginBottom={-2} width="100%">
-                <Button
-                    float="right"
-                    onClick={() => setBodyShown(!bodyShown)}
-                >
+            <Pane margin={20} marginBottom={-2} width='100%'>
+                <Button float='right' onClick={() => setBodyShown(!bodyShown)}>
                     {bodyShown ? 'Hide Email Body' : 'View Email Body'}
                 </Button>
-                <Text><b>Header:</b> { listing.header }</Text>
+                <Text>
+                    <b>Header:</b> {listing.header}
+                </Text>
                 <br />
-                <Text><b>Sender:</b> { listing.sender }</Text>
+                <Text>
+                    <b>Sender:</b> {listing.sender}
+                </Text>
                 <br />
                 {bodyShown && (
-                    <Pane height="auto" overflow="auto">
-                        <Text><b>Body:</b></Text>
-                        <Pane margin={20} width="100%">
+                    <Pane height='auto' overflow='auto'>
+                        <Text>
+                            <b>Body:</b>
+                        </Text>
+                        <Pane margin={20} width='100%'>
                             <Paragraph
                                 size={300}
                                 dangerouslySetInnerHTML={{ __html: mailBody }}
@@ -44,7 +52,8 @@ function ScheduledMailListing({
                     </Pane>
                 )}
                 <Text>
-                    <b>Created time:</b> {` ${formatDateString(listing.createdAt, true)}`}
+                    <b>Created time:</b>
+                    {` ${formatDateString(listing.createdAt, true)}`}
                 </Text>
                 <br />
                 <Text>
@@ -56,18 +65,18 @@ function ScheduledMailListing({
                         onUpdate({
                             schedule: listing.schedule,
                             newSchedule: e.target.value,
-                        })
+                        });
                     }}
                     schedule={listing.schedule}
-                    float="left"
-                    marginTop="5px"
-                    display="flex"
+                    float='left'
+                    marginTop='5px'
+                    display='flex'
                 />
                 <Button
                     onClick={() => setShowConfirm(true)}
-                    size="large"
-                    appearance="primary"
-                    float="right"
+                    size='large'
+                    appearance='primary'
+                    float='right'
                 >
                     Delete
                 </Button>
@@ -79,19 +88,19 @@ function ScheduledMailListing({
                         await onDelete({
                             schedule: listing.schedule,
                             newSchedule: null,
-                        })
-                        setShowConfirm(false)
+                        });
+                        setShowConfirm(false);
                     }}
                     onCloseComplete={() => setShowConfirm(false)}
-                    confirmLabel="I understand"
-                    intent="warning"
+                    confirmLabel='I understand'
+                    intent='warning'
                 >
                     <Pane
                         marginTop={35}
                         marginBottom={20}
-                        fontFamily="Nunito"
-                        display="flex"
-                        alignItems="center"
+                        fontFamily='Nunito'
+                        display='flex'
+                        alignItems='center'
                     >
                         <InfoSignIcon marginRight={10} />
                         Are you sure you want to delete your email scheduled for
@@ -103,22 +112,24 @@ function ScheduledMailListing({
                 </Dialog>
             </Pane>
         </Pane>
-    )
+    );
 }
 
 export default function ScheduledMailPane({
-    scheduledMail, onDelete, onUpdate,
+    scheduledMail,
+    onDelete,
+    onUpdate,
 }) {
     return (
-        <Pane>{
-            scheduledMail.map((listing) => (
+        <Pane>
+            {scheduledMail.map((listing, i) => (
                 <ScheduledMailListing
+                    key={i}
                     listing={listing}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
                 />
-            ))
-        }
+            ))}
         </Pane>
-    )
+    );
 }
