@@ -13,14 +13,14 @@ export default function ScheduleSelectField({
     schedule,
     ...selectOptions
 }) {
-    const [optionTags, setOptionTags] = useState([]);
+    const [optionTags, setOptionTags] = useState<React.ReactElement[]>([]);
 
     // Generate dates and times for scheduled send based on user's time
     useEffect(() => {
         const hours = [8, 13, 18]; // 8am, 1pm, 6pm
         const daysToGenerate = 4;
 
-        const dates = [];
+        const dates: { date: Date; dateLabel: string }[] = [];
         const todayEST = new Date(
             new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
         );

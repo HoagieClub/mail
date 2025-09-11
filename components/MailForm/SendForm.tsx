@@ -27,7 +27,6 @@ footer of the email regardless of your sender name.`;
 export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [header, setHeader] = useState('');
     const [headerInvalid, setHeaderInvalid] = useState(false);
-    const [editorCore, seteditorCore] = useState({ preview: null });
     const [sender, setSender] = useState(user.name);
     const [senderInvalid, setSenderInvalid] = useState(false);
     const hasInteracted = useRef(false);
@@ -35,10 +34,6 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [schedule, setSchedule] = useState('now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false)
-
-    const getEditor = (sunEditor) => {
-        seteditorCore(sunEditor.core);
-    };
 
     useEffect(() => {
         if (!hasInteracted.current && header !== '') {
@@ -107,7 +102,6 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 onError={onError}
                 label='Body Content'
                 required
-                getEditor={getEditor}
                 placeholder='Hello there!'
                 description={`
         This is the content of your email. `}
