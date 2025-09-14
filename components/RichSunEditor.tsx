@@ -1,4 +1,4 @@
-import { FormField, Alert } from 'evergreen-ui';
+import { FormField } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
 import SunEditorCore from "suneditor/src/lib/core";
@@ -16,7 +16,6 @@ interface ImageResult {
     };
 }
 
-/* eslint-disable */
 interface RichTextEditorProps {
     onError: (error: string) => void;
     onChange: (content: string) => void;
@@ -64,14 +63,13 @@ export default function RichTextEditor({
         return `Hoagie Mail is having trouble uploading your image: ${image.data.error}`;
     };
 
-    const onImageUploadBefore = (files, info, uploadHandler) => {
-        console.log(info, uploadHandler);
+    const onImageUploadBefore = (files, uploadHandler) => {
         saveToServer(files[0]).then((res) => {
             uploadHandler(res);
         });
         return undefined;
     };
-    const onImageUploadError = (errorMessage, result) => {
+    const onImageUploadError = (errorMessage) => {
         onError(errorMessage);
         return false;
     };
@@ -85,7 +83,6 @@ export default function RichTextEditor({
         ['align', 'list', 'lineHeight'],
         ['link', 'image', 'video'],
         ['fullScreen'],
-        ['preview'],
     ];
     const options: SunEditorOptions = {
         buttonList,
@@ -103,32 +100,6 @@ export default function RichTextEditor({
             description={description}
             marginBottom='24px'
         >
-            <Alert marginBottom='20px'>
-                <b>Guide to Email Formatting:</b>
-                <div>
-                    To make sure your email formatting does not get messed up:
-                    <ol>
-                        <li>
-                            <b>Do not copy-paste images</b> and minimize
-                            copy-pasting text. Copy-pasted images are unlikely
-                            to appear in the actual email. Use the Image icon in
-                            the editor to manually upload your images.
-                        </li>
-                        <li>
-                            <b>Resize images to be at most 600px width</b> and
-                            check the Preview before submitting. That being
-                            said, the preview can be misleading with regards to
-                            scale and images shown.
-                            <br />
-                            <br />
-                            We recommend making posters around 400px to 600px in
-                            width and logos 50px to 200px.
-                        </li>
-                    </ol>
-                    We are working on ways to make this more seamless, thank you
-                    for bearing with us in the meantime.
-                </div>
-            </Alert>
             <SunEditor
                 setOptions={options}
                 onChange={onChange}
@@ -142,4 +113,3 @@ export default function RichTextEditor({
         </FormField>
     );
 }
-/* eslint-enable */
