@@ -63,7 +63,7 @@ export default function RichTextEditor({
         return `Hoagie Mail is having trouble uploading your image: ${image.data.error}`;
     };
 
-    const onImageUploadBefore = (files, uploadHandler) => {
+    const onImageUploadBefore = (files, info, uploadHandler) => {
         saveToServer(files[0]).then((res) => {
             uploadHandler(res);
         });
