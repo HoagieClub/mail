@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { toaster } from 'evergreen-ui';
 import { useRouter } from 'next/navigation';
 
 import MailForm from '@/components/MailForm';
@@ -23,8 +24,10 @@ export default withPageAuthRequired(() => {
             setTimeout(() => {
                 window.scrollTo(0, 0);
             }, 50);
-        } else {
+        } else if (mailData.schedule !== 'test') {
             setSuccess(true);
+        } else {
+            toaster.success('Test email sent! Check your inbox.');
         }
     };
     useEffect(() => {

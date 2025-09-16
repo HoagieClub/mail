@@ -42,7 +42,7 @@ export default function SuccessPage({ digest = false, schedule = 'now' }) {
                         <br /> <br />
                         Thank you for using Hoagie Mail! If you would like to
                         give feedback or are interested in our future projects,
-                        feel free to contact us through
+                        feel free to contact us through {' '}
                         <b>
                             <a href='mailto:hoagie@princeton.edu'>
                                 hoagie@princeton.edu
@@ -68,7 +68,7 @@ export default function SuccessPage({ digest = false, schedule = 'now' }) {
                         <br /> <br />
                         Thank you for using Hoagie Mail! If you would like to
                         give feedback or are interested in our future projects,
-                        feel free to contact us through
+                        feel free to contact us through {' '}
                         <b>
                             <a href='mailto:hoagie@princeton.edu'>
                                 hoagie@princeton.edu
@@ -95,7 +95,7 @@ export default function SuccessPage({ digest = false, schedule = 'now' }) {
                         <br /> <br />
                         Thank you for using Hoagie Mail! If you would like to
                         give feedback or are interested in our future projects,
-                        feel free to contact us through
+                        feel free to contact us through {' '}
                         <b>
                             <a href='mailto:hoagie@princeton.edu'>
                                 hoagie@princeton.edu
