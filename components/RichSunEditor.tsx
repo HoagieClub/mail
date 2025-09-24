@@ -1,7 +1,7 @@
 import { FormField } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
-import SunEditorCore from "suneditor/src/lib/core";
+import SunEditorCore from 'suneditor/src/lib/core';
 import { ButtonListItem, SunEditorOptions } from 'suneditor/src/options';
 
 const SunEditor = dynamic(() => import('suneditor-react'), {

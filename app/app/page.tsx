@@ -112,7 +112,7 @@ export default withPageAuthRequired(() => {
     );
     const SelectForm = (
         <Pane marginBottom={majorScale(4)}>
-            {user &&
+            {user && (
                 <Heading
                     size={900}
                     marginTop={majorScale(2)}
@@ -120,7 +120,7 @@ export default withPageAuthRequired(() => {
                 >
                     Hi, {user.name}
                 </Heading>
-            }
+            )}
 
             <Text size={500}> Would you like to send an email about...</Text>
 
