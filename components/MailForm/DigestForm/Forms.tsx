@@ -39,7 +39,7 @@ function LostAndFoundForm({
         const res = await fetch('https://api.imgur.com/3/image', {
             method: 'POST',
             headers: {
-                Authorization: 'Client-ID 197e34bb1737a08',
+                Authorization: `Client-ID ${process.env.NEXT_PUBLIC_IMGUR_API_ID}`,
             },
             body,
         });
