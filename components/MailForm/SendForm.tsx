@@ -23,7 +23,6 @@ You can either keep it as your name or use the name of your club, department, or
 organization if you have permission to do so. Your full name will be included in the
 footer of the email regardless of your sender name.`;
 
-
 export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [header, setHeader] = useState('');
     const [headerInvalid, setHeaderInvalid] = useState(false);
@@ -33,7 +32,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [body, setBody] = useState('');
     const [schedule, setSchedule] = useState('now');
     const [showConfirm, setShowConfirm] = useState(false);
-    const [showTestConfirm, setShowTestConfirm] = useState(false)
+    const [showTestConfirm, setShowTestConfirm] = useState(false);
 
     useEffect(() => {
         if (!hasInteracted.current && header !== '') {
@@ -117,10 +116,10 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 </Button>
                 <Button
                     onClick={() => setShowTestConfirm(true)}
-                    size="large"
-                    appearance="secondary"
-                    float="right"
-                    marginRight="8px"
+                    size='large'
+                    appearance='secondary'
+                    float='right'
+                    marginRight='8px'
                 >
                     Send Test Email
                 </Button>
@@ -185,27 +184,28 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                         sender,
                         header,
                         body,
-                        'schedule': 'test',
+                        schedule: 'test',
                     });
                     setShowTestConfirm(false);
                 }}
                 onCloseComplete={() => setShowTestConfirm(false)}
-                confirmLabel="Send Test Email"
-                intent="warning"
+                confirmLabel='Send Test Email'
+                intent='warning'
             >
                 <Pane
                     marginTop={35}
                     marginBottom={20}
-                    display="flex"
-                    alignItems="center"
+                    display='flex'
+                    alignItems='center'
                 >
                     <InfoSignIcon marginRight={10} />
                     You are about to send a test email to yourself
                 </Pane>
                 <Text>
-                    You can send a test email to yourself to ensure that the text, images,
-                    and other formatting appear as you intend.
-                    Once you click <b>Send Test Email</b>, Hoagie will send the email to
+                    You can send a test email to yourself to ensure that the
+                    text, images, and other formatting appear as you intend.
+                    Once you click <b>Send Test Email</b>, Hoagie will send the
+                    email to
                     <b> your Princeton email</b>.
                 </Text>
             </Dialog>

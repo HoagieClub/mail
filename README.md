@@ -1,8 +1,7 @@
 # Hoagie Mail
 
-This is the repository for Hoagie Mail, a web app that sends 
+This is the repository for Hoagie Mail, a web app that sends
 emails to undergraduate and graduate listservs. It supports authentication using JWT tokens through the Hoagie and CAS system.
-
 
 ## Local Development
 
