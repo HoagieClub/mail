@@ -26,8 +26,9 @@ export default withPageAuthRequired(() => {
             method: 'DELETE',
         });
         if (!response.ok) {
-            const errorText = await response.text();
-            setErrorMessage(errorText);
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
+            setErrorMessage(`There was an issue with your scheduled email: ${errorText}`);
             setLoading(false);
             setTimeout(() => {
                 window.scrollTo(0, 0);
@@ -48,7 +49,9 @@ export default withPageAuthRequired(() => {
             method: 'POST',
         });
         if (!response.ok) {
-            const errorText = await response.text();
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
+            setErrorMessage(`There was an issue with your scheduled email: ${errorText}`);
             setErrorMessage(errorText);
             setLoading(false);
             setTimeout(() => {
