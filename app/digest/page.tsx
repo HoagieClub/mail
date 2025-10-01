@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { Spinner } from 'evergreen-ui';
 import { useRouter } from 'next/navigation';
 import useSWR, { useSWRConfig } from 'swr';
@@ -9,8 +10,8 @@ import useSWR, { useSWRConfig } from 'swr';
 import ErrorMessage from '@/components/ErrorMessage';
 import MailForm from '@/components/MailForm';
 import View from '@/components/View';
-
-export default function Digest() {
+ 
+export default  withPageAuthRequired(() => {
     const { mutate } = useSWRConfig();
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
@@ -103,4 +104,4 @@ export default function Digest() {
             onDelete={deleteDigest}
         />
     );
-}
+});
