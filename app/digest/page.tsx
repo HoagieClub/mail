@@ -46,9 +46,9 @@ export default function Digest() {
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            setErrorMessage(`There was an issue while performing the deletion. 
-            ${errorText}`);
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
+            setErrorMessage(`There was an issue while performing the deletion: ${errorText}`);
             setLoading(false);
             setTimeout(() => {
                 window.scrollTo(0, 0);
