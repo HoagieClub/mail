@@ -28,7 +28,9 @@ export default withPageAuthRequired(() => {
         if (!response.ok) {
             const errorJson = await response.json();
             const errorText = errorJson.error || 'Unknown error';
-            setErrorMessage(`There was an issue with your scheduled email: ${errorText}`);
+            setErrorMessage(
+                `There was an issue with your scheduled email: ${errorText}`
+            );
             setLoading(false);
             setTimeout(() => {
                 window.scrollTo(0, 0);
@@ -51,7 +53,9 @@ export default withPageAuthRequired(() => {
         if (!response.ok) {
             const errorJson = await response.json();
             const errorText = errorJson.error || 'Unknown error';
-            setErrorMessage(`There was an issue with your scheduled email: ${errorText}`);
+            setErrorMessage(
+                `There was an issue with your scheduled email: ${errorText}`
+            );
             setLoading(false);
             setTimeout(() => {
                 window.scrollTo(0, 0);
