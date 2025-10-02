@@ -26,7 +26,8 @@ export default withPageAuthRequired(() => {
             method: 'DELETE',
         });
         if (!response.ok) {
-            const errorText = await response.text();
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
             setErrorMessage(errorText);
             setLoading(false);
             setTimeout(() => {
@@ -48,7 +49,8 @@ export default withPageAuthRequired(() => {
             method: 'POST',
         });
         if (!response.ok) {
-            const errorText = await response.text();
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
             setErrorMessage(errorText);
             setLoading(false);
             setTimeout(() => {

@@ -26,8 +26,11 @@ export default function Digest() {
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            setErrorMessage(`There was an issue with your email. ${errorText}`);
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
+            setErrorMessage(
+                `There was an issue with your digest: ${errorText}`
+            );
             setTimeout(() => {
                 window.scrollTo(0, 0);
             }, 50);
@@ -45,9 +48,11 @@ export default function Digest() {
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            setErrorMessage(`There was an issue while performing the deletion. 
-            ${errorText}`);
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
+            setErrorMessage(
+                `There was an issue while performing the deletion. ${errorText}`
+            );
             setLoading(false);
             setTimeout(() => {
                 window.scrollTo(0, 0);
