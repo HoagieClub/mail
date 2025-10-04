@@ -14,7 +14,6 @@ import {
     Button,
 } from 'evergreen-ui';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import AuthButton from '@/lib/hoagie-ui/AuthButton';
 
@@ -43,18 +42,6 @@ export default function Index() {
         );
     } else Profile = <AuthButton />;
 
-    const router = useRouter();
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-
-        if (queryParams.has('code')) {
-            queryParams.delete('code');
-            queryParams.delete('state');
-            // TODO: add support for other params to persist using
-            // queryParam.toString() or remove the queryParams method
-            router.replace('/');
-        }
-    }, [router]);
     return (
         <Pane
             display='flex'
