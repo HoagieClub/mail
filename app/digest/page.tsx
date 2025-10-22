@@ -10,8 +10,8 @@ import useSWR, { useSWRConfig } from 'swr';
 import ErrorMessage from '@/components/ErrorMessage';
 import MailForm from '@/components/MailForm';
 import View from '@/components/View';
- 
-export default  withPageAuthRequired(() => {
+
+export default withPageAuthRequired(() => {
     const { mutate } = useSWRConfig();
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
