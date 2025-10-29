@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { toaster } from 'evergreen-ui';
@@ -8,7 +8,6 @@ import { toaster } from 'evergreen-ui';
 import MailForm from '@/components/MailForm';
 
 export default withPageAuthRequired(() => {
-    const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const sendMail = async (mailData) => {

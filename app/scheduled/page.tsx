@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { Spinner } from 'evergreen-ui';

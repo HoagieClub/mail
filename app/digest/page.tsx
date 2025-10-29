@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Spinner } from 'evergreen-ui';
 import useSWR, { useSWRConfig } from 'swr';
@@ -14,7 +14,6 @@ export default function Digest() {
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
     const fetcher = (url: string) => fetch(url).then((r) => r.json());
     const { data, error } = useSWR('/api/hoagie/stuff/user', fetcher);
 

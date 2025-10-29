@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import {
@@ -19,7 +19,6 @@ import View from '@/components/View';
 
 export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
-    const router = useRouter();
     if (isLoading) {
         return <Spinner />;
     }
