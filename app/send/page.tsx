@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import LinearProgress from '@mui/material/LinearProgress';
 import { toaster } from 'evergreen-ui';
 
 import MailForm from '@/components/MailForm';
@@ -10,7 +11,9 @@ import MailForm from '@/components/MailForm';
 export default withPageAuthRequired(() => {
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
     const sendMail = async (mailData) => {
+        setLoading(true);
         const response = await fetch('/api/hoagie/mail/send', {
             body: JSON.stringify(mailData),
             method: 'POST',
@@ -27,6 +30,9 @@ export default withPageAuthRequired(() => {
             setSuccess(true);
         } else {
             toaster.success('Test email sent! Check your inbox.');
+        }
+        finally {
+            setLoading(false);
         }
     };
 
