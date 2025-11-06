@@ -10,6 +10,7 @@
  * and/or sell copies of the software. This software is provided "as-is", without warranty of any kind.
  */
 
+import nextPlugin from '@next/eslint-plugin-next';
 import tsEslintPlugin from '@typescript-eslint/eslint-plugin';
 import tsEslintParser from '@typescript-eslint/parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
@@ -44,12 +45,15 @@ export default [
             '@typescript-eslint': tsEslintPlugin,
             import: importPlugin,
             'react-hooks': reactHooksEslint,
+            '@next/next': nextPlugin,
         },
         rules: {
-            ...tsEslint.configs.recommended.rules,
+            ...tsEslint.configs.recommendedTypeChecked.rules,
             ...reactEslint.configs.recommended.rules,
             ...reactHooksEslint.configs.recommended.rules,
             ...importPlugin.flatConfigs.recommended.rules,
+            ...nextPlugin.configs.recommended.rules,
+            ...nextPlugin.configs['core-web-vitals'].rules,
             'import/order': [
                 'error',
                 {

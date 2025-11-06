@@ -1,6 +1,7 @@
+import { NextConfig } from 'next';
 import withPWA from 'next-pwa';
 
-const nextConfig = {
+const nextConfig: NextConfig = {
     reactStrictMode: true,
     ...withPWA({
         dest: 'public',
@@ -9,7 +10,12 @@ const nextConfig = {
     }),
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     images: {
-        domains: ['github.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'github.com',
+            }
+        ]
     },
 };
 
