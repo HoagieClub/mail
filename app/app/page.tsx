@@ -126,7 +126,7 @@ export default function App() {
             <Text size={500}> Would you like to send an email about...</Text>
 
             <RadioGroup
-                name="email-category"
+                name='email-category'
                 size={16}
                 value={optionValue}
                 options={options}
