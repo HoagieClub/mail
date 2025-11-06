@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { toaster } from 'evergreen-ui';
 import { useRouter } from 'next/navigation';
 
 import MailForm from '@/components/MailForm';
 
-export default withPageAuthRequired(() => {
+export default function Send() {
     const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
@@ -50,4 +49,4 @@ export default withPageAuthRequired(() => {
             isDigest={false}
         />
     );
-});
+}

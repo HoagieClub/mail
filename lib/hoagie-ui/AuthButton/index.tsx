@@ -37,7 +37,7 @@ function AuthButton({ variant = 'login', href = '' }: AuthButtonProps) {
         </h2>
     );
     const isLogout = variant === 'logout';
-    const defHref = isLogout ? '/api/auth/logout' : '/api/auth/login';
+    const defHref = isLogout ? '/auth/logout' : '/auth/login';
 
     return (
         <a href={href === '' ? defHref : href}>

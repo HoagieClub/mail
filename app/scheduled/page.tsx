@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { Spinner } from 'evergreen-ui';
 import { useRouter } from 'next/navigation';
 import useSWR, { useSWRConfig } from 'swr';
@@ -11,7 +10,7 @@ import ErrorMessage from '@/components/ErrorMessage';
 import ScheduledMailForm from '@/components/MailForm/ScheduledSend/ScheduledMailForm';
 import View from '@/components/View';
 
-export default withPageAuthRequired(() => {
+export default function Scheduled() {
     const router = useRouter();
     const { mutate } = useSWRConfig();
     const [errorMessage, setErrorMessage] = useState('');
@@ -105,4 +104,4 @@ export default withPageAuthRequired(() => {
             />
         </View>
     );
-});
+}
