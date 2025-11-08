@@ -1,0 +1,32 @@
+# ===============================
+# Project Metadata
+# ===============================
+
+[project]
+name = "hoagie-mail"
+version = "0.1.0"
+description = "Dependency manager for Hoagie Mail"
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.12"
+
+authors = [
+    { name = "Hoagie Club", email = "hoagie@princeton.edu" },
+]
+
+maintainers = [
+    { name = "Hoagie Club", email = "hoagie@princeton.edu" },
+]
+
+# Project dependencies
+dependencies = [
+    "django>=5.1",
+    "djangorestframework>=3.15.2",
+]
+
+# ===============================
+# Project URLs
+# ===============================
+[project.urls]
+Homepage = "https://mail.hoagie.io/"
+Repository = "https://github.com/hoagieclub/mail/"
