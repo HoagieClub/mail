@@ -17,6 +17,7 @@ import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 import SuccessPage from '@/components/MailForm/SuccessPage';
 import RichTextEditor from '@/components/RichSunEditor';
+import QuillJSEditor from '../QuillJSEditor';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
@@ -96,7 +97,12 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
             />
-            <RichTextEditor
+            <QuillJSEditor
+                label='Body Content'
+                description='This is the content of your email.'
+                onHTMLChange={(content) => {console.log(content); setBody(content);}}
+            />
+            {/* <RichTextEditor
                 onChange={(content) => setBody(content)}
                 onError={onError}
                 label='Body Content'
@@ -104,7 +110,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 placeholder='Hello there!'
                 description={`
         This is the content of your email. `}
-            />
+            /> */}
             <Pane>
                 <Button
                     onClick={() => setShowConfirm(true)}
