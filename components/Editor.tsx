@@ -1,7 +1,7 @@
 import Quill, { Delta } from 'quill';
 import Toolbar from 'quill/modules/toolbar';
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
-import ImageResize from 'quill-image-resize-module';
+import ImageResize from 'quill-image-resize-module-react';
 
 Quill.register('modules/imageResize', ImageResize);
 
