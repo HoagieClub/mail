@@ -1,21 +1,81 @@
 .controls {
-  display: flex;
-  border: 1px solid #ccc;
-  border-top: 0;
-  padding: 10px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-top: 0;
+    padding: 10px;
 }
 
+/* p {
+    font-size: 14px;
+} */
+
 .controls-right {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 .state {
-  margin: 10px 0;
-  font-family: monospace;
+    margin: 10px 0;
+    font-family: monospace;
 }
 
 .state-title {
-  color: #999;
-  text-transform: uppercase;
+    color: #999;
+    text-transform: uppercase;
 }
 
+/* Target Quill bullet lists */
+li[data-list='bullet'] {
+    list-style-type: disc !important;
+    counter-reset: none !important; /* remove numbering */
+}
+
+/* Optional: remove numbering styles if Quill adds ol styles */
+li[data-list='bullet']::before {
+    content: '' !important;
+}
+
+/* Show the data-value text automatically */
+.ql-snow .ql-picker.ql-size .ql-picker-item::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label::before {
+    content: attr(data-value);
+}
+
+/* Automatically show font name in toolbar dropdown */
+.ql-snow .ql-picker.ql-font .ql-picker-item::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+    content: attr(data-value);
+    font-family: attr(data-value);
+    text-transform: capitalize;
+}
+
+/* Actual font-family previews */
+.ql-snow .ql-picker.ql-font [data-value='arial']::before {
+    font-family: Arial, sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='helvetica']::before {
+    font-family: Helvetica, sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='times-new-roman']::before {
+    font-family: 'Times New Roman', serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='courier-new']::before {
+    font-family: 'Courier New', monospace;
+}
+.ql-snow .ql-picker.ql-font [data-value='georgia']::before {
+    font-family: Georgia, serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='verdana']::before {
+    font-family: Verdana, sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='roboto']::before {
+    font-family: 'Roboto', sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='open-sans']::before {
+    font-family: 'Open Sans', sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='lato']::before {
+    font-family: 'Lato', sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='montserrat']::before {
+    font-family: 'Montserrat', sans-serif;
+}
