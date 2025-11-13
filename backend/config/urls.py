@@ -18,15 +18,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from hoagiemail.api.send_mail_view import SendMailView
-from hoagiemail.api.scheduled_mail_view import ScheduledMailView
+from hoagiemail.api.mail_view import MailView
 from hoagiemail.api.stuff_posts_view import StuffPostsView
 from hoagiemail.api.stuff_user_view import StuffUserView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("mail/send", SendMailView.as_view(), name="send_mail"),
-    path("mail/scheduled/", ScheduledMailView.as_view(), name="scheduled_mail"),
+    # TODO: update to just one mail endpoint when officially migrating over
+    path("mail/send/", MailView.as_view(), name="send_mail"),
+    path("mail/scheduled/user/", MailView.as_view(), name="scheduled_mail"),
     path("stuff/", StuffPostsView.as_view(), name="stuff"),
     path("stuff/user/", StuffUserView.as_view(), name="stuff_user"),
 ]
