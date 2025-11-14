@@ -23,6 +23,7 @@ dependencies = [
     "django>=5.1",
     "djangorestframework>=3.15.2",
     "python-dotenv>=1.2.1",
+    "ruff>=0.14.5",
 ]
 
 # ===============================
@@ -31,3 +32,80 @@ dependencies = [
 [project.urls]
 Homepage = "https://mail.hoagie.io/"
 Repository = "https://github.com/hoagieclub/mail/"
+
+# ===============================
+# Ruff Configuration
+# ===============================
+
+# Adopting Google-style docstrings for consistency across the project.
+
+[tool.ruff]
+# Exclude commonly ignored directories from linting
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+# General Ruff settings
+line-length = 119 # Slight deviation from Google style since we are using Django.
+indent-width = 4
+target-version = "py312"
+
+# -------------------------------
+# Ruff Linting Rules
+# -------------------------------
+[tool.ruff.lint]
+
+# Enable pydocstyle rules for Google-style docstrings
+select = ["E4", "E7", "E9", "F", "B", "Q", "I"] # Flake8 rules, Bugbear, Quotes, etc.
+
+ignore = []
+
+# Define fixable and unfixable rules
+fixable = ["ALL"]
+unfixable = []
+
+# -------------------------------
+# Ruff Flake8-Quotes Settings
+# -------------------------------
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"  # Enforce double quotes for docstrings
+inline-quotes = "double"     # Enforce double quotes for inline strings
+
+# -------------------------------
+# Ruff Formatting Settings
+# -------------------------------
+[tool.ruff.format]
+quote-style = "double"                  # Use double quotes for auto-formatting
+indent-style = "tab"                    # Indent with tabs instead of spaces
+skip-magic-trailing-comma = false       # Respect magic trailing commas
+line-ending = "auto"                    # Automatically detect line endings
+
+# ===============================
+# Build System
+# ===============================
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["hoagiemail"]

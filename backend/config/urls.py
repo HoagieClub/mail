@@ -3,6 +3,7 @@ URL configuration for hoagiemail project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.2/topics/http/urls/
+
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -13,6 +14,7 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
 """
 
 from django.contrib import admin
@@ -23,10 +25,10 @@ from hoagiemail.api.stuff_posts_view import StuffPostsView
 from hoagiemail.api.stuff_user_view import StuffUserView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    # TODO: update to just one mail endpoint when officially migrating over
-    path("mail/send/", MailView.as_view(), name="send_mail"),
-    path("mail/scheduled/user/", MailView.as_view(), name="scheduled_mail"),
-    path("stuff/", StuffPostsView.as_view(), name="stuff"),
-    path("stuff/user/", StuffUserView.as_view(), name="stuff_user"),
+	path("admin/", admin.site.urls),
+	# TODO: update to just one mail endpoint when officially migrating over
+	path("mail/send/", MailView.as_view(), name="send_mail"),
+	path("mail/scheduled/user/", MailView.as_view(), name="scheduled_mail"),
+	path("stuff/", StuffPostsView.as_view(), name="stuff"),
+	path("stuff/user/", StuffUserView.as_view(), name="stuff_user"),
 ]
