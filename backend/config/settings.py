@@ -86,6 +86,19 @@ DATABASES = {
 	}
 }
 
+# Auth0 Configuration
+AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")  # Your Auth0 domain
+AUTH0_AUDIENCE = os.getenv("AUTH0_AUDIENCE")  # Your API audience (for JWT verification)
+AUTH0_ALGORITHMS = ["RS256"]
+
+REST_FRAMEWORK = {
+	"DEFAULT_AUTHENTICATION_CLASSES": [
+		"hoagiemail.api.auth.auth.Auth0JWTAuthentication",
+	],
+	"DEFAULT_PERMISSION_CLASSES": [
+		"rest_framework.permissions.IsAuthenticated",
+	],
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
