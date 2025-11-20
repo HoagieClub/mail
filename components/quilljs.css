@@ -5,10 +5,6 @@
     padding: 10px;
 }
 
-/* p {
-    font-size: 14px;
-} */
-
 .controls-right {
     margin-left: auto;
 }
@@ -25,13 +21,33 @@
 
 /* Target Quill bullet lists */
 li[data-list='bullet'] {
-    list-style-type: disc !important;
+    list-style-type: none !important;
     counter-reset: none !important; /* remove numbering */
 }
 
 /* Optional: remove numbering styles if Quill adds ol styles */
-li[data-list='bullet']::before {
-    content: '' !important;
+* li[data-list='bullet']::before {
+    content: '•' !important;
+}
+
+.ql-editor ol li:not(.ql-direction-rtl),
+.ql-editor ul li:not(.ql-direction-rtl) {
+    padding-left: 0;
+}
+
+/* Level 1 indent */
+.ql-editor li[data-indent='1'] {
+    margin-left: 3em;
+}
+
+/* Level 2 indent */
+.ql-editor li[data-indent='2'] {
+    margin-left: 4.5em;
+}
+
+/* Level 3 indent */
+.ql-editor li[data-indent='3'] {
+    margin-left: 6em;
 }
 
 /* Show the data-value text automatically */
@@ -78,4 +94,55 @@ li[data-list='bullet']::before {
 }
 .ql-snow .ql-picker.ql-font [data-value='montserrat']::before {
     font-family: 'Montserrat', sans-serif;
+}
+
+/* Remove Quill's default markers */
+.ql-editor ul,
+.ql-editor ol {
+    padding-left: 0;
+}
+.ql-editor li {
+    list-style: none !important;
+}
+
+/* Use scalable markers that inherit the li font-size */
+.ql-editor ul li::before {
+    content: '•';
+    font-size: inherit;
+    line-height: inherit;
+    display: inline-block;
+    width: 1em;
+    vertical-align: middle;
+}
+
+.ql-editor li:not(.ql-direction-rtl)::before {
+    margin-right: 6px;
+    margin-left: -0.1;
+}
+
+.ql-editor ol {
+    counter-reset: quill-counter;
+}
+.ql-editor ol li {
+    counter-increment: quill-counter;
+}
+.ql-editor ol li::before {
+    content: counter(quill-counter) '.';
+    font-size: inherit;
+    line-height: inherit;
+    display: inline-block;
+    width: 2em;
+    text-align: right;
+    margin-right: 0.4em;
+}
+
+.ql-container {
+    height: auto !important; /* allow content to dictate height */
+    overflow: hidden !important; /* remove scrollbars */
+}
+
+.ql-editor {
+    min-height: 200px; /* initial height */
+    max-height: none; /* no max height */
+    overflow: visible; /* let content grow */
 }

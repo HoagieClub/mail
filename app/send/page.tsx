@@ -7,6 +7,14 @@ import { toaster } from 'evergreen-ui';
 
 import MailForm from '@/components/MailForm';
 
+const clearLocalStorage = () => {
+    localStorage.removeItem('mailBodyDelta');
+    localStorage.removeItem('mailBody');
+    localStorage.removeItem('mailHeader');
+    localStorage.removeItem('mailSender');
+    localStorage.removeItem('mailSchedule');
+};
+
 export default withPageAuthRequired(() => {
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
@@ -25,8 +33,10 @@ export default withPageAuthRequired(() => {
             }, 50);
         } else if (mailData.schedule !== 'test') {
             setSuccess(true);
+            clearLocalStorage();
         } else {
             toaster.success('Test email sent! Check your inbox.');
+            clearLocalStorage();
         }
     };
 

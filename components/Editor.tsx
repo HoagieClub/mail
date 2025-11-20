@@ -6,6 +6,16 @@ import ImageResize from 'quill-image-resize-module-react';
 
 Quill.register('modules/imageResize', ImageResize);
 
+// Disable Quill's default formatting for new lines
+const SizeStyle = Quill.import('attributors/style/size') as any;
+const FontStyle = Quill.import('attributors/style/font') as any;
+
+SizeStyle.whitelist = null;
+FontStyle.whitelist = null;
+
+Quill.register(SizeStyle, true);
+Quill.register(FontStyle, true);
+
 interface ImageResult {
     success: boolean;
     data: {
@@ -44,8 +54,7 @@ const Editor = forwardRef<Quill, RichTextEditorProps>(
             '48px',
             '56px',
             '64px',
-            '80px',
-            '96px',
+            '72px',
         ];
 
         const fonts = [
@@ -70,19 +79,21 @@ const Editor = forwardRef<Quill, RichTextEditorProps>(
         Quill.register(FontAttributor, true);
 
         const toolbarOptions = [
-            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-            ['blockquote'],
+            [{ header: [1, 2, 3, false] }],
+            [{ size: fontSizeArr }], // custom dropdown
+            [{ font: fonts }],
+
             ['link', 'image'],
+            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+
+            ['blockquote'],
 
             [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
             [{ indent: '-1' }, { indent: '+1' }],
 
-            [{ size: fontSizeArr }], // custom dropdown
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
-            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-            [{ font: fonts }],
             [{ align: [] }],
 
             ['clean'], // remove formatting button
@@ -181,7 +192,67 @@ const Editor = forwardRef<Quill, RichTextEditorProps>(
                 };
             });
 
+            toolbar.addHandler('header', (value) => {
+                const range = quill.getSelection();
+                if (!range) return;
+
+                // Apply the new header format
+                quill.format('header', value);
+
+                // Remove all inline font-size styles inside the header element
+                const [line] = quill.getLine(range.index);
+                if (line && line.domNode) {
+                    // Get the root element (e.g., <h1>, <h2>)
+                    const headerEl = line.domNode.closest('h1, h2, h3');
+                    if (headerEl) {
+                        // Select *all* descendants with inline font-size, no matter the tag
+                        const elementsWithSize = headerEl.querySelectorAll(
+                            '[style*="font-size"]'
+                        );
+                        elementsWithSize.forEach((el: HTMLElement) => {
+                            el.style.removeProperty('font-size');
+                        });
+                    }
+                }
+            });
+
             quillRef.current = quill;
+
+            /** Copy computed font-size from the first child with inline size into the li so ::before inherits it */
+            function syncListItemFontSizes() {
+                const editor = quill.root;
+                const lis = editor.querySelectorAll('li');
+                lis.forEach((li) => {
+                    // find first descendant that contains an inline font-size style (Quill usually puts it on a span)
+                    const childWithSize = li.querySelector(
+                        '[style*="font-size"]'
+                    );
+                    if (childWithSize) {
+                        const fs = window.getComputedStyle(
+                            childWithSize as Element
+                        ).fontSize;
+                        // apply to the li so ::before inherits
+                        (li as HTMLElement).style.fontSize = fs;
+                    } else {
+                        // no inline size found — clear explicit font-size to fall back to normal
+                        (li as HTMLElement).style.removeProperty('font-size');
+                    }
+                });
+            }
+
+            // initial sync after setContents / HTML load
+            setTimeout(syncListItemFontSizes, 0);
+
+            // Keep in sync on user changes and selection change
+            quill.on(Quill.events.TEXT_CHANGE, (delta, oldDelta, source) => {
+                if (source === 'user' || source === 'api') {
+                    syncListItemFontSizes();
+                }
+            });
+
+            quill.on(Quill.events.SELECTION_CHANGE, () => {
+                syncListItemFontSizes();
+            });
 
             /* Load saved editor content from localStorage
             Saved in both HTML and Delta formats for flexibility (HTML for reloading then sending form
@@ -236,41 +307,49 @@ const Editor = forwardRef<Quill, RichTextEditorProps>(
                 if (formats.font) lastFont.current = formats.font;
             });
 
-            // Apply last selected font size and font family to newly typed text
+            // Apply last selected font to new text, AND carry it onto new lines
             quill.on(Quill.events.TEXT_CHANGE, (delta, oldDelta, source) => {
                 if (source !== 'user') return;
 
                 let index = 0;
+
                 delta.ops?.forEach((op) => {
-                    if (op.insert) {
-                        const length =
-                            typeof op.insert === 'string'
-                                ? op.insert.length
-                                : 1;
+                    if (typeof op.insert === 'string') {
+                        const text = op.insert;
 
-                        // Apply font size and font family
-                        quill.formatText(
-                            index,
-                            length,
-                            'size',
-                            lastFontSize,
-                            'silent'
-                        );
-                        quill.formatText(
-                            index,
-                            length,
-                            'font',
-                            lastFont,
-                            'silent'
-                        );
+                        // If user pressed ENTER
+                        if (text.includes('\n')) {
+                            // Copy previous line's formatting
+                            const prevFormats = quill.getFormat(index - 1);
 
-                        index += length;
-                    } else if (op.retain) {
-                        if (typeof op.retain === 'number') {
-                            index += op.retain;
+                            quill.formatLine(
+                                index, // position of newline
+                                1,
+                                {
+                                    size:
+                                        prevFormats.size ||
+                                        lastFontSize.current,
+                                    font: prevFormats.font || lastFont.current,
+                                },
+                                'silent'
+                            );
+                        } else {
+                            // Normal characters - apply last selected format
+                            quill.formatText(
+                                index,
+                                text.length,
+                                {
+                                    size: lastFontSize.current,
+                                    font: lastFont.current,
+                                },
+                                'silent'
+                            );
                         }
+
+                        index += text.length;
+                    } else if (typeof op.retain === 'number') {
+                        index += op.retain;
                     }
-                    // op.delete is ignored
                 });
             });
 
@@ -283,7 +362,7 @@ const Editor = forwardRef<Quill, RichTextEditorProps>(
         return (
             <div
                 ref={containerRef}
-                style={{ height: '200px', marginBottom: '8rem' }}
+                style={{ minHeight: '200px', marginBottom: '2rem' }}
             ></div>
         );
     }
