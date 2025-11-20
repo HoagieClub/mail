@@ -250,7 +250,7 @@ const Editor = forwardRef<Quill, RichTextEditorProps>(
                 }
             });
 
-            quill.on(Quill.events.SELECTION_CHANGE, () => {
+            quill.on(Quill.events.SELECTION_CHANGE, (range) => {
                 syncListItemFontSizes();
             });
 
