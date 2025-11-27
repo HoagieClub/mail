@@ -18,7 +18,7 @@ export async function proxy(request: NextRequest) {
     // Any route that gets to this point will be considered a protected route,
     // and require the user to be logged-in to be able to access it
     const { origin } = new URL(request.url);
-    const session = await auth0.getSession(); // TODO: Pass request to getSession when supported
+    const session = await auth0.getSession(request);
 
     // If the user does not have a session, redirect to login
     if (!session) {
