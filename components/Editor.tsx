@@ -8,6 +8,8 @@ import React, {
     MutableRefObject,
 } from 'react';
 
+import screenfull from 'screenfull';
+
 interface ImageResult {
     success: boolean;
     data: {
@@ -27,7 +29,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
         const containerRef = useRef<HTMLDivElement | null>(null);
         const quillRef = ref as MutableRefObject<any | null>;
 
-        const initialized = useRef(false); // 🔥 Prevents double Quill instance
+        const initialized = useRef(false); // Prevents double Quill instance
 
         const onTextChangeRef = useRef(onTextChange);
         const onSelectionChangeRef = useRef(onSelectionChange);
@@ -89,6 +91,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
             [{ align: [] }],
 
             ['clean'],
+            ['fullscreen'],
         ];
 
         const saveToServer = async (file: File) => {
@@ -171,6 +174,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                 quill = new Quill(editorEl, {
                     theme: 'snow',
+                    placeholder: 'Hello there!',
                     modules: {
                         toolbar: toolbarOptions,
                         imageResize: { modules: ['Resize', 'DisplaySize'] },
@@ -214,6 +218,30 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                         } catch {}
                     };
                 });
+
+                // Add the fullscreen button to the toolbar
+                const toolbarElement = document.querySelector('.ql-toolbar');
+                if (toolbarElement) {
+                    const fullscreenButton = document.querySelector(
+                        '.ql-fullscreen'
+                    ) as HTMLElement;
+                    fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24"><path d="M9.29,13.29,4,18.59V17a1,1,0,0,0-2,0v4a1,1,0,0,0,.08.38,1,1,0,0,0,.54.54A1,1,0,0,0,3,22H7a1,1,0,0,0,0-2H5.41l5.3-5.29a1,1,0,0,0-1.42-1.42ZM5.41,4H7A1,1,0,0,0,7,2H3a1,1,0,0,0-.38.08,1,1,0,0,0-.54.54A1,1,0,0,0,2,3V7A1,1,0,0,0,4,7V5.41l5.29,5.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM21,16a1,1,0,0,0-1,1v1.59l-5.29-5.3a1,1,0,0,0-1.42,1.42L18.59,20H17a1,1,0,0,0,0,2h4a1,1,0,0,0,.38-.08,1,1,0,0,0,.54-.54A1,1,0,0,0,22,21V17A1,1,0,0,0,21,16Zm.92-13.38a1,1,0,0,0-.54-.54A1,1,0,0,0,21,2H17a1,1,0,0,0,0,2h1.59l-5.3,5.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L20,5.41V7a1,1,0,0,0,2,0V3A1,1,0,0,0,21.92,2.62Z"/></svg>`;
+
+                    // Add event listener to fullscreen button
+                    fullscreenButton.addEventListener('click', () => {
+                        const editor = containerRef.current as any;
+                        if (screenfull.isFullscreen) {
+                            fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24"><path d="M9.29,13.29,4,18.59V17a1,1,0,0,0-2,0v4a1,1,0,0,0,.08.38,1,1,0,0,0,.54.54A1,1,0,0,0,3,22H7a1,1,0,0,0,0-2H5.41l5.3-5.29a1,1,0,0,0-1.42-1.42ZM5.41,4H7A1,1,0,0,0,7,2H3a1,1,0,0,0-.38.08,1,1,0,0,0-.54.54A1,1,0,0,0,2,3V7A1,1,0,0,0,4,7V5.41l5.29,5.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM21,16a1,1,0,0,0-1,1v1.59l-5.29-5.3a1,1,0,0,0-1.42,1.42L18.59,20H17a1,1,0,0,0,0,2h4a1,1,0,0,0,.38-.08,1,1,0,0,0,.54-.54A1,1,0,0,0,22,21V17A1,1,0,0,0,21,16Zm.92-13.38a1,1,0,0,0-.54-.54A1,1,0,0,0,21,2H17a1,1,0,0,0,0,2h1.59l-5.3,5.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L20,5.41V7a1,1,0,0,0,2,0V3A1,1,0,0,0,21.92,2.62Z"/></svg>`;
+
+                            screenfull.toggle(editor);
+                        } else {
+                            fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.29289 3.29289C3.68342 2.90237 4.31658 2.90237 4.70711 3.29289L8 6.58579V5C8 4.44772 8.44772 4 9 4C9.55228 4 10 4.44772 10 5V9C10 9.55228 9.55228 10 9 10H5C4.44772 10 4 9.55228 4 9C4 8.44772 4.44772 8 5 8H6.58579L3.29289 4.70711C2.90237 4.31658 2.90237 3.68342 3.29289 3.29289ZM19.2929 3.29289C19.6834 2.90237 20.3166 2.90237 20.7071 3.29289C21.0976 3.68342 21.0976 4.31658 20.7071 4.70711L17.4142 8H19C19.5523 8 20 8.44772 20 9C20 9.55228 19.5523 10 19 10H15C14.4477 10 14 9.55228 14 9V5C14 4.44772 14.4477 4 15 4C15.5523 4 16 4.44772 16 5V6.58579L19.2929 3.29289ZM4 15C4 14.4477 4.44772 14 5 14H9C9.55228 14 10 14.4477 10 15V19C10 19.5523 9.55228 20 9 20C8.44772 20 8 19.5523 8 19V17.4142L4.70711 20.7071C4.31658 21.0976 3.68342 21.0976 3.29289 20.7071C2.90237 20.3166 2.90237 19.6834 3.29289 19.2929L6.58579 16H5C4.44772 16 4 15.5523 4 15ZM14 15C14 14.4477 14.4477 14 15 14H19C19.5523 14 20 14.4477 20 15C20 15.5523 19.5523 16 19 16H17.4142L20.7071 19.2929C21.0976 19.6834 21.0976 20.3166 20.7071 20.7071C20.3166 21.0976 19.6834 21.0976 19.2929 20.7071L16 17.4142V19C16 19.5523 15.5523 20 15 20C14.4477 20 14 19.5523 14 19V15Z" fill="#000000"/>
+                            </svg>`;
+                            screenfull.toggle(editor); 
+                        }
+                    });
+                }
 
                 /** ----------------------------------------------
                  *  Sync <li> font sizes (for bullet indentation)

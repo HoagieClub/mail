@@ -136,13 +136,41 @@ li[data-list='bullet'] {
     margin-right: 0.4em;
 }
 
-.ql-container {
-    height: auto !important; /* allow content to dictate height */
-    overflow: hidden !important; /* remove scrollbars */
-}
-
 .ql-editor {
     min-height: 200px; /* initial height */
     max-height: none; /* no max height */
     overflow: visible; /* let content grow */
+}
+
+.ql-formats {
+    border-left: 1px solid #ccc;
+}
+
+.ql-toolbar .ql-formats:first-child,
+.ql-toolbar .ql-formats:nth-child(6) {
+    border-left: none !important;
+}
+
+.ql-header .ql-picker {
+    border-left: 0;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    margin: 0;
+}
+
+.ql-editor.ql-blank::before {
+    padding-top: 5px;
+}
+
+/* When the editor is in fullscreen mode */
+.ql-editor {
+    background-color: white;
+}
+
+/* Ensure toolbar stays in place */
+.ql-toolbar {
+    background-color: #fff;
 }
