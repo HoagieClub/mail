@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import {
@@ -14,28 +14,15 @@ import {
     Alert,
 } from 'evergreen-ui';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import View from '@/components/View';
 
 export default withPageAuthRequired(() => {
     const { user, isLoading } = useUser();
-    const router = useRouter();
     if (isLoading) {
         return <Spinner />;
     }
 
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-
-        if (queryParams.has('code')) {
-            queryParams.delete('code');
-            queryParams.delete('state');
-            // TODO: add support for other params to persist using
-            // queryParam.toString() or remove the queryParams method
-            router.replace('/app');
-        }
-    }, [router]);
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
