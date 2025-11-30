@@ -23,10 +23,14 @@ class Auth0JWTAuthentication(authentication.BaseAuthentication):
 
 			# Get or create user based on Auth0 sub (subject)
 			auth0_id = payload["sub"]
+			name = payload.get("https://hoagie.io/name", "")
+			
 			user, _ = User.objects.get_or_create(
 				username=auth0_id.split("|")[2].split("@")[0],
 				defaults={
 					"email": payload.get("https://hoagie.io/email", ""),
+					"first_name": name.split(" ")[0],
+					"last_name": name.split(" ")[-1],
 				},
 			)
 

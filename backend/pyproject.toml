@@ -20,8 +20,10 @@ maintainers = [
 
 # Project dependencies
 dependencies = [
+    "dj-database-url>=3.0.1",
     "django>=5.1",
     "djangorestframework>=3.15.2",
+    "postgres>=4.0",
     "pyjwt[crypto]>=2.10.1",
     "python-dotenv>=1.2.1",
     "requests>=2.32.0",
