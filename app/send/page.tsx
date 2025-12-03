@@ -1,14 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { toaster } from 'evergreen-ui';
-import { useRouter } from 'next/navigation';
 
 import MailForm from '@/components/MailForm';
 
 export default function Send() {
-    const router = useRouter();
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const sendMail = async (mailData) => {
@@ -18,7 +16,8 @@ export default function Send() {
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
+            const errorJson = await response.json();
+            const errorText = errorJson.error || 'Unknown error';
             setErrorMessage(`There was an issue with your email. ${errorText}`);
             setTimeout(() => {
                 window.scrollTo(0, 0);
@@ -29,17 +28,7 @@ export default function Send() {
             toaster.success('Test email sent! Check your inbox.');
         }
     };
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
 
-        if (queryParams.has('code')) {
-            queryParams.delete('code');
-            queryParams.delete('state');
-            // TODO: add support for other params to persist using
-            // queryParam.toString() or remove the queryParams method
-            router.replace('/app');
-        }
-    }, [router]);
     return (
         <MailForm
             success={success}
