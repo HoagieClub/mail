@@ -10,7 +10,7 @@
  * and/or sell copies of the software. This software is provided "as-is", without warranty of any kind.
  */
 
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@auth0/nextjs-auth0/types';
 import {
     majorScale,
     Button,
@@ -25,7 +25,7 @@ import {
  * ProfileCard is a profile card meant for display of user information
  *  throughout different Hoagie applications.
  */
-function ProfileCard({ user }: { user: UserProfile }) {
+function ProfileCard({ user }: { user: User }) {
     const theme = useTheme();
     const name = user?.name;
     const email =
@@ -54,7 +54,7 @@ function ProfileCard({ user }: { user: UserProfile }) {
             <Text color='muted' size={300} marginTop={2}>
                 {email}
             </Text>
-            <a href='/api/auth/logout'>
+            <a href='/auth/logout'>
                 <Button marginTop={16}>Log Out</Button>
             </a>
         </Card>

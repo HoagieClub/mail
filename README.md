@@ -5,6 +5,22 @@ emails to undergraduate and graduate listservs. It supports authentication using
 
 ## Local Development
 
+### Prerequisites
+
+Before you begin, ensure you have [Yarn](https://yarnpkg.com/) installed. You can install Yarn using corepack following [this guide](https://yarnpkg.com/getting-started/install):
+
+```bash
+npm install -g corepack
+```
+
+You can set your yarn version to the latest version with:
+
+```bash
+yarn set version stable
+```
+
+### Set Up
+
 1. First, clone the repository with the following. You will need to [setup GitHub SSH keys](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh) to successfully run this command.
 
 ```
