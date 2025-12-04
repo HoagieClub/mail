@@ -147,7 +147,8 @@ li[data-list='bullet'] {
 }
 
 .ql-toolbar .ql-formats:first-child,
-.ql-toolbar .ql-formats:nth-child(6) {
+.ql-toolbar .ql-formats:nth-child(6),
+.ql-toolbar .ql-formats:nth-child(13) {
     border-left: none !important;
 }
 
