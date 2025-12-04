@@ -78,7 +78,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
             [{ font: fonts }],
 
             ['link', 'image'],
-            [{ script: 'sub' }, { script: 'super' }],
+            ['undo', 'redo'],
 
             ['bold', 'italic', 'underline', 'strike'],
             [{ color: [] }, { background: [] }],
@@ -86,7 +86,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
             ['blockquote'],
 
             [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ indent: '-1' }, { indent: '+1' }],
+            [{ script: 'sub' }, { script: 'super' }],
 
             [{ align: [] }],
 
@@ -174,7 +174,8 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                 quill = new Quill(editorEl, {
                     theme: 'snow',
-                    placeholder: 'Hello there!',
+                    placeholder:
+                        'Compose your campus-wide announcement here — use the toolbar above to format your text.',
                     modules: {
                         toolbar: toolbarOptions,
                         imageResize: { modules: ['Resize', 'DisplaySize'] },
@@ -225,8 +226,24 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     const fullscreenButton = document.querySelector(
                         '.ql-fullscreen'
                     ) as HTMLElement;
-                    fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24"><path d="M9.29,13.29,4,18.59V17a1,1,0,0,0-2,0v4a1,1,0,0,0,.08.38,1,1,0,0,0,.54.54A1,1,0,0,0,3,22H7a1,1,0,0,0,0-2H5.41l5.3-5.29a1,1,0,0,0-1.42-1.42ZM5.41,4H7A1,1,0,0,0,7,2H3a1,1,0,0,0-.38.08,1,1,0,0,0-.54.54A1,1,0,0,0,2,3V7A1,1,0,0,0,4,7V5.41l5.29,5.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM21,16a1,1,0,0,0-1,1v1.59l-5.29-5.3a1,1,0,0,0-1.42,1.42L18.59,20H17a1,1,0,0,0,0,2h4a1,1,0,0,0,.38-.08,1,1,0,0,0,.54-.54A1,1,0,0,0,22,21V17A1,1,0,0,0,21,16Zm.92-13.38a1,1,0,0,0-.54-.54A1,1,0,0,0,21,2H17a1,1,0,0,0,0,2h1.59l-5.3,5.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L20,5.41V7a1,1,0,0,0,2,0V3A1,1,0,0,0,21.92,2.62Z"/></svg>`;
 
+                    const undoButton = document.querySelector(
+                        '.ql-undo'
+                    ) as HTMLElement;
+
+                    const redoButton = document.querySelector(
+                        '.ql-redo'
+                    ) as HTMLElement;
+
+                    fullscreenButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 24 24"><path d="M9.29,13.29,4,18.59V17a1,1,0,0,0-2,0v4a1,1,0,0,0,.08.38,1,1,0,0,0,.54.54A1,1,0,0,0,3,22H7a1,1,0,0,0,0-2H5.41l5.3-5.29a1,1,0,0,0-1.42-1.42ZM5.41,4H7A1,1,0,0,0,7,2H3a1,1,0,0,0-.38.08,1,1,0,0,0-.54.54A1,1,0,0,0,2,3V7A1,1,0,0,0,4,7V5.41l5.29,5.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42ZM21,16a1,1,0,0,0-1,1v1.59l-5.29-5.3a1,1,0,0,0-1.42,1.42L18.59,20H17a1,1,0,0,0,0,2h4a1,1,0,0,0,.38-.08,1,1,0,0,0,.54-.54A1,1,0,0,0,22,21V17A1,1,0,0,0,21,16Zm.92-13.38a1,1,0,0,0-.54-.54A1,1,0,0,0,21,2H17a1,1,0,0,0,0,2h1.59l-5.3,5.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L20,5.41V7a1,1,0,0,0,2,0V3A1,1,0,0,0,21.92,2.62Z"/></svg>`;
+                    undoButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" font-weight="bold" viewBox="-0.5 0 25 25" width="15" height"15" fill="none">
+<path d="M10 21.4199H15C16.8565 21.4199 18.637 20.6824 19.9497 19.3696C21.2625 18.0569 22 16.2764 22 14.4199C22 12.5634 21.2625 10.783 19.9497 9.47021C18.637 8.15746 16.8565 7.41992 15 7.41992H2" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6 11.4199L2 7.41992L6 3.41992" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+                    redoButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.5 0 25 25" width="15" height"15" fill="none">
+<path d="M14 21.4199H9C7.14348 21.4199 5.36302 20.6824 4.05026 19.3696C2.73751 18.0569 2 16.2764 2 14.4199C2 12.5634 2.73751 10.783 4.05026 9.47021C5.36302 8.15746 7.14348 7.41992 9 7.41992H22" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 11.4199L22 7.41992L18 3.41992" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
                     // Add event listener to fullscreen button
                     fullscreenButton.addEventListener('click', () => {
                         const editor = containerRef.current as any;
@@ -240,6 +257,14 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             </svg>`;
                             screenfull.toggle(editor);
                         }
+                    });
+
+                    undoButton.addEventListener('click', () => {
+                        quill.history.undo();
+                    });
+
+                    redoButton.addEventListener('click', () => {
+                        quill.history.redo();
                     });
                 }
 

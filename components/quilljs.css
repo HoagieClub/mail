@@ -168,6 +168,7 @@ li[data-list='bullet'] {
 /* When the editor is in fullscreen mode */
 .ql-editor {
     background-color: white;
+    overflow: auto;
 }
 
 /* Ensure toolbar stays in place */
