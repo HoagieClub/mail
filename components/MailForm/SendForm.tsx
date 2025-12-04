@@ -34,6 +34,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     const [schedule, setSchedule] = useLocalStorage('mailSchedule', 'now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
+    const [isSending, setIsSending] = useState(false);
 
     function useLocalStorage(key, initialValue) {
         const [storedValue, setStoredValue] = useState(() => {
@@ -150,13 +151,16 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 isShown={showConfirm}
                 hasHeader={false}
                 hasClose={false}
+                isConfirmLoading={isSending}
                 onConfirm={async () => {
+                    setIsSending(true);
                     await onSend({
                         sender,
                         header,
                         body,
                         schedule,
                     });
+                    setIsSending(false);
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}
@@ -196,13 +200,16 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 isShown={showTestConfirm}
                 hasHeader={false}
                 hasClose={false}
+                isConfirmLoading={isSending}
                 onConfirm={async () => {
+                    setIsSending(true);
                     await onSend({
                         sender,
                         header,
                         body,
                         schedule: 'test',
                     });
+                    setIsSending(false);
                     setShowTestConfirm(false);
                 }}
                 onCloseComplete={() => setShowTestConfirm(false)}

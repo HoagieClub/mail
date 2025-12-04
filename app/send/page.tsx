@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 
-import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { toaster } from 'evergreen-ui';
 
 import MailForm from '@/components/MailForm';
@@ -15,7 +14,7 @@ const clearLocalStorage = () => {
     localStorage.removeItem('mailSchedule');
 };
 
-export default withPageAuthRequired(() => {
+export default function Send() {
     const [errorMessage, setErrorMessage] = useState('');
     const [success, setSuccess] = useState(false);
     const sendMail = async (mailData) => {
@@ -48,4 +47,4 @@ export default withPageAuthRequired(() => {
             isDigest={false}
         />
     );
-});
+}

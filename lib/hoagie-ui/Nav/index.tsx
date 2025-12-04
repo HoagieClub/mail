@@ -14,7 +14,7 @@
 
 import { ComponentType } from 'react';
 
-import { UserProfile } from '@auth0/nextjs-auth0/client';
+import { User } from '@auth0/nextjs-auth0/types';
 import {
     majorScale,
     Pane,
@@ -45,7 +45,7 @@ export type Nav = {
     tabs?: Array<any>;
 
     // Authenticated user data.
-    user?: UserProfile;
+    user?: User;
 
     // A flag to show the "beta" development disclaimer on the hoagie app logo.
     beta?: boolean;
@@ -66,7 +66,6 @@ function Nav({
     const theme = useTheme();
     const router = useRouter();
     const pathname = usePathname();
-    const username = user?.name;
 
     return (
         <Pane elevation={1}>
@@ -152,7 +151,7 @@ function Nav({
                                 position={Position.BOTTOM}
                             >
                                 <Avatar
-                                    name={username}
+                                    name={user?.name}
                                     style={{
                                         cursor: 'pointer',
                                     }}

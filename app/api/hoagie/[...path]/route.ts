@@ -1,43 +1,40 @@
-import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
 import {
     NextRequest,
     RequestInit,
 } from 'next/dist/server/web/spec-extension/request';
 import { NextResponse } from 'next/server';
 
-type Params = { path: string[] };
+import { auth0 } from '@/lib/auth0';
 
-const handler = withApiAuthRequired(
-    async (request: NextRequest, { params }: { params: Params }) => {
-        const path = params.path.join('/');
+async function handler(
+    request: NextRequest,
+    { params }: { params: Promise<{ path: string[] }> }
+) {
+    const path = (await params).path.join('/');
 
-        const fetchReq: RequestInit = {
-            method: request.method,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        };
+    const fetchReq: RequestInit = {
+        method: request.method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
 
-        if (request.method !== 'GET') {
-            fetchReq.body = await request.text();
-        }
-
-        try {
-            const { accessToken } = await getAccessToken();
-            fetchReq.headers = {
-                ...fetchReq.headers,
-                Authorization: `Bearer ${accessToken}`,
-            };
-        } catch (error: any) {
-            return NextResponse.json({ error: error.message }, { status: 401 });
-        }
-
-        return await proxyRequest(
-            `${process.env.HOAGIE_API_URL}${path}`,
-            fetchReq
-        );
+    if (request.method !== 'GET') {
+        fetchReq.body = await request.text();
     }
-);
+
+    try {
+        const accessToken = await auth0.getAccessToken();
+        fetchReq.headers = {
+            ...fetchReq.headers,
+            Authorization: `Bearer ${accessToken.token}`,
+        };
+    } catch (error: any) {
+        return NextResponse.json({ error: error.message }, { status: 401 });
+    }
+
+    return await proxyRequest(`${process.env.HOAGIE_API_URL}${path}`, fetchReq);
+}
 
 async function proxyRequest(url: string, fetchReq: RequestInit) {
     try {
