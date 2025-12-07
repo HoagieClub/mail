@@ -2,7 +2,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-
 class MailView(APIView):
 	def post(self, request) -> Response:
 		# Logic to send mail
@@ -11,7 +10,7 @@ class MailView(APIView):
 	def get(self, request) -> Response:
 		# Logic to get scheduled mails
 		return Response(
-			{"status": "OK", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
+			{"status": "unused", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
 		)
 
 	def put(self, request) -> Response:
