@@ -1,3 +1,5 @@
+ # ruff: noqa 
+
 from mail import ScheduledEmail
-from stuff import Tag, StuffPost
+from stuff import StuffPost, Tag
 from user import User

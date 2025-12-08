@@ -1,8 +1,6 @@
-from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
-    name = models.CharField()
-    email = models.CharField(db_index=True)
 
+class User(AbstractUser):
     def __str__(self) -> str:
-        return self.name
+        return f"{self.get_full_name} ({self.username})"
