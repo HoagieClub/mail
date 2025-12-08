@@ -33,6 +33,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [schedule, setSchedule] = useState('now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
+    const [isSending, setIsSending] = useState(false);
 
     useEffect(() => {
         if (!hasInteracted.current && header !== '') {
@@ -133,13 +134,16 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 isShown={showConfirm}
                 hasHeader={false}
                 hasClose={false}
+                isConfirmLoading={isSending}
                 onConfirm={async () => {
+                    setIsSending(true);
                     await onSend({
                         sender,
                         header,
                         body,
                         schedule,
                     });
+                    setIsSending(false);
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}
@@ -179,13 +183,16 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 isShown={showTestConfirm}
                 hasHeader={false}
                 hasClose={false}
+                isConfirmLoading={isSending}
                 onConfirm={async () => {
+                    setIsSending(true);
                     await onSend({
                         sender,
                         header,
                         body,
                         schedule: 'test',
                     });
+                    setIsSending(false);
                     setShowTestConfirm(false);
                 }}
                 onCloseComplete={() => setShowTestConfirm(false)}
