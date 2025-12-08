@@ -82,6 +82,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
             </Pane>
             <ErrorMessage text={errorMessage} />
             <ScheduleSelectField
+                id='schedule-select-field'
                 label='Scheduled Time'
                 description='Send emails now or schedule them up to four days
                 in advance! Emails will be sent out in batches at 8am,
@@ -92,6 +93,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 handleScheduleChange={(e) => setSchedule(e.target.value)}
             />
             <TextInputField
+                id='email-header-input'
                 label='Email Header'
                 isInvalid={headerInvalid}
                 required
@@ -104,6 +106,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 onChange={(e) => setHeader(e.target.value)}
             />
             <TextInputField
+                id='sender-name-input'
                 label='Displayed Sender Name'
                 required
                 isInvalid={senderInvalid}

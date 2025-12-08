@@ -4,6 +4,13 @@ import { SelectField } from 'evergreen-ui';
 
 import formatDateString from '@/components/MailForm/ScheduledSend/formatDateString';
 
+// Helper function to get current date/time in EST
+const getESTDate = (date = new Date()) => {
+    return new Date(
+        date.toLocaleString('en-US', { timeZone: 'America/New_York' })
+    );
+};
+
 export default function ScheduleSelectField({
     label = '',
     description = '',
@@ -21,9 +28,8 @@ export default function ScheduleSelectField({
         const daysToGenerate = 4;
 
         const dates: { date: Date; dateLabel: string }[] = [];
-        const todayEST = new Date(
-            new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
-        );
+        const todayEST = getESTDate();
+
         for (let day = 0; day < daysToGenerate; day += 1) {
             hours.forEach((hour) => {
                 const newDate = new Date(todayEST);
@@ -37,23 +43,15 @@ export default function ScheduleSelectField({
         }
 
         // Only include options with dates > the current time
+        const estNow = getESTDate();
         const options = dates.filter((option) => {
-            const estNow = new Date(
-                new Date().toLocaleString('en-US', {
-                    timeZone: 'America/New_York',
-                })
-            );
             return option.date > estNow;
         });
 
         // Prepend the scheduled time to the front of options
         if (!includeNow) {
             const originalScheduleObj = {
-                date: new Date(
-                    new Date(schedule).toLocaleString('en-US', {
-                        timeZone: 'America/New_York',
-                    })
-                ),
+                date: getESTDate(new Date(schedule)),
                 dateLabel: formatDateString(schedule),
             };
             const optionLabels = options.map((option) => option.dateLabel);
@@ -98,6 +96,7 @@ export default function ScheduleSelectField({
 
     return (
         <SelectField
+            id='schedule-select-field'
             label={label}
             required={required}
             description={description}

@@ -177,7 +177,20 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     placeholder:
                         'Compose your campus-wide announcement here — use the toolbar above to format your text.',
                     modules: {
-                        toolbar: toolbarOptions,
+                        toolbar: {
+                            container: toolbarOptions,
+                            handlers: {
+                                undo: function () {
+                                    (this as any).quill.history.undo();
+                                },
+                                redo: function () {
+                                    (this as any).quill.history.redo();
+                                },
+                                fullscreen: function () {
+                                    // Handled by manual event listener below (needs to toggle icon and fullscreen state)
+                                },
+                            },
+                        },
                         imageResize: { modules: ['Resize', 'DisplaySize'] },
                     },
                 });
@@ -259,13 +272,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                         }
                     });
 
-                    undoButton.addEventListener('click', () => {
-                        quill.history.undo();
-                    });
-
-                    redoButton.addEventListener('click', () => {
-                        quill.history.redo();
-                    });
+                    // Undo/redo handlers are now registered in Quill config
                 }
 
                 /** ----------------------------------------------
