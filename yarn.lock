@@ -4076,7 +4076,7 @@ __metadata:
     globals: "npm:^16.4.0"
     katex: "npm:^0.16.25"
     minimatch: "npm:^10.1.1"
-    next: "npm:^16.0.1"
+    next: "npm:^16.0.7"
     next-pwa: "npm:^5.6.0"
     prettier: "npm:^3.6.2"
     quill: "npm:^2.0.3"
@@ -5141,7 +5141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:^16.0.1":
+"next@npm:^16.0.7":
   version: 16.0.7
   resolution: "next@npm:16.0.7"
   dependencies:
