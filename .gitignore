@@ -15,6 +15,9 @@
 # production
 /build
 
+# Editor settings
+/.vscode/
+
 # misc
 .DS_Store
 .editorconfig
@@ -32,3 +35,12 @@ yarn-error.log*
 .env.production.local
 
 !.env.local.txt
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
