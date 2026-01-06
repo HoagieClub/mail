@@ -33,7 +33,10 @@ async function handler(
         return NextResponse.json({ error: error.message }, { status: 401 });
     }
 
-    return await proxyRequest(`${process.env.HOAGIE_API_URL}${path}`, fetchReq);
+    return await proxyRequest(
+        `${process.env.HOAGIE_API_URL}${path}/`,
+        fetchReq
+    );
 }
 
 async function proxyRequest(url: string, fetchReq: RequestInit) {
@@ -41,7 +44,8 @@ async function proxyRequest(url: string, fetchReq: RequestInit) {
         const response = await fetch(url, fetchReq);
 
         if (!response.ok) {
-            const errorText = await response.text();
+            const responseJson = await response.json();
+            const errorText = responseJson.error || 'An error occurred';
             return NextResponse.json(
                 { error: errorText },
                 { status: response.status }
