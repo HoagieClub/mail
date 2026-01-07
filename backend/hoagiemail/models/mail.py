@@ -13,3 +13,6 @@ class ScheduledEmail(models.Model):
 
 	def get_sender_name(self) -> str:
 		return self.custom_sender_name if self.custom_sender_name else self.sender.get_full_name()
+
+	class Meta:
+		db_table = "ScheduledEmail"

@@ -12,6 +12,9 @@ class Category(models.Model):
 	def __str__(self) -> str:
 		return self.name
 
+	class Meta:
+		db_table = "Category"
+
 
 class Tag(models.Model):
 	name = models.CharField(max_length=20)
@@ -20,9 +23,11 @@ class Tag(models.Model):
 	def __str__(self) -> str:
 		return self.name
 
+	class Meta:
+		unique_together = ("name", "category")
+		db_table = "Tag"
 
-# idx not needed django automatically inserts a AutoField as primary key.
-# unless we want to use BigAutoField for future proofing purposes.
+
 class StuffPost(models.Model):
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=100)
@@ -36,6 +41,7 @@ class StuffPost(models.Model):
 
 	class Meta:
 		ordering = "-created_at"
+		db_table = "StuffPost"
 
 
 @receiver(m2m_changed, sender=StuffPost.tags.through)

@@ -1,5 +1,5 @@
 from .mail import ScheduledEmail
-from .stuff import StuffPost, Tag
+from .stuff import Category, StuffPost, Tag
 from .user import User
 
-__all__ = ["ScheduledEmail", "Tag", "StuffPost", "User"]
+__all__ = ["ScheduledEmail", "Tag", "Category", "StuffPost", "User"]
