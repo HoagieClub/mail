@@ -40,7 +40,7 @@ class StuffPost(models.Model):
 	created_at = models.DateTimeField()
 
 	class Meta:
-		ordering = "-created_at"
+		ordering = ["-created_at"]
 		db_table = "StuffPost"
 
 
