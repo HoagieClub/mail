@@ -24,6 +24,14 @@ interface RichTextEditorProps {
     onHTMLChange?: (html: string) => void;
 }
 
+/**
+ * Checks if a string is a valid email address
+ */
+const isEmailAddress = (str: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i;
+    return emailRegex.test(str);
+};
+
 const Editor = forwardRef<any, RichTextEditorProps>(
     ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
@@ -346,6 +354,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                 /** ----------------------------------------------
                  *  Ensure links always start with https://
+                 *  (but preserve mailto: links and auto-detect email addresses)
                  * ---------------------------------------------- */
                 quill.on(
                     Quill.events.TEXT_CHANGE,
@@ -356,7 +365,19 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                         links.forEach((link) => {
                             const href = link.getAttribute('href');
                             if (href && !/^https?:\/\//i.test(href)) {
-                                link.setAttribute('href', 'https://' + href);
+                                if (/^mailto:/i.test(href)) {
+                                    return;
+                                }
+
+                                // Check if it is an email address
+                                if (isEmailAddress(href)) {
+                                    link.setAttribute('href', 'mailto:' + href);
+                                } else {
+                                    link.setAttribute(
+                                        'href',
+                                        'https://' + href
+                                    );
+                                }
                             }
                         });
                     }
