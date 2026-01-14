@@ -226,15 +226,30 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             const result = await saveToServer(file);
                             const range = quill.getSelection(true);
 
-                            if (typeof result === 'string') {
-                                quill.insertEmbed(range.index, 'image', result);
-                            } else {
-                                quill.insertEmbed(
-                                    range.index,
-                                    'image',
-                                    result.result[0].url
-                                );
-                            }
+                            const imageUrl =
+                                typeof result === 'string'
+                                    ? result
+                                    : result.result[0].url;
+
+                            quill.insertEmbed(range.index, 'image', imageUrl);
+
+                            // Set default width of 500px after image is inserted
+                            setTimeout(() => {
+                                const images =
+                                    quill.root.querySelectorAll('img');
+                                // Find the image with the matching URL
+                                for (const img of images) {
+                                    if (
+                                        img.src === imageUrl ||
+                                        img.src.endsWith(imageUrl)
+                                    ) {
+                                        img.style.width = '500px';
+                                        img.style.height = 'auto';
+                                        break;
+                                    }
+                                }
+                            }, 0);
+
                             quill.setSelection(range.index + 1);
                         } catch {}
                     };
@@ -383,6 +398,67 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 );
 
                 /** ----------------------------------------------
+                 *  Preserve header format when size is changed via toolbar
+                 * ---------------------------------------------- */
+                // Override the format method to preserve header when size is changed
+                const originalFormat = quill.format.bind(quill);
+                quill.format = function (
+                    name: string,
+                    value: any,
+                    source?: any
+                ) {
+                    // When header is being applied, remove any existing size format
+                    // so CSS default can take effect
+                    if (
+                        name === 'header' &&
+                        value !== false &&
+                        value !== null
+                    ) {
+                        const range = quill.getSelection(true);
+                        if (range) {
+                            const currentFormat = quill.getFormat(range);
+                            // Remove size format when header is applied so CSS default is used
+                            if (currentFormat.size) {
+                                quill.format('size', false, 'silent');
+                            }
+                        }
+                    }
+
+                    // When size is being changed, check if we need to preserve header
+                    if (name === 'size' && value !== null && value !== false) {
+                        const range = quill.getSelection(true);
+                        if (range) {
+                            const currentFormat = quill.getFormat(range);
+                            const hadHeader = currentFormat.header;
+
+                            // Apply the size change
+                            const result = originalFormat(name, value, source);
+
+                            // If there was a header before, restore it after size change
+                            if (hadHeader) {
+                                setTimeout(() => {
+                                    const newRange = quill.getSelection(true);
+                                    if (newRange) {
+                                        const newFormat =
+                                            quill.getFormat(newRange);
+                                        // Only restore if header was lost
+                                        if (!newFormat.header) {
+                                            quill.format(
+                                                'header',
+                                                hadHeader,
+                                                'silent'
+                                            );
+                                        }
+                                    }
+                                }, 10);
+                            }
+                            return result;
+                        }
+                    }
+                    return originalFormat(name, value, source);
+                };
+
+                /** ----------------------------------------------
                  *  Maintain last font + size on new lines
                  * ---------------------------------------------- */
                 quill.on(Quill.events.SELECTION_CHANGE, (range) => {
@@ -410,27 +486,45 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                         index - 1
                                     );
 
+                                    const formatOptions: any = {
+                                        font:
+                                            prevFormats.font ||
+                                            lastFont.current,
+                                    };
+
+                                    // Don't auto-apply size to headings - let CSS default handle it
+                                    // Only apply size if not a heading (user can manually change it later)
+                                    if (!prevFormats.header) {
+                                        formatOptions.size =
+                                            prevFormats.size ||
+                                            lastFontSize.current;
+                                    }
+
                                     quill.formatLine(
                                         index,
                                         1,
-                                        {
-                                            size:
-                                                prevFormats.size ||
-                                                lastFontSize.current,
-                                            font:
-                                                prevFormats.font ||
-                                                lastFont.current,
-                                        },
+                                        formatOptions,
                                         'silent'
                                     );
                                 } else {
+                                    const currentFormats =
+                                        quill.getFormat(index);
+
+                                    const formatOptions: any = {
+                                        font: lastFont.current,
+                                    };
+
+                                    // Don't auto-apply size to headings - let CSS default handle it
+                                    // Only apply size if not a heading (user can manually change it later)
+                                    if (!currentFormats.header) {
+                                        formatOptions.size =
+                                            lastFontSize.current;
+                                    }
+
                                     quill.formatText(
                                         index,
                                         text.length,
-                                        {
-                                            size: lastFontSize.current,
-                                            font: lastFont.current,
-                                        },
+                                        formatOptions,
                                         'silent'
                                     );
                                 }
