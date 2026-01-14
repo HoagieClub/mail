@@ -36,6 +36,7 @@ const isEmailAddress = (str: string): boolean => {
  * Normalizes HTML to fix paragraph spacing for email clients
  * - Adds inline styles to <p> tags to control margin (set to 0)
  * - Replaces empty paragraphs with <br> tags for consistent spacing
+ * - Converts Quill alignment classes (ql-align-*) to inline text-align styles
  */
 const normalizeHTMLForEmail = (html: string): string => {
     if (!html || typeof document === 'undefined') {
@@ -45,6 +46,27 @@ const normalizeHTMLForEmail = (html: string): string => {
     // Create a temporary DOM element to parse and manipulate the HTML
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
+
+    // Map Quill alignment classes to text-align values
+    const alignmentMap: Record<string, string> = {
+        'ql-align-left': 'left',
+        'ql-align-center': 'center',
+        'ql-align-right': 'right',
+        'ql-align-justify': 'justify',
+    };
+
+    // Convert alignment classes to inline styles
+    const allElements = tempDiv.querySelectorAll('*');
+    allElements.forEach((element) => {
+        const classList = Array.from(element.classList);
+        classList.forEach((className) => {
+            if (className in alignmentMap) {
+                (element as HTMLElement).style.textAlign =
+                    alignmentMap[className];
+                element.classList.remove(className);
+            }
+        });
+    });
 
     // Process all paragraph tags
     const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
