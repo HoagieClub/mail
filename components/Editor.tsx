@@ -32,6 +32,50 @@ const isEmailAddress = (str: string): boolean => {
     return emailRegex.test(str);
 };
 
+/**
+ * Normalizes HTML to fix paragraph spacing for email clients
+ * - Adds inline styles to <p> tags to control margin (set to 0)
+ * - Replaces empty paragraphs with <br> tags for consistent spacing
+ */
+const normalizeHTMLForEmail = (html: string): string => {
+    if (!html || typeof document === 'undefined') {
+        return html;
+    }
+
+    // Create a temporary DOM element to parse and manipulate the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    // Process all paragraph tags
+    const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
+
+    paragraphs.forEach((p) => {
+        // Check if paragraph is empty or only contains <br>
+        const textContent = p.textContent?.trim() || '';
+        const innerHTML = p.innerHTML.trim();
+        const hasOnlyBr =
+            innerHTML === '<br>' || innerHTML === '<br/>' || innerHTML === '';
+
+        if (textContent === '' || hasOnlyBr) {
+            // Replace empty paragraphs with a single <br> tag
+            const br = document.createElement('br');
+            if (p.parentNode) {
+                p.parentNode.replaceChild(br, p);
+            }
+        } else {
+            // Add inline styles to control margin for non-empty paragraphs
+            // Set margins to 0 to prevent email clients from adding extra spacing
+            p.style.marginTop = '0';
+            p.style.marginBottom = '0';
+        }
+    });
+
+    // Convert back to HTML string
+    const normalizedHTML = tempDiv.innerHTML;
+
+    return normalizedHTML;
+};
+
 const Editor = forwardRef<any, RichTextEditorProps>(
     ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
@@ -350,13 +394,16 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     const html = quill.root.innerHTML;
                     const delta = quill.getContents();
 
+                    // Normalize HTML for email clients to fix paragraph spacing
+                    const normalizedHTML = normalizeHTMLForEmail(html);
+
                     localStorage.setItem('mailBody', JSON.stringify(html));
                     localStorage.setItem(
                         'mailBodyDelta',
                         JSON.stringify(delta)
                     );
 
-                    onHTMLChange?.(html);
+                    onHTMLChange?.(normalizedHTML);
                 });
 
                 /** ----------------------------------------------
