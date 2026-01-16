@@ -104,6 +104,8 @@ li[data-list='bullet'] {
     padding-left: 7.5px;
     padding-right: 7.5px;
     margin: 0;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 .ql-editor.ql-blank::before {
