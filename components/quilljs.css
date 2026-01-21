@@ -1,0 +1,122 @@
+.controls {
+    display: flex;
+    border: 1px solid #ccc;
+    border-top: 0;
+    padding: 10px;
+}
+
+.controls-right {
+    margin-left: auto;
+}
+
+.state {
+    margin: 10px 0;
+    font-family: monospace;
+}
+
+.state-title {
+    color: #999;
+    text-transform: uppercase;
+}
+
+/* Target Quill bullet lists */
+li[data-list='bullet'] {
+    list-style-type: none !important;
+    counter-reset: none !important; /* remove numbering */
+}
+
+/* Show the data-value text automatically */
+.ql-snow .ql-picker.ql-size .ql-picker-item::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label::before {
+    content: attr(data-value);
+}
+
+/* Automatically show font name in toolbar dropdown */
+.ql-snow .ql-picker.ql-font .ql-picker-item::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label::before {
+    content: attr(data-value);
+    font-family: attr(data-value);
+    text-transform: capitalize;
+}
+
+/* Actual font-family previews */
+.ql-snow .ql-picker.ql-font [data-value='arial']::before {
+    font-family: Arial, sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='helvetica']::before {
+    font-family: Helvetica, sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='times-new-roman']::before {
+    font-family: 'Times New Roman', serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='courier-new']::before {
+    font-family: 'Courier New', monospace;
+}
+.ql-snow .ql-picker.ql-font [data-value='georgia']::before {
+    font-family: Georgia, serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='verdana']::before {
+    font-family: Verdana, sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='roboto']::before {
+    font-family: 'Roboto', sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='open-sans']::before {
+    font-family: 'Open Sans', sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='lato']::before {
+    font-family: 'Lato', sans-serif;
+}
+.ql-snow .ql-picker.ql-font [data-value='montserrat']::before {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Remove Quill's default markers */
+.ql-editor ul,
+.ql-editor ol {
+    padding-left: 0;
+}
+.ql-editor li {
+    list-style: none !important;
+}
+
+.ql-editor {
+    min-height: 200px; /* initial height */
+    max-height: none; /* no max height */
+    overflow: visible; /* let content grow */
+}
+
+.ql-formats {
+    border-left: 1px solid #ccc;
+}
+
+.ql-toolbar .ql-formats:first-child,
+.ql-toolbar .ql-formats:nth-child(6),
+.ql-toolbar .ql-formats:nth-child(13) {
+    border-left: none !important;
+}
+
+.ql-header .ql-picker {
+    border-left: 0;
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    margin: 0;
+}
+
+.ql-editor.ql-blank::before {
+    padding-top: 5px;
+}
+
+/* When the editor is in fullscreen mode */
+.ql-editor {
+    background-color: white;
+    overflow: auto;
+}
+
+/* Ensure toolbar stays in place */
+.ql-toolbar {
+    background-color: #fff;
+}
