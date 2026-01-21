@@ -67,6 +67,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "**/migrations/**",
 ]
 
 # General Ruff settings
