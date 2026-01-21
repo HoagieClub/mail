@@ -29,6 +29,7 @@ dependencies = [
     "pyjwt[crypto]>=2.10.1",
     "python-dotenv>=1.2.1",
     "requests>=2.32.0",
+    "requests>=2.32.0",
     "ruff>=0.14.5",
     "tinycss2>=1.5.1",
 ]
@@ -70,6 +71,7 @@ exclude = [
     "dist",
     "node_modules",
     "venv",
+    "**/migrations/**",
 ]
 
 # General Ruff settings
@@ -116,3 +118,4 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["hoagiemail"]
+

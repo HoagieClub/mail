@@ -47,6 +47,9 @@ INSTALLED_APPS = [
 	"hoagiemail",
 ]
 
+# Custom user model
+AUTH_USER_MODEL = "hoagiemail.User"
+
 MIDDLEWARE = [
 	"django.middleware.security.SecurityMiddleware",
 	"django.contrib.sessions.middleware.SessionMiddleware",
