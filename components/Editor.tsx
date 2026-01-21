@@ -97,6 +97,58 @@ const normalizeHTMLForEmail = (html: string): string => {
     return normalizedHTML;
 };
 
+const fontSizeArr = [
+    '10px',
+    '12px',
+    '14px',
+    '16px',
+    '18px',
+    '20px',
+    '24px',
+    '28px',
+    '32px',
+    '40px',
+    '48px',
+    '56px',
+    '64px',
+    '72px',
+];
+
+const fonts = [
+    'arial',
+    'helvetica',
+    'times',
+    'courier',
+    'georgia',
+    'verdana',
+    'roboto',
+    'open-sans',
+    'lato',
+    'montserrat',
+];
+
+const toolbarOptions = [
+    [{ header: [1, 2, 3, false] }],
+    [{ size: fontSizeArr }],
+    [{ font: fonts }],
+
+    ['link', 'image'],
+    ['undo', 'redo'],
+
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ color: [] }, { background: [] }],
+
+    ['blockquote'],
+
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ script: 'sub' }, { script: 'super' }],
+
+    [{ align: [] }],
+
+    ['clean'],
+    ['fullscreen'],
+];
+
 const Editor = forwardRef<any, RichTextEditorProps>(
     ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
@@ -106,6 +158,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
         const onTextChangeRef = useRef(onTextChange);
         const onSelectionChangeRef = useRef(onSelectionChange);
+        const onHTMLChangeRef = useRef(onHTMLChange);
 
         const lastFontSize = useRef<string>('14px');
         const lastFont = useRef<string>('arial');
@@ -113,59 +166,8 @@ const Editor = forwardRef<any, RichTextEditorProps>(
         useLayoutEffect(() => {
             onTextChangeRef.current = onTextChange;
             onSelectionChangeRef.current = onSelectionChange;
+            onHTMLChangeRef.current = onHTMLChange;
         });
-
-        const fontSizeArr = [
-            '10px',
-            '12px',
-            '14px',
-            '16px',
-            '18px',
-            '20px',
-            '24px',
-            '28px',
-            '32px',
-            '40px',
-            '48px',
-            '56px',
-            '64px',
-            '72px',
-        ];
-
-        const fonts = [
-            'arial',
-            'helvetica',
-            'times',
-            'courier',
-            'georgia',
-            'verdana',
-            'roboto',
-            'open-sans',
-            'lato',
-            'montserrat',
-        ];
-
-        const toolbarOptions = [
-            [{ header: [1, 2, 3, false] }],
-            [{ size: fontSizeArr }],
-            [{ font: fonts }],
-
-            ['link', 'image'],
-            ['undo', 'redo'],
-
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ color: [] }, { background: [] }],
-
-            ['blockquote'],
-
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }],
-
-            [{ align: [] }],
-
-            ['clean'],
-            ['fullscreen'],
-        ];
 
         const saveToServer = async (file: File) => {
             // Uncomment below for local image testing (default Hoagie image)
@@ -435,7 +437,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                         JSON.stringify(delta)
                     );
 
-                    onHTMLChange?.(normalizedHTML);
+                    onHTMLChangeRef.current?.(normalizedHTML);
                 });
 
                 /** ----------------------------------------------
@@ -621,7 +623,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 quillRef.current = null;
                 if (container) container.innerHTML = '';
             };
-        }, []);
+        }, [quillRef]);
 
         return (
             <div
