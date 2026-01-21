@@ -32,6 +32,72 @@ const isEmailAddress = (str: string): boolean => {
     return emailRegex.test(str);
 };
 
+/**
+ * Normalizes HTML to fix paragraph spacing for email clients
+ * - Adds inline styles to <p> tags to control margin (set to 0)
+ * - Replaces empty paragraphs with <br> tags for consistent spacing
+ * - Converts Quill alignment classes (ql-align-*) to inline text-align styles
+ */
+const normalizeHTMLForEmail = (html: string): string => {
+    if (!html || typeof document === 'undefined') {
+        return html;
+    }
+
+    // Create a temporary DOM element to parse and manipulate the HTML
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+
+    // Map Quill alignment classes to text-align values
+    const alignmentMap: Record<string, string> = {
+        'ql-align-left': 'left',
+        'ql-align-center': 'center',
+        'ql-align-right': 'right',
+        'ql-align-justify': 'justify',
+    };
+
+    // Convert alignment classes to inline styles
+    const allElements = tempDiv.querySelectorAll('*');
+    allElements.forEach((element) => {
+        const classList = Array.from(element.classList);
+        classList.forEach((className) => {
+            if (className in alignmentMap) {
+                (element as HTMLElement).style.textAlign =
+                    alignmentMap[className];
+                element.classList.remove(className);
+            }
+        });
+    });
+
+    // Process all paragraph tags
+    const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
+
+    paragraphs.forEach((p) => {
+        // Check if paragraph is empty or only contains <br>
+        const textContent = p.textContent?.trim() || '';
+        const innerHTML = p.innerHTML.trim();
+        const hasOnlyBr =
+            innerHTML === '<br>' || innerHTML === '<br/>' || innerHTML === '';
+
+        if (textContent === '' || hasOnlyBr) {
+            // Replace empty paragraphs with a single <br> tag
+            const br = document.createElement('br');
+            if (p.parentNode) {
+                p.parentNode.replaceChild(br, p);
+            }
+        } else {
+            // Add inline styles to control margin for non-empty paragraphs
+            // Set margins to 0 to prevent email clients from adding extra spacing
+            p.style.marginTop = '0';
+            p.style.marginBottom = '0';
+        }
+    });
+
+    // Convert back to HTML string
+    const normalizedHTML = tempDiv.innerHTML;
+
+    return normalizedHTML;
+};
+
 const Editor = forwardRef<any, RichTextEditorProps>(
     ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
@@ -135,7 +201,8 @@ const Editor = forwardRef<any, RichTextEditorProps>(
             if (initialized.current) return;
             initialized.current = true;
 
-            if (!containerRef.current) return;
+            const container = containerRef.current;
+            if (!container) return;
 
             let quill: any = null;
 
@@ -174,8 +241,6 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 /** ----------------------------------------------
                  *  Build the editor
                  * ---------------------------------------------- */
-                const container = containerRef.current;
-                if (!container) return;
                 const editorEl = container.appendChild(
                     container.ownerDocument.createElement('div')
                 );
@@ -227,15 +292,30 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             const result = await saveToServer(file);
                             const range = quill.getSelection(true);
 
-                            if (typeof result === 'string') {
-                                quill.insertEmbed(range.index, 'image', result);
-                            } else {
-                                quill.insertEmbed(
-                                    range.index,
-                                    'image',
-                                    result.result[0].url
-                                );
-                            }
+                            const imageUrl =
+                                typeof result === 'string'
+                                    ? result
+                                    : result.result[0].url;
+
+                            quill.insertEmbed(range.index, 'image', imageUrl);
+
+                            // Set default width of 500px after image is inserted
+                            setTimeout(() => {
+                                const images =
+                                    quill.root.querySelectorAll('img');
+                                // Find the image with the matching URL
+                                for (const img of images) {
+                                    if (
+                                        img.src === imageUrl ||
+                                        img.src.endsWith(imageUrl)
+                                    ) {
+                                        img.style.width = '500px';
+                                        img.style.height = 'auto';
+                                        break;
+                                    }
+                                }
+                            }, 0);
+
                             quill.setSelection(range.index + 1);
                         } catch {}
                     };
@@ -336,13 +416,16 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     const html = quill.root.innerHTML;
                     const delta = quill.getContents();
 
+                    // Normalize HTML for email clients to fix paragraph spacing
+                    const normalizedHTML = normalizeHTMLForEmail(html);
+
                     localStorage.setItem('mailBody', JSON.stringify(html));
                     localStorage.setItem(
                         'mailBodyDelta',
                         JSON.stringify(delta)
                     );
 
-                    onHTMLChange?.(html);
+                    onHTMLChange?.(normalizedHTML);
                 });
 
                 /** ----------------------------------------------
@@ -384,6 +467,67 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 );
 
                 /** ----------------------------------------------
+                 *  Preserve header format when size is changed via toolbar
+                 * ---------------------------------------------- */
+                // Override the format method to preserve header when size is changed
+                const originalFormat = quill.format.bind(quill);
+                quill.format = function (
+                    name: string,
+                    value: any,
+                    source?: any
+                ) {
+                    // When header is being applied, remove any existing size format
+                    // so CSS default can take effect
+                    if (
+                        name === 'header' &&
+                        value !== false &&
+                        value !== null
+                    ) {
+                        const range = quill.getSelection(true);
+                        if (range) {
+                            const currentFormat = quill.getFormat(range);
+                            // Remove size format when header is applied so CSS default is used
+                            if (currentFormat.size) {
+                                quill.format('size', false, 'silent');
+                            }
+                        }
+                    }
+
+                    // When size is being changed, check if we need to preserve header
+                    if (name === 'size' && value !== null && value !== false) {
+                        const range = quill.getSelection(true);
+                        if (range) {
+                            const currentFormat = quill.getFormat(range);
+                            const hadHeader = currentFormat.header;
+
+                            // Apply the size change
+                            const result = originalFormat(name, value, source);
+
+                            // If there was a header before, restore it after size change
+                            if (hadHeader) {
+                                setTimeout(() => {
+                                    const newRange = quill.getSelection(true);
+                                    if (newRange) {
+                                        const newFormat =
+                                            quill.getFormat(newRange);
+                                        // Only restore if header was lost
+                                        if (!newFormat.header) {
+                                            quill.format(
+                                                'header',
+                                                hadHeader,
+                                                'silent'
+                                            );
+                                        }
+                                    }
+                                }, 10);
+                            }
+                            return result;
+                        }
+                    }
+                    return originalFormat(name, value, source);
+                };
+
+                /** ----------------------------------------------
                  *  Maintain last font + size on new lines
                  * ---------------------------------------------- */
                 quill.on(Quill.events.SELECTION_CHANGE, (range) => {
@@ -411,27 +555,45 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                         index - 1
                                     );
 
+                                    const formatOptions: any = {
+                                        font:
+                                            prevFormats.font ||
+                                            lastFont.current,
+                                    };
+
+                                    // Don't auto-apply size to headings - let CSS default handle it
+                                    // Only apply size if not a heading (user can manually change it later)
+                                    if (!prevFormats.header) {
+                                        formatOptions.size =
+                                            prevFormats.size ||
+                                            lastFontSize.current;
+                                    }
+
                                     quill.formatLine(
                                         index,
                                         1,
-                                        {
-                                            size:
-                                                prevFormats.size ||
-                                                lastFontSize.current,
-                                            font:
-                                                prevFormats.font ||
-                                                lastFont.current,
-                                        },
+                                        formatOptions,
                                         'silent'
                                     );
                                 } else {
+                                    const currentFormats =
+                                        quill.getFormat(index);
+
+                                    const formatOptions: any = {
+                                        font: lastFont.current,
+                                    };
+
+                                    // Don't auto-apply size to headings - let CSS default handle it
+                                    // Only apply size if not a heading (user can manually change it later)
+                                    if (!currentFormats.header) {
+                                        formatOptions.size =
+                                            lastFontSize.current;
+                                    }
+
                                     quill.formatText(
                                         index,
                                         text.length,
-                                        {
-                                            size: lastFontSize.current,
-                                            font: lastFont.current,
-                                        },
+                                        formatOptions,
                                         'silent'
                                     );
                                 }
@@ -447,7 +609,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
             return () => {
                 quillRef.current = null;
-                if (containerRef.current) containerRef.current.innerHTML = '';
+                if (container) container.innerHTML = '';
             };
         }, []);
 
