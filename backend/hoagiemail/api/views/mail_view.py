@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+
 class MailView(APIView):
 	def post(self, request) -> Response:
 		# Logic to send mail

@@ -1,9 +1,10 @@
 import jwt
 import requests
 from django.conf import settings
-from django.contrib.auth.models import User
 from jwt.algorithms import RSAAlgorithm
 from rest_framework import authentication, exceptions
+
+from hoagiemail.models import User
 
 
 class Auth0JWTAuthentication(authentication.BaseAuthentication):
@@ -24,7 +25,7 @@ class Auth0JWTAuthentication(authentication.BaseAuthentication):
 			# Get or create user based on Auth0 sub (subject)
 			auth0_id = payload["sub"]
 			name = payload.get("https://hoagie.io/name", "")
-			
+
 			user, _ = User.objects.get_or_create(
 				username=auth0_id.split("|")[2].split("@")[0],
 				defaults={
