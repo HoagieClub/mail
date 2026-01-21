@@ -168,6 +168,15 @@ const Editor = forwardRef<any, RichTextEditorProps>(
         ];
 
         const saveToServer = async (file: File) => {
+            // Uncomment below for local image testing (default Hoagie image)
+            // return {
+            //     result: [
+            //         {
+            //             url: 'https://i.imgur.com/p2jC53h.jpeg',
+            //         },
+            //     ],
+            // };
+
             const body = new FormData();
             body.append('image', file);
 
