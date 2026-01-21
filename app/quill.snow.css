@@ -670,6 +670,13 @@
 .ql-snow .ql-editor img {
     max-width: 100%;
 }
+
+/* Default width for images without explicit width attribute */
+/* This allows the resize module to work properly while providing a default size */
+.ql-snow .ql-editor img:not([width]) {
+    width: 500px;
+    height: auto;
+}
 .ql-snow .ql-picker {
     color: #444;
     display: inline-block;

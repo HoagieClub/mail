@@ -73,12 +73,11 @@ const normalizeHTMLForEmail = (html: string): string => {
 
     paragraphs.forEach((p) => {
         // Check if paragraph is empty or only contains <br>
-        const textContent = p.textContent?.trim() || '';
         const innerHTML = p.innerHTML.trim();
-        const hasOnlyBr =
-            innerHTML === '<br>' || innerHTML === '<br/>' || innerHTML === '';
+        const isEmpty =
+            innerHTML === '' || innerHTML === '<br>' || innerHTML === '<br/>';
 
-        if (textContent === '' || hasOnlyBr) {
+        if (isEmpty) {
             // Replace empty paragraphs with a single <br> tag
             const br = document.createElement('br');
             if (p.parentNode) {
@@ -299,22 +298,24 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                             quill.insertEmbed(range.index, 'image', imageUrl);
 
-                            // Set default width of 500px after image is inserted
-                            setTimeout(() => {
+                            // Set a default width on the inserted image. Only
+                            // apply it when no explicit width has been set yet.
+                            requestAnimationFrame(() => {
                                 const images =
                                     quill.root.querySelectorAll('img');
-                                // Find the image with the matching URL
                                 for (const img of images) {
                                     if (
                                         img.src === imageUrl ||
                                         img.src.endsWith(imageUrl)
                                     ) {
-                                        img.style.width = '500px';
-                                        img.style.height = 'auto';
+                                        if (!img.hasAttribute('width')) {
+                                            img.setAttribute('width', '500');
+                                            img.removeAttribute('height');
+                                        }
                                         break;
                                     }
                                 }
-                            }, 0);
+                            });
 
                             quill.setSelection(range.index + 1);
                         } catch {}
