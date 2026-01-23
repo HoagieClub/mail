@@ -36,56 +36,45 @@ class MailRequestSerializer(serializers.Serializer):
 
 
 # Bleach configuration
+# Based on Quill editor toolbar options and generated HTML
 ALLOWED_TAGS = [
-	"a",
-	"b",
-	"blockquote",
-	"br",
-	"code",
-	"div",
-	"del",
-	"em",
-	"h1",
+	"a",  # Links
+	"blockquote",  # Blockquotes
+	"br",  # Line breaks
+	"em",  # Italic
+	"h1",  # Headers (h1-h3 only, based on toolbar)
 	"h2",
 	"h3",
-	"h4",
-	"h5",
-	"h6",
-	"hr",
-	"i",
-	"img",
-	"li",
-	"ol",
-	"p",
-	"pre",
-	"span",
-	"strong",
-	"table",
-	"tbody",
-	"td",
-	"th",
-	"thead",
-	"tr",
-	"ul",
+	"img",  # Images
+	"li",  # List items
+	"ol",  # Ordered lists
+	"p",  # Paragraphs
+	"s",  # Strikethrough (Quill uses <s>, not <del>)
+	"span",  # Inline formatting with style attributes
+	"strong",  # Bold
+	"sub",  # Subscript
+	"sup",  # Superscript
+	"u",  # Underline
+	"ul",  # Unordered lists
 ]
 ALLOWED_ATTRIBUTES = {
-	"*": ["class", "style"],
-	"a": ["href", "title", "target"],
-	"img": ["src", "alt", "width", "height"],
-	"table": ["border", "cellpadding", "cellspacing"],
-	"td": ["colspan", "rowspan"],
-	"th": ["colspan", "rowspan"],
+	"*": ["style"],  # All tags can have style attribute
+	"a": ["href"],  # Links only need href (mailto: and https:// are handled by editor)
+	"img": ["src", "alt"],  # Images use src and alt (width/height set via style attribute)
 }
 SAFE_CSS_PROPERTIES = [
-	"width",
-	"height",
-	"color",
-	"background-color",
-	"font-size",
-	"margin-left",
-	"text-align",
-	"font-family",
-	"line-height",
+	"width",  # For images (set to 500px by editor)
+	"height",  # For images (set to auto by editor)
+	"color",  # Text color (from color picker)
+	"background-color",  # Highlight/background color (from background picker)
+	"font-size",  # Font size (from size dropdown)
+	"font-family",  # Font family (from font dropdown)
+	"text-align",  # Alignment (left, center, right, justify - converted from Quill classes)
+	"margin-top",  # Paragraph margins (added in normalizeHTMLForEmail, set to 0)
+	"margin-bottom",  # Paragraph margins (added in normalizeHTMLForEmail, set to 0)
+	"margin-left",  # For indentation/spacing
+	"margin-right",  # For indentation/spacing
+	"line-height",  # Line spacing
 ]
 
 NORMAL_EMAIL_FOOTER = (
