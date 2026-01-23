@@ -9,6 +9,8 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from hoagiemail.models import ScheduledEmail
+
 
 class MailRequestSerializer(serializers.Serializer):
 	header = serializers.CharField(
@@ -196,7 +198,10 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time = datetime.fromisoformat(schedule)
 	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
-	# TODO: Check if already scheduled mail at this time
+	# Check if already scheduled mail at this time for this user
+	if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
+		return "You already have an email scheduled for this time. If you would like to change your message, please \
+			delete your mail in the Scheduled Emails page and try again."
 
 	message = create_message(mail_data, mail_data["email"])
 
@@ -204,7 +209,16 @@ def handle_scheduled_email(mail_data, user):
 		print_debug(message, schedule=schedule_time_et)
 		return
 
-	# TODO: Create scheduled email entry in the database
+	# Create scheduled email
+	ScheduledEmail.objects.create(
+		sender=user,
+		custom_sender_name=mail_data["sender"],
+		header_text=mail_data["header"],
+		body_text=mail_data["body"],
+		scheduled_at=schedule_time_et,
+	)
+
+	return None
 
 
 def handle_email_now(mail_data, user):
