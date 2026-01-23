@@ -73,12 +73,11 @@ const normalizeHTMLForEmail = (html: string): string => {
 
     paragraphs.forEach((p) => {
         // Check if paragraph is empty or only contains <br>
-        const textContent = p.textContent?.trim() || '';
         const innerHTML = p.innerHTML.trim();
-        const hasOnlyBr =
-            innerHTML === '<br>' || innerHTML === '<br/>' || innerHTML === '';
+        const isEmpty =
+            innerHTML === '' || innerHTML === '<br>' || innerHTML === '<br/>';
 
-        if (textContent === '' || hasOnlyBr) {
+        if (isEmpty) {
             // Replace empty paragraphs with a single <br> tag
             const br = document.createElement('br');
             if (p.parentNode) {
@@ -98,6 +97,58 @@ const normalizeHTMLForEmail = (html: string): string => {
     return normalizedHTML;
 };
 
+const fontSizeArr = [
+    '10px',
+    '12px',
+    '14px',
+    '16px',
+    '18px',
+    '20px',
+    '24px',
+    '28px',
+    '32px',
+    '40px',
+    '48px',
+    '56px',
+    '64px',
+    '72px',
+];
+
+const fonts = [
+    'arial',
+    'helvetica',
+    'times',
+    'courier',
+    'georgia',
+    'verdana',
+    'roboto',
+    'open-sans',
+    'lato',
+    'montserrat',
+];
+
+const toolbarOptions = [
+    [{ header: [1, 2, 3, false] }],
+    [{ size: fontSizeArr }],
+    [{ font: fonts }],
+
+    ['link', 'image'],
+    ['undo', 'redo'],
+
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ color: [] }, { background: [] }],
+
+    ['blockquote'],
+
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    [{ script: 'sub' }, { script: 'super' }],
+
+    [{ align: [] }],
+
+    ['clean'],
+    ['fullscreen'],
+];
+
 const Editor = forwardRef<any, RichTextEditorProps>(
     ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
@@ -107,6 +158,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
         const onTextChangeRef = useRef(onTextChange);
         const onSelectionChangeRef = useRef(onSelectionChange);
+        const onHTMLChangeRef = useRef(onHTMLChange);
 
         const lastFontSize = useRef<string>('14px');
         const lastFont = useRef<string>('arial');
@@ -114,61 +166,19 @@ const Editor = forwardRef<any, RichTextEditorProps>(
         useLayoutEffect(() => {
             onTextChangeRef.current = onTextChange;
             onSelectionChangeRef.current = onSelectionChange;
+            onHTMLChangeRef.current = onHTMLChange;
         });
 
-        const fontSizeArr = [
-            '10px',
-            '12px',
-            '14px',
-            '16px',
-            '18px',
-            '20px',
-            '24px',
-            '28px',
-            '32px',
-            '40px',
-            '48px',
-            '56px',
-            '64px',
-            '72px',
-        ];
-
-        const fonts = [
-            'arial',
-            'helvetica',
-            'times',
-            'courier',
-            'georgia',
-            'verdana',
-            'roboto',
-            'open-sans',
-            'lato',
-            'montserrat',
-        ];
-
-        const toolbarOptions = [
-            [{ header: [1, 2, 3, false] }],
-            [{ size: fontSizeArr }],
-            [{ font: fonts }],
-
-            ['link', 'image'],
-            ['undo', 'redo'],
-
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ color: [] }, { background: [] }],
-
-            ['blockquote'],
-
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }],
-
-            [{ align: [] }],
-
-            ['clean'],
-            ['fullscreen'],
-        ];
-
         const saveToServer = async (file: File) => {
+            // Uncomment below for local image testing (default Hoagie image)
+            // return {
+            //     result: [
+            //         {
+            //             url: 'https://i.imgur.com/p2jC53h.jpeg',
+            //         },
+            //     ],
+            // };
+
             const body = new FormData();
             body.append('image', file);
 
@@ -299,22 +309,24 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                             quill.insertEmbed(range.index, 'image', imageUrl);
 
-                            // Set default width of 500px after image is inserted
-                            setTimeout(() => {
+                            // Set a default width on the inserted image. Only
+                            // apply it when no explicit width has been set yet.
+                            requestAnimationFrame(() => {
                                 const images =
                                     quill.root.querySelectorAll('img');
-                                // Find the image with the matching URL
                                 for (const img of images) {
                                     if (
                                         img.src === imageUrl ||
                                         img.src.endsWith(imageUrl)
                                     ) {
-                                        img.style.width = '500px';
-                                        img.style.height = 'auto';
+                                        if (!img.hasAttribute('width')) {
+                                            img.setAttribute('width', '500');
+                                            img.removeAttribute('height');
+                                        }
                                         break;
                                     }
                                 }
-                            }, 0);
+                            });
 
                             quill.setSelection(range.index + 1);
                         } catch {}
@@ -425,7 +437,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                         JSON.stringify(delta)
                     );
 
-                    onHTMLChange?.(normalizedHTML);
+                    onHTMLChangeRef.current?.(normalizedHTML);
                 });
 
                 /** ----------------------------------------------
@@ -611,7 +623,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 quillRef.current = null;
                 if (container) container.innerHTML = '';
             };
-        }, []);
+        }, [quillRef]);
 
         return (
             <div
