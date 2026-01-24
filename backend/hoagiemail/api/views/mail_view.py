@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -60,7 +61,7 @@ ALLOWED_TAGS = [
 ALLOWED_ATTRIBUTES = {
 	"*": ["style"],  # All tags can have style attribute
 	"a": ["href"],  # Links only need href (mailto: and https:// are handled by editor)
-	"img": ["src", "alt"],  # Images use src and alt (width/height set via style attribute)
+	"img": ["src", "alt", "width"],  # Images use src, alt, and width
 }
 SAFE_CSS_PROPERTIES = [
 	"width",  # For images (set to 500px by editor)
@@ -150,18 +151,34 @@ def send_email(mail_data, user):
 		return
 
 	# Send email via Mailjet
-	mailjet = Client(auth=("your_mailjet_api_key", "your_mailjet_secret_key"), version="v3.1")
-	result = mailjet.send.create(data=message)
+	mailjet_public_key = os.getenv("MAILJET_PUBLIC_KEY")
+	mailjet_private_key = os.getenv("MAILJET_PRIVATE_KEY")
+
+	if not mailjet_public_key or not mailjet_private_key:
+		return "Mailjet API credentials are not configured."
+
+	try:
+		mailjet = Client(auth=(mailjet_public_key, mailjet_private_key), version="v3.1")
+		result = mailjet.send.create(data={"Messages": [message]})
+	except Exception as e:
+		return f"Failed to connect to Mailjet API: {str(e)}"
 
 	result_status = result.status_code
 	if result_status == 200:
 		return
 	else:
 		error_data = result.json()
+
+		# Message-specific errors (invalid emails, content issues, etc.)
 		messages = error_data.get("Messages", [])
-		if messages and "Errors" in messages[0]:
-			return messages[0]["Errors"]
-		return error_data.get("ErrorMessage", "Unknown error")
+		if messages and len(messages) > 0 and "Errors" in messages[0]:
+			errors = messages[0]["Errors"]
+			# Errors is a list of error objects with ErrorMessage field
+			if isinstance(errors, list) and len(errors) > 0:
+				error_messages = [error.get("ErrorMessage", str(error)) for error in errors]
+				return "; ".join(error_messages)
+		# API-level errors (auth failures, rate limits, etc.)
+		return error_data.get("ErrorMessage", f"Unknown Mailjet API error (status {result_status})")
 
 
 def valid_schedule(schedule):
@@ -188,9 +205,14 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
 	# Check if already scheduled mail at this time for this user
-	if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
-		return "You already have an email scheduled for this time. If you would like to change your message, please \
-			delete your mail in the Scheduled Emails page and try again."
+	try:
+		if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
+			return (
+				"You already have an email scheduled for this time. If you would like to change your message, please \
+				delete your mail in the Scheduled Emails page and try again."
+			)
+	except Exception as e:
+		return f"Error checking for existing scheduled emails: {str(e)}"
 
 	message = create_message(mail_data, mail_data["email"])
 
@@ -199,13 +221,16 @@ def handle_scheduled_email(mail_data, user):
 		return
 
 	# Create scheduled email
-	ScheduledEmail.objects.create(
-		sender=user,
-		custom_sender_name=mail_data["sender"],
-		header_text=mail_data["header"],
-		body_text=mail_data["body"],
-		scheduled_at=schedule_time_et,
-	)
+	try:
+		ScheduledEmail.objects.create(
+			sender=user,
+			custom_sender_name=mail_data["sender"],
+			header_text=mail_data["header"],
+			body_text=mail_data["body"],
+			scheduled_at=schedule_time_et,
+		)
+	except Exception as e:
+		return f"Error saving scheduled email to database: {str(e)}"
 
 	return None
 
@@ -230,17 +255,17 @@ class MailView(APIView):
 		serializer = MailRequestSerializer(data=request.data)
 
 		# Validate request data
-		serializer = MailRequestSerializer(data=request.data)
 		if not serializer.is_valid():
-			print(serializer.errors)
-
-			# Get the first error message string
-			first_field = next(iter(serializer.errors))
-			error = str(serializer.errors[first_field][0])
+			error_messages = []
+			if serializer.errors:
+				for _, errors in serializer.errors.items():
+					if errors and isinstance(errors, list):
+						for error in errors:
+							error_messages.append(str(error))
+			error = " ".join(error_messages) if error_messages else "Invalid request data"
 			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
 
 		mail_data = serializer.validated_data
-		print("Original mail_data:", mail_data)
 		mail_data["email"] = user.email
 
 		# Sanitize HTML body
@@ -253,14 +278,17 @@ class MailView(APIView):
 			strip=True,
 		)
 
-		print("Sanitized mail_data:", mail_data)
-
 		# Handle scheduled vs immediate email
 		error = ""
-		if mail_data["schedule"] != "now" and mail_data["schedule"] != "test":
-			error = handle_scheduled_email(mail_data, user)
-		else:
-			error = handle_email_now(mail_data, user)
+		try:
+			if mail_data["schedule"] != "now" and mail_data["schedule"] != "test":
+				error = handle_scheduled_email(mail_data, user)
+			else:
+				error = handle_email_now(mail_data, user)
+		except Exception as e:
+			return Response(
+				{"error": f"Unexpected error processing email: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+			)
 
 		if error:
 			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
