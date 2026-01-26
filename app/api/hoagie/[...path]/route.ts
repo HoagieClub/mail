@@ -44,8 +44,7 @@ async function proxyRequest(url: string, fetchReq: RequestInit) {
         const response = await fetch(url, fetchReq);
 
         if (!response.ok) {
-            const responseJson = await response.json();
-            const errorText = responseJson.error || 'An error occurred';
+            const errorText = await response.text();
             return NextResponse.json(
                 { error: errorText },
                 { status: response.status }
