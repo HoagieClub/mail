@@ -39,43 +39,43 @@ class MailRequestSerializer(serializers.Serializer):
 # Bleach configuration
 # Based on Quill editor toolbar options and generated HTML
 ALLOWED_TAGS = [
-	"a",  # Links
-	"blockquote",  # Blockquotes
-	"br",  # Line breaks
-	"em",  # Italic
-	"h1",  # Headers (h1-h3 only, based on toolbar)
+	"a",
+	"blockquote",
+	"br",
+	"em",
+	"h1",
 	"h2",
 	"h3",
-	"img",  # Images
-	"li",  # List items
-	"ol",  # Ordered lists
-	"p",  # Paragraphs
-	"s",  # Strikethrough (Quill uses <s>, not <del>)
-	"span",  # Inline formatting with style attributes
-	"strong",  # Bold
-	"sub",  # Subscript
-	"sup",  # Superscript
-	"u",  # Underline
-	"ul",  # Unordered lists
+	"img",
+	"li",
+	"ol",
+	"p",
+	"s",
+	"span",
+	"strong",
+	"sub",
+	"sup",
+	"u",
+	"ul",
 ]
 ALLOWED_ATTRIBUTES = {
-	"*": ["style"],  # All tags can have style attribute
-	"a": ["href"],  # Links only need href (mailto: and https:// are handled by editor)
-	"img": ["src", "alt", "width"],  # Images use src, alt, and width
+	"*": ["style"],
+	"a": ["href"],
+	"img": ["src", "alt", "width"],
 }
 SAFE_CSS_PROPERTIES = [
-	"width",  # For images (set to 500px by editor)
-	"height",  # For images (set to auto by editor)
-	"color",  # Text color (from color picker)
-	"background-color",  # Highlight/background color (from background picker)
-	"font-size",  # Font size (from size dropdown)
-	"font-family",  # Font family (from font dropdown)
-	"text-align",  # Alignment (left, center, right, justify - converted from Quill classes)
-	"margin-top",  # Paragraph margins (added in normalizeHTMLForEmail, set to 0)
-	"margin-bottom",  # Paragraph margins (added in normalizeHTMLForEmail, set to 0)
-	"margin-left",  # For indentation/spacing
-	"margin-right",  # For indentation/spacing
-	"line-height",  # Line spacing
+	"width",
+	"height",
+	"color",
+	"background-color",
+	"font-size",
+	"font-family",
+	"text-align",
+	"margin-top",
+	"margin-bottom",
+	"margin-left",
+	"margin-right",
+	"line-height",
 ]
 
 NORMAL_EMAIL_FOOTER = (
