@@ -1,15 +1,14 @@
-import os
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 import bleach
 from bleach.css_sanitizer import CSSSanitizer
 from django.conf import settings
-from mailjet_rest import Client
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from hoagiemail.api.mail.mailjet_client import get_mailjet_client
 from hoagiemail.models import ScheduledEmail
 
 
@@ -151,14 +150,9 @@ def send_email(mail_data, user):
 		return
 
 	# Send email via Mailjet
-	mailjet_public_key = os.getenv("MAILJET_PUBLIC_KEY")
-	mailjet_private_key = os.getenv("MAILJET_PRIVATE_KEY")
-
-	if not mailjet_public_key or not mailjet_private_key:
-		return "Mailjet API credentials are not configured."
+	mailjet = get_mailjet_client()
 
 	try:
-		mailjet = Client(auth=(mailjet_public_key, mailjet_private_key), version="v3.1")
 		result = mailjet.send.create(data={"Messages": [message]})
 	except Exception as e:
 		return f"Failed to connect to Mailjet API: {str(e)}"
