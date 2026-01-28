@@ -6,7 +6,7 @@ mailjet_client = None
 
 
 def get_mailjet_client():
-	"""Returns a Mailjet client instance, or None if credentials are not configured"""
+	"""Returns a Mailjet client instance, or raises ValueError if credentials are not configured"""
 	global mailjet_client
 
 	if mailjet_client is None:
