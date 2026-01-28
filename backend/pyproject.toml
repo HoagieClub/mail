@@ -20,17 +20,16 @@ maintainers = [
 
 # Project dependencies
 dependencies = [
-    "bleach>=6.3.0",
     "dj-database-url>=3.0.1",
     "django>=5.1",
     "djangorestframework>=3.15.2",
     "mailjet-rest>=1.5.1",
+    "nh3>=0.3.2",
     "postgres>=4.0",
     "pyjwt[crypto]>=2.10.1",
     "python-dotenv>=1.2.1",
     "requests>=2.32.0",
     "ruff>=0.14.5",
-    "tinycss2>=1.5.1",
 ]
 
 # ===============================

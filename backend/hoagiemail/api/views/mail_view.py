@@ -1,14 +1,13 @@
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
-import bleach
-from bleach.css_sanitizer import CSSSanitizer
 from django.conf import settings
 from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hoagiemail.api.mail.mailjet_client import get_mailjet_client
+from hoagiemail.api.mail.sanitize import sanitize_html
 from hoagiemail.models import ScheduledEmail
 
 
@@ -34,48 +33,6 @@ class MailRequestSerializer(serializers.Serializer):
 	body = serializers.CharField(error_messages={"blank": "Email body cannot be blank."})
 	schedule = serializers.CharField()
 
-
-# Bleach configuration
-# Based on Quill editor toolbar options and generated HTML
-ALLOWED_TAGS = [
-	"a",
-	"blockquote",
-	"br",
-	"em",
-	"h1",
-	"h2",
-	"h3",
-	"img",
-	"li",
-	"ol",
-	"p",
-	"s",
-	"span",
-	"strong",
-	"sub",
-	"sup",
-	"u",
-	"ul",
-]
-ALLOWED_ATTRIBUTES = {
-	"*": ["style"],
-	"a": ["href"],
-	"img": ["src", "alt", "width"],
-}
-SAFE_CSS_PROPERTIES = [
-	"width",
-	"height",
-	"color",
-	"background-color",
-	"font-size",
-	"font-family",
-	"text-align",
-	"margin-top",
-	"margin-bottom",
-	"margin-left",
-	"margin-right",
-	"line-height",
-]
 
 NORMAL_EMAIL_FOOTER = (
 	"<hr />"
@@ -263,14 +220,7 @@ class MailView(APIView):
 		mail_data["email"] = user.email
 
 		# Sanitize HTML body
-		css_sanitizer = CSSSanitizer(allowed_css_properties=SAFE_CSS_PROPERTIES)
-		mail_data["body"] = bleach.clean(
-			mail_data["body"],
-			tags=ALLOWED_TAGS,
-			attributes=ALLOWED_ATTRIBUTES,
-			css_sanitizer=css_sanitizer,
-			strip=True,
-		)
+		mail_data["body"] = sanitize_html(mail_data["body"])
 
 		# Handle scheduled vs immediate email
 		error = ""
