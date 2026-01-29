@@ -134,17 +134,17 @@ def create_message(mail_data, sender_email, to_email):
 
 def print_debug(message, schedule=None):
 	"""Prints email contents for debugging purposes"""
-	print("DEBUG - Email:")
-	print(f"From: {message['From']['Name']} <{message['From']['Email']}>")
-	print(f"To: {message['To'][0]['Email']}")
-	print(f"Subject: {message['Subject']}")
-	print(f"Body: {message['TextPart']}")
+	logger.debug("Email:")
+	logger.debug(f"From: {message['From']['Name']} <{message['From']['Email']}>")
+	logger.debug(f"To: {message['To'][0]['Email']}")
+	logger.debug(f"Subject: {message['Subject']}")
+	logger.debug(f"Body: {message['TextPart']}")
 	if "Cc" in message:
-		print("CC:")
+		logger.debug("CC:")
 		for cc in message["Cc"]:
-			print(f"    {cc['Name']} <{cc['Email']}>")
+			logger.debug(f"    {cc['Name']} <{cc['Email']}>")
 	if schedule:
-		print(f"Scheduled for: {schedule} Eastern Time")
+		logger.debug(f"Scheduled for: {schedule} Eastern Time")
 
 
 def send_email(mail_data, sender_email):
@@ -162,28 +162,14 @@ def send_email(mail_data, sender_email):
 
 	# Send email via Mailjet
 	mailjet = get_mailjet_client()
-
-	try:
-		result = mailjet.send.create(data={"Messages": [message]})
-	except Exception as e:
-		return f"Failed to connect to Mailjet API: {str(e)}"
+	result = mailjet.send.create(data={"Messages": [message]})
 
 	result_status = result.status_code
 	if result_status == 200:
 		return
 	else:
 		error_data = result.json()
-
-		# Message-specific errors (invalid emails, content issues, etc.)
-		messages = error_data.get("Messages", [])
-		if messages and len(messages) > 0 and "Errors" in messages[0]:
-			errors = messages[0]["Errors"]
-			# Errors is a list of error objects with ErrorMessage field
-			if isinstance(errors, list) and len(errors) > 0:
-				error_messages = [error.get("ErrorMessage", str(error)) for error in errors]
-				return "; ".join(error_messages)
-		# API-level errors (auth failures, rate limits, etc.)
-		return error_data.get("ErrorMessage", f"Unknown Mailjet API error (status {result_status})")
+		raise Exception(f"Error sending email: {error_data}")
 
 
 def valid_schedule(schedule):
@@ -210,32 +196,23 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
 	# Check if already scheduled mail at this time for this user
-	try:
-		if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
-			return (
-				"You already have an email scheduled for this time. If you would like to change your message, please \
-				delete your mail in the Scheduled Emails page and try again."
-			)
-	except Exception as e:
-		return f"Error checking for existing scheduled emails: {str(e)}"
-
-	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
+	if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
+		return "You already have an email scheduled for this time. If you would like to change your message, please \
+			delete your mail in the Scheduled Emails page and try again."
 
 	if settings.DEBUG:
+		message = create_message(mail_data, user.email, HOAGIE_EMAIL)
 		print_debug(message, schedule=schedule_time_et)
 		return
 
 	# Create scheduled email
-	try:
-		ScheduledEmail.objects.create(
-			sender=user,
-			custom_sender_name=mail_data["sender"],
-			header_text=mail_data["header"],
-			body_text=mail_data["body"],
-			scheduled_at=schedule_time_et,
-		)
-	except Exception as e:
-		return f"Error saving scheduled email to database: {str(e)}"
+	ScheduledEmail.objects.create(
+		sender=user,
+		custom_sender_name=mail_data["sender"],
+		header_text=mail_data["header"],
+		body_text=mail_data["body"],
+		scheduled_at=schedule_time_et,
+	)
 
 	return None
 
