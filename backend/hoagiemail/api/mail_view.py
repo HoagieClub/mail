@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
@@ -9,6 +10,8 @@ from rest_framework.views import APIView
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.email.sanitize import sanitize_html
 from hoagiemail.models import ScheduledEmail
+
+logger = logging.getLogger(__name__)
 
 
 class MailRequestSerializer(serializers.Serializer):
@@ -57,17 +60,7 @@ class MailView(APIView):
 	def post(self, request) -> Response:
 		user = request.user
 		serializer = MailRequestSerializer(data=request.data)
-
-		# Validate request data
-		if not serializer.is_valid():
-			error_messages = []
-			if serializer.errors:
-				for _, errors in serializer.errors.items():
-					if errors and isinstance(errors, list):
-						for error in errors:
-							error_messages.append(str(error))
-			error = " ".join(error_messages) if error_messages else "Invalid request data"
-			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
+		serializer.is_valid(raise_exception=True)
 
 		mail_data = serializer.validated_data
 
@@ -82,8 +75,9 @@ class MailView(APIView):
 			else:
 				error = handle_email_now(mail_data, user)
 		except Exception as e:
+			logger.error(f"Unexpected error processing email: {str(e)}")
 			return Response(
-				{"error": f"Unexpected error processing email: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+				{"error": "Unexpected error processing email"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
 			)
 
 		if error:

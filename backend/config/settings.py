@@ -102,6 +102,54 @@ REST_FRAMEWORK = {
 	],
 }
 
+# Logging
+LOGGING = {
+	"version": 1,
+	"disable_existing_loggers": False,
+	"formatters": {
+		"standard": {
+			"format": "{asctime} [{levelname}] {name}: {message}",
+			"style": "{",
+		},
+	},
+	"handlers": {
+		"console": {
+			"class": "logging.StreamHandler",
+			"formatter": "standard",
+		},
+	},
+	"root": {
+		"handlers": ["console"],
+		"level": "WARNING",
+	},
+	"loggers": {
+		# Your application
+		"hoagiemail": {
+			"level": "DEBUG" if DEBUG else "INFO",
+			"handlers": ["console"],
+			"propagate": False,
+		},
+		# Django internals
+		"django": {
+			"level": "INFO",
+			"handlers": ["console"],
+			"propagate": False,
+		},
+		# SQL queries
+		"django.db.backends": {
+			"level": "DEBUG" if DEBUG else "WARNING",
+			"handlers": ["console"],
+			"propagate": False,
+		},
+		# HTTP requests
+		"django.request": {
+			"level": "INFO",
+			"handlers": ["console"],
+			"propagate": False,
+		},
+	},
+}
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
