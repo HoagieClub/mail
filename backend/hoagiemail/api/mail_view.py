@@ -6,8 +6,8 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hoagiemail.api.mail.mailjet_client import get_mailjet_client
-from hoagiemail.api.mail.sanitize import sanitize_html
+from hoagiemail.email.mailjet_client import get_mailjet_client
+from hoagiemail.email.sanitize import sanitize_html
 from hoagiemail.models import ScheduledEmail
 
 
