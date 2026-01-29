@@ -34,13 +34,15 @@ class MailRequestSerializer(serializers.Serializer):
 	schedule = serializers.CharField()
 
 
+HOAGIE_EMAIL = "hoagie@princeton.edu"
+
 NORMAL_EMAIL_FOOTER = (
 	"<hr />"
 	'<div style="font-size:8pt;">This email was instantly sent to all '
 	'college listservs with <a href="https://mail.hoagie.io/">Hoagie Mail</a>. '
 	"Email composed by %s (%s) — if you believe this email is offensive, "
 	"intentionally misleading or harmful, please report it to "
-	'<a href="mailto:hoagie@princeton.edu">hoagie@princeton.edu</a>.</div>'
+	f'<a href="mailto:{HOAGIE_EMAIL}">{HOAGIE_EMAIL}</a>.</div>'
 )
 
 TEST_EMAIL_FOOTER = (
@@ -49,6 +51,59 @@ TEST_EMAIL_FOOTER = (
 	'to you with <a href="https://mail.hoagie.io/">Hoagie Mail</a>. '
 	"Email composed by %s (%s).</div>"
 )
+
+
+class MailView(APIView):
+	def post(self, request) -> Response:
+		user = request.user
+		serializer = MailRequestSerializer(data=request.data)
+
+		# Validate request data
+		if not serializer.is_valid():
+			error_messages = []
+			if serializer.errors:
+				for _, errors in serializer.errors.items():
+					if errors and isinstance(errors, list):
+						for error in errors:
+							error_messages.append(str(error))
+			error = " ".join(error_messages) if error_messages else "Invalid request data"
+			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
+
+		mail_data = serializer.validated_data
+
+		# Sanitize HTML body
+		mail_data["body"] = sanitize_html(mail_data["body"])
+
+		# Handle scheduled vs immediate email
+		error = ""
+		try:
+			if mail_data["schedule"] != "now" and mail_data["schedule"] != "test":
+				error = handle_scheduled_email(mail_data, user)
+			else:
+				error = handle_email_now(mail_data, user)
+		except Exception as e:
+			return Response(
+				{"error": f"Unexpected error processing email: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+			)
+
+		if error:
+			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
+
+		return Response({"status": "OK", "message": "Mail sent successfully"}, status=status.HTTP_200_OK)
+
+	def get(self, request) -> Response:
+		# Logic to get scheduled mails
+		return Response(
+			{"status": "unused", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
+		)
+
+	def put(self, request) -> Response:
+		# Logic to update a scheduled mail
+		return Response({"status": "OK", "message": "Scheduled mail updated successfully"}, status=status.HTTP_200_OK)
+
+	def delete(self, request) -> Response:
+		# Logic to delete a scheduled mail
+		return Response({"status": "OK", "message": "Scheduled mail deleted successfully"}, status=status.HTTP_200_OK)
 
 
 def get_listservs():
@@ -65,11 +120,16 @@ def get_listservs():
 	]
 
 
-def create_message(mail_data, to_email):
-	"""Creates mailjet message structure"""
+def create_message(mail_data, sender_email, to_email):
+	"""
+	Creates mailjet message structure.
+	mail_data: serialized mail request from MailRequestSerializer
+	sender_email: email address of the sender
+	to_email: email address of the recipient
+	"""
 	return {
-		"From": {"Email": "hoagie@princeton.edu", "Name": mail_data["sender"]},
-		"ReplyTo": {"Email": mail_data["email"], "Name": mail_data["sender"]},
+		"From": {"Email": HOAGIE_EMAIL, "Name": mail_data["sender"]},
+		"ReplyTo": {"Email": sender_email, "Name": mail_data["sender"]},
 		"To": [{"Email": to_email, "Name": mail_data["sender"]}],
 		"Subject": mail_data["header"],
 		"TextPart": mail_data["body"],
@@ -93,13 +153,13 @@ def print_debug(message, schedule=None):
 		print(f"Scheduled for: {schedule} Eastern Time")
 
 
-def send_email(mail_data, user):
+def send_email(mail_data, sender_email):
 	"""Sends email using Mailjet API"""
 	if mail_data["schedule"] != "test":
-		message = create_message(mail_data, "hoagie@princeton.edu")
+		message = create_message(mail_data, sender_email, HOAGIE_EMAIL)
 		message["Cc"] = get_listservs()
 	else:
-		message = create_message(mail_data, mail_data["email"])
+		message = create_message(mail_data, sender_email, sender_email)
 
 	# In debug mode, print email contents instead of sending
 	if settings.DEBUG:
@@ -165,7 +225,7 @@ def handle_scheduled_email(mail_data, user):
 	except Exception as e:
 		return f"Error checking for existing scheduled emails: {str(e)}"
 
-	message = create_message(mail_data, mail_data["email"])
+	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
 
 	if settings.DEBUG:
 		print_debug(message, schedule=schedule_time_et)
@@ -197,58 +257,4 @@ def handle_email_now(mail_data, user):
 		mail_data["body"] += NORMAL_EMAIL_FOOTER % (user.username, user.email)
 
 	# Send the email
-	return send_email(mail_data, user)
-
-
-class MailView(APIView):
-	def post(self, request) -> Response:
-		user = request.user
-		serializer = MailRequestSerializer(data=request.data)
-
-		# Validate request data
-		if not serializer.is_valid():
-			error_messages = []
-			if serializer.errors:
-				for _, errors in serializer.errors.items():
-					if errors and isinstance(errors, list):
-						for error in errors:
-							error_messages.append(str(error))
-			error = " ".join(error_messages) if error_messages else "Invalid request data"
-			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
-
-		mail_data = serializer.validated_data
-		mail_data["email"] = user.email
-
-		# Sanitize HTML body
-		mail_data["body"] = sanitize_html(mail_data["body"])
-
-		# Handle scheduled vs immediate email
-		error = ""
-		try:
-			if mail_data["schedule"] != "now" and mail_data["schedule"] != "test":
-				error = handle_scheduled_email(mail_data, user)
-			else:
-				error = handle_email_now(mail_data, user)
-		except Exception as e:
-			return Response(
-				{"error": f"Unexpected error processing email: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
-			)
-
-		if error:
-			return Response({"error": error}, status=status.HTTP_400_BAD_REQUEST)
-
-		return Response({"status": "OK", "message": "Mail sent successfully"}, status=status.HTTP_200_OK)
-
-	def get(self, request) -> Response:
-		# Logic to get scheduled mails
-		return Response(
-			{"status": "unused", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
-		)
-
-	def put(self, request) -> Response:
-		# Logic to update a scheduled mail
-		return Response({"status": "OK", "message": "Scheduled mail updated successfully"}, status=status.HTTP_200_OK)
-
-	def delete(self, request) -> Response:
-		# Logic to delete a scheduled mail
-		return Response({"status": "OK", "message": "Scheduled mail deleted successfully"}, status=status.HTTP_200_OK)
+	return send_email(mail_data, user.email)
