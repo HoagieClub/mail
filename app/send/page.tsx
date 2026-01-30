@@ -26,7 +26,7 @@ export default function Send() {
         if (!response.ok) {
             const errorJson = await response.json();
             const errorText = errorJson.error || 'Unknown error';
-            setErrorMessage(`There was an issue with your email. ${errorText}`);
+            setErrorMessage(`There was an issue with your email: ${errorText}`);
             setTimeout(() => {
                 window.scrollTo(0, 0);
             }, 50);

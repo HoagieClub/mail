@@ -20,9 +20,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from hoagiemail.api.views.mail_view import MailView
-from hoagiemail.api.views.stuff_posts_view import StuffPostsView
-from hoagiemail.api.views.stuff_user_view import StuffUserView
+from hoagiemail.api.mail_view import MailView
+from hoagiemail.api.stuff_posts_view import StuffPostsView
+from hoagiemail.api.stuff_user_view import StuffUserView
 
 urlpatterns = [
 	path("admin/", admin.site.urls),
