@@ -288,10 +288,16 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 // Enhance color pickers (toolbar is created synchronously with Quill)
                 [
                     { class: '.ql-color', format: 'color', default: '#000000' },
-                    { class: '.ql-background', format: 'background', default: '' },
-                ].forEach(({ class: pickerClass, format, default: defaultValue }) => {
-                    enhanceColorPicker(pickerClass, format, defaultValue);
-                });
+                    {
+                        class: '.ql-background',
+                        format: 'background',
+                        default: '',
+                    },
+                ].forEach(
+                    ({ class: pickerClass, format, default: defaultValue }) => {
+                        enhanceColorPicker(pickerClass, format, defaultValue);
+                    }
+                );
 
                 /** ----------------------------------------------
                  *  Image upload handler
@@ -346,7 +352,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 /** ----------------------------------------------
                  *  Enhanced color picker with hex input and remove button
                  * ---------------------------------------------- */
-                
+
                 // React component for color picker enhancement
                 const ColorPickerEnhancement = ({
                     quill,
@@ -385,15 +391,17 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     };
 
                     return (
-                        <div className="ql-hex-input-container">
-                            <div className="ql-hex-input-wrapper">
+                        <div className='ql-hex-input-container'>
+                            <div className='ql-hex-input-wrapper'>
                                 <input
-                                    type="text"
-                                    placeholder="#000000"
-                                    className="ql-hex-input"
+                                    type='text'
+                                    placeholder='#000000'
+                                    className='ql-hex-input'
                                     maxLength={7}
                                     value={hexValue}
-                                    onChange={(e) => setHexValue(e.target.value)}
+                                    onChange={(e) =>
+                                        setHexValue(e.target.value)
+                                    }
                                     onKeyPress={(e) => {
                                         if (e.key === 'Enter') {
                                             applyHexColor();
@@ -403,22 +411,22 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                         borderColor: error ? '#ff0000' : '#ccc',
                                     }}
                                 />
-                                <div className="ql-icon-button-wrapper ql-apply-button">
+                                <div className='ql-icon-button-wrapper ql-apply-button'>
                                     <Button
-                                        appearance="default"
-                                        size="small"
+                                        appearance='default'
+                                        size='small'
                                         iconBefore={TickIcon}
                                         onClick={applyHexColor}
-                                        title="Apply"
+                                        title='Apply'
                                     />
                                 </div>
-                                <div className="ql-icon-button-wrapper ql-remove-button">
+                                <div className='ql-icon-button-wrapper ql-remove-button'>
                                     <Button
-                                        appearance="default"
-                                        size="small"
+                                        appearance='default'
+                                        size='small'
                                         iconBefore={EraserIcon}
                                         onClick={removeColor}
-                                        title="Remove Format"
+                                        title='Remove Format'
                                     />
                                 </div>
                             </div>
@@ -443,7 +451,9 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     if (!pickerOptions) return;
 
                     // Check if already enhanced
-                    if (pickerOptions.querySelector('.ql-hex-input-container')) {
+                    if (
+                        pickerOptions.querySelector('.ql-hex-input-container')
+                    ) {
                         return;
                     }
 
@@ -460,7 +470,6 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     );
                     pickerOptions.appendChild(container);
                 };
-
 
                 // Add tooltips to toolbar buttons
                 const toolbarElement = document.querySelector('.ql-toolbar');
@@ -491,12 +500,16 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     };
 
                     // Add tooltips to all toolbar buttons
-                    Object.entries(tooltipMap).forEach(([selector, tooltip]) => {
-                        const button = toolbarElement.querySelector(selector) as HTMLElement;
-                        if (button) {
-                            button.setAttribute('title', tooltip);
+                    Object.entries(tooltipMap).forEach(
+                        ([selector, tooltip]) => {
+                            const button = toolbarElement.querySelector(
+                                selector
+                            ) as HTMLElement;
+                            if (button) {
+                                button.setAttribute('title', tooltip);
+                            }
                         }
-                    });
+                    );
 
                     const fullscreenButton = document.querySelector(
                         '.ql-fullscreen'
