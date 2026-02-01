@@ -8,6 +8,8 @@ import React, {
     MutableRefObject,
 } from 'react';
 
+import { Button, TickIcon, EraserIcon } from 'evergreen-ui';
+import { createRoot } from 'react-dom/client';
 import screenfull from 'screenfull';
 
 interface ImageResult {
@@ -284,6 +286,142 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 quill.format('font', 'arial');
 
                 /** ----------------------------------------------
+                 *  Enhanced color picker with hex input and remove button
+                 * ---------------------------------------------- */
+
+                // React component for color picker enhancement
+                const ColorPickerEnhancement = ({
+                    quill,
+                    formatName,
+                    defaultValue,
+                    colorPicker,
+                }: {
+                    quill: any;
+                    formatName: string;
+                    defaultValue: string;
+                    colorPicker: HTMLElement;
+                }) => {
+                    const [hexValue, setHexValue] = React.useState('');
+                    const [error, setError] = React.useState(false);
+
+                    const applyHexColor = () => {
+                        let hex = hexValue.trim();
+                        if (!hex.startsWith('#')) {
+                            hex = '#' + hex;
+                        }
+                        const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                        if (hexRegex.test(hex)) {
+                            quill.format(formatName, hex);
+                            colorPicker.classList.remove('ql-expanded');
+                            setHexValue('');
+                            setError(false);
+                        } else {
+                            setError(true);
+                            setTimeout(() => setError(false), 1000);
+                        }
+                    };
+
+                    const removeColor = () => {
+                        quill.format(formatName, defaultValue);
+                        colorPicker.classList.remove('ql-expanded');
+                    };
+
+                    return (
+                        <div className='ql-hex-input-container'>
+                            <div className='ql-hex-input-wrapper'>
+                                <input
+                                    type='text'
+                                    placeholder='#000000'
+                                    className='ql-hex-input'
+                                    maxLength={7}
+                                    value={hexValue}
+                                    onChange={(e) =>
+                                        setHexValue(e.target.value)
+                                    }
+                                    onKeyPress={(e) => {
+                                        if (e.key === 'Enter') {
+                                            applyHexColor();
+                                        }
+                                    }}
+                                    style={{
+                                        borderColor: error ? '#ff0000' : '#ccc',
+                                    }}
+                                />
+                                <div className='ql-icon-button-wrapper ql-apply-button'>
+                                    <Button
+                                        appearance='default'
+                                        size='small'
+                                        iconBefore={TickIcon}
+                                        onClick={applyHexColor}
+                                        title='Apply'
+                                    />
+                                </div>
+                                <div className='ql-icon-button-wrapper ql-remove-button'>
+                                    <Button
+                                        appearance='default'
+                                        size='small'
+                                        iconBefore={EraserIcon}
+                                        onClick={removeColor}
+                                        title='Remove Format'
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    );
+                };
+
+                const enhanceColorPicker = (
+                    pickerClass: string,
+                    formatName: string,
+                    defaultValue: string
+                ) => {
+                    const toolbarEl = document.querySelector('.ql-toolbar');
+                    const colorPicker = toolbarEl?.querySelector(
+                        pickerClass
+                    ) as HTMLElement;
+                    if (!colorPicker) return;
+
+                    const pickerOptions = colorPicker.querySelector(
+                        '.ql-picker-options'
+                    ) as HTMLElement;
+                    if (!pickerOptions) return;
+
+                    // Check if already enhanced
+                    if (
+                        pickerOptions.querySelector('.ql-hex-input-container')
+                    ) {
+                        return;
+                    }
+
+                    // Create container and render React component
+                    const container = document.createElement('div');
+                    const root = createRoot(container);
+                    root.render(
+                        React.createElement(ColorPickerEnhancement, {
+                            quill,
+                            formatName,
+                            defaultValue,
+                            colorPicker,
+                        })
+                    );
+                    pickerOptions.appendChild(container);
+                };
+
+                // Enhance color pickers (toolbar is created synchronously with Quill)
+                [
+                    { class: '.ql-color', format: 'color', default: '#000000' },
+                    {
+                        class: '.ql-background',
+                        format: 'background',
+                        default: '',
+                    },
+                ].forEach(
+                    ({ class: pickerClass, format, default: defaultValue }) => {
+                        enhanceColorPicker(pickerClass, format, defaultValue);
+                    }
+                );
+
+                /** ----------------------------------------------
                  *  Image upload handler
                  * ---------------------------------------------- */
                 const toolbar = quill.getModule('toolbar');
@@ -333,9 +471,46 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     };
                 });
 
-                // Add the fullscreen button to the toolbar
+                // Add tooltips to toolbar buttons
                 const toolbarElement = document.querySelector('.ql-toolbar');
                 if (toolbarElement) {
+                    // Map of button classes to tooltip text
+                    const tooltipMap: Record<string, string> = {
+                        '.ql-header': 'Heading',
+                        '.ql-size': 'Font Size',
+                        '.ql-font': 'Font Family',
+                        '.ql-link': 'Link',
+                        '.ql-image': 'Image',
+                        '.ql-undo': 'Undo',
+                        '.ql-redo': 'Redo',
+                        '.ql-bold': 'Bold',
+                        '.ql-italic': 'Italic',
+                        '.ql-underline': 'Underline',
+                        '.ql-strike': 'Strikethrough',
+                        '.ql-color': 'Text Color',
+                        '.ql-background': 'Background Color',
+                        '.ql-blockquote': 'Quote',
+                        '.ql-list[value="ordered"]': 'Numbered List',
+                        '.ql-list[value="bullet"]': 'Bullet List',
+                        '.ql-script[value="sub"]': 'Subscript',
+                        '.ql-script[value="super"]': 'Superscript',
+                        '.ql-align': 'Text Alignment',
+                        '.ql-clean': 'Clear Formatting',
+                        '.ql-fullscreen': 'Fullscreen',
+                    };
+
+                    // Add tooltips to all toolbar buttons
+                    Object.entries(tooltipMap).forEach(
+                        ([selector, tooltip]) => {
+                            const button = toolbarElement.querySelector(
+                                selector
+                            ) as HTMLElement;
+                            if (button) {
+                                button.setAttribute('title', tooltip);
+                            }
+                        }
+                    );
+
                     const fullscreenButton = document.querySelector(
                         '.ql-fullscreen'
                     ) as HTMLElement;
