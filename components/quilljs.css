@@ -122,3 +122,53 @@ li[data-list='bullet'] {
 .ql-toolbar {
     background-color: #fff;
 }
+
+/* Enhanced color picker styles */
+.ql-hex-input-container {
+    padding: 6px 0;
+    margin-top: 4px;
+    clear: both;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ql-hex-input-wrapper {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    align-items: center;
+}
+
+.ql-hex-input {
+    flex: 1;
+    padding: 3px 4px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 11px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.ql-icon-button-wrapper {
+    flex-shrink: 0;
+}
+
+.ql-icon-button-wrapper button {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 1px !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.ql-icon-button-wrapper button > * {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.ql-icon-button-wrapper button svg {
+    width: 14px !important;
+    height: 14px !important;
+}
