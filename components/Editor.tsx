@@ -333,9 +333,42 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     };
                 });
 
-                // Add the fullscreen button to the toolbar
+                // Add tooltips to toolbar buttons
                 const toolbarElement = document.querySelector('.ql-toolbar');
                 if (toolbarElement) {
+                    // Map of button classes to tooltip text
+                    const tooltipMap: Record<string, string> = {
+                        '.ql-header': 'Heading',
+                        '.ql-size': 'Font Size',
+                        '.ql-font': 'Font Family',
+                        '.ql-link': 'Link',
+                        '.ql-image': 'Image',
+                        '.ql-undo': 'Undo',
+                        '.ql-redo': 'Redo',
+                        '.ql-bold': 'Bold',
+                        '.ql-italic': 'Italic',
+                        '.ql-underline': 'Underline',
+                        '.ql-strike': 'Strikethrough',
+                        '.ql-color': 'Text Color',
+                        '.ql-background': 'Background Color',
+                        '.ql-blockquote': 'Quote',
+                        '.ql-list[value="ordered"]': 'Numbered List',
+                        '.ql-list[value="bullet"]': 'Bullet List',
+                        '.ql-script[value="sub"]': 'Subscript',
+                        '.ql-script[value="super"]': 'Superscript',
+                        '.ql-align': 'Text Alignment',
+                        '.ql-clean': 'Clear Formatting',
+                        '.ql-fullscreen': 'Fullscreen',
+                    };
+
+                    // Add tooltips to all toolbar buttons
+                    Object.entries(tooltipMap).forEach(([selector, tooltip]) => {
+                        const button = toolbarElement.querySelector(selector) as HTMLElement;
+                        if (button) {
+                            button.setAttribute('title', tooltip);
+                        }
+                    });
+
                     const fullscreenButton = document.querySelector(
                         '.ql-fullscreen'
                     ) as HTMLElement;
