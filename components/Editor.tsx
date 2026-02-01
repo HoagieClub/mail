@@ -285,70 +285,6 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                 quill.format('size', '14px');
                 quill.format('font', 'arial');
 
-                // Enhance color pickers (toolbar is created synchronously with Quill)
-                [
-                    { class: '.ql-color', format: 'color', default: '#000000' },
-                    {
-                        class: '.ql-background',
-                        format: 'background',
-                        default: '',
-                    },
-                ].forEach(
-                    ({ class: pickerClass, format, default: defaultValue }) => {
-                        enhanceColorPicker(pickerClass, format, defaultValue);
-                    }
-                );
-
-                /** ----------------------------------------------
-                 *  Image upload handler
-                 * ---------------------------------------------- */
-                const toolbar = quill.getModule('toolbar');
-
-                toolbar.addHandler('image', () => {
-                    const input = document.createElement('input');
-                    input.type = 'file';
-                    input.accept = 'image/*';
-                    input.click();
-
-                    input.onchange = async () => {
-                        const file = input.files?.[0];
-                        if (!file) return;
-
-                        try {
-                            const result = await saveToServer(file);
-                            const range = quill.getSelection(true);
-
-                            const imageUrl =
-                                typeof result === 'string'
-                                    ? result
-                                    : result.result[0].url;
-
-                            quill.insertEmbed(range.index, 'image', imageUrl);
-
-                            // Set a default width on the inserted image. Only
-                            // apply it when no explicit width has been set yet.
-                            requestAnimationFrame(() => {
-                                const images =
-                                    quill.root.querySelectorAll('img');
-                                for (const img of images) {
-                                    if (
-                                        img.src === imageUrl ||
-                                        img.src.endsWith(imageUrl)
-                                    ) {
-                                        if (!img.hasAttribute('width')) {
-                                            img.setAttribute('width', '500');
-                                            img.removeAttribute('height');
-                                        }
-                                        break;
-                                    }
-                                }
-                            });
-
-                            quill.setSelection(range.index + 1);
-                        } catch {}
-                    };
-                });
-
                 /** ----------------------------------------------
                  *  Enhanced color picker with hex input and remove button
                  * ---------------------------------------------- */
@@ -470,6 +406,70 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     );
                     pickerOptions.appendChild(container);
                 };
+
+                // Enhance color pickers (toolbar is created synchronously with Quill)
+                [
+                    { class: '.ql-color', format: 'color', default: '#000000' },
+                    {
+                        class: '.ql-background',
+                        format: 'background',
+                        default: '',
+                    },
+                ].forEach(
+                    ({ class: pickerClass, format, default: defaultValue }) => {
+                        enhanceColorPicker(pickerClass, format, defaultValue);
+                    }
+                );
+
+                /** ----------------------------------------------
+                 *  Image upload handler
+                 * ---------------------------------------------- */
+                const toolbar = quill.getModule('toolbar');
+
+                toolbar.addHandler('image', () => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.click();
+
+                    input.onchange = async () => {
+                        const file = input.files?.[0];
+                        if (!file) return;
+
+                        try {
+                            const result = await saveToServer(file);
+                            const range = quill.getSelection(true);
+
+                            const imageUrl =
+                                typeof result === 'string'
+                                    ? result
+                                    : result.result[0].url;
+
+                            quill.insertEmbed(range.index, 'image', imageUrl);
+
+                            // Set a default width on the inserted image. Only
+                            // apply it when no explicit width has been set yet.
+                            requestAnimationFrame(() => {
+                                const images =
+                                    quill.root.querySelectorAll('img');
+                                for (const img of images) {
+                                    if (
+                                        img.src === imageUrl ||
+                                        img.src.endsWith(imageUrl)
+                                    ) {
+                                        if (!img.hasAttribute('width')) {
+                                            img.setAttribute('width', '500');
+                                            img.removeAttribute('height');
+                                        }
+                                        break;
+                                    }
+                                }
+                            });
+
+                            quill.setSelection(range.index + 1);
+                        } catch {}
+                    };
+                });
 
                 // Add tooltips to toolbar buttons
                 const toolbarElement = document.querySelector('.ql-toolbar');
