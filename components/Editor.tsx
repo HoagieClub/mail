@@ -271,6 +271,17 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                 redo: function () {
                                     (this as any).quill.history.redo();
                                 },
+                                clean: function () {
+                                    const quill = (this as any).quill;
+                                    const range = quill.getSelection(true);
+                                    if (range) {
+                                        // Remove all formatting
+                                        quill.removeFormat(range);
+                                        // Set default font size
+                                        quill.formatText(range.index, range.length, 'size', '14px');
+                                        quill.formatText(range.index, range.length, 'font', 'arial');
+                                    }
+                                },
                                 fullscreen: function () {
                                     // Handled by manual event listener below (needs to toggle icon and fullscreen state)
                                 },
@@ -687,6 +698,9 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             const currentFormat = quill.getFormat(range);
                             const hadHeader = currentFormat.header;
 
+                            // Update lastFontSize ref when size is changed
+                            lastFontSize.current = value;
+
                             // Apply the size change
                             const result = originalFormat(name, value, source);
 
@@ -711,6 +725,12 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             return result;
                         }
                     }
+
+                    // When font is being changed, update lastFont ref
+                    if (name === 'font' && value !== null && value !== false) {
+                        lastFont.current = value;
+                    }
+
                     return originalFormat(name, value, source);
                 };
 
@@ -725,6 +745,22 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     if (f.size) lastFontSize.current = f.size;
                     if (f.font) lastFont.current = f.font;
                 });
+
+                // Update last font/size when format is changed via toolbar
+                quill.on(
+                    Quill.events.TEXT_CHANGE,
+                    (delta, oldDelta, source) => {
+                        // When format is applied via toolbar (source === 'api'), update refs
+                        if (source === 'api') {
+                            const range = quill.getSelection(true);
+                            if (range) {
+                                const f = quill.getFormat(range);
+                                if (f.size) lastFontSize.current = f.size;
+                                if (f.font) lastFont.current = f.font;
+                            }
+                        }
+                    }
+                );
 
                 quill.on(
                     Quill.events.TEXT_CHANGE,
