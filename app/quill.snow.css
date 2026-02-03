@@ -31,7 +31,7 @@
 }
 .ql-editor {
     box-sizing: border-box;
-    line-height: 1.42;
+    line-height: 1.2;
     height: 100%;
     outline: none;
     overflow-y: auto;
@@ -49,13 +49,7 @@
 .ql-editor ol,
 .ql-editor ul,
 .ql-editor pre,
-.ql-editor blockquote,
-.ql-editor h1,
-.ql-editor h2,
-.ql-editor h3,
-.ql-editor h4,
-.ql-editor h5,
-.ql-editor h6 {
+.ql-editor blockquote {
     margin: 0;
     padding: 0;
     counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8
@@ -599,23 +593,50 @@
 .ql-snow .ql-direction.ql-active svg:first-child {
     display: none;
 }
-.ql-snow .ql-editor h1 {
+/* Default heading sizes - can be overridden by inline styles when user changes size */
+.ql-snow .ql-editor h1:not([style*='font-size']) {
     font-size: 2em;
 }
-.ql-snow .ql-editor h2 {
+.ql-snow .ql-editor h2:not([style*='font-size']) {
     font-size: 1.5em;
 }
-.ql-snow .ql-editor h3 {
+.ql-snow .ql-editor h3:not([style*='font-size']) {
     font-size: 1.17em;
 }
-.ql-snow .ql-editor h4 {
+.ql-snow .ql-editor h4:not([style*='font-size']) {
     font-size: 1em;
 }
-.ql-snow .ql-editor h5 {
+.ql-snow .ql-editor h5:not([style*='font-size']) {
     font-size: 0.83em;
 }
-.ql-snow .ql-editor h6 {
+.ql-snow .ql-editor h6:not([style*='font-size']) {
     font-size: 0.67em;
+}
+
+/* Heading margins - always applied */
+.ql-snow .ql-editor h1 {
+    margin-top: 0.67em !important;
+    margin-bottom: 0.67em !important;
+}
+.ql-snow .ql-editor h2 {
+    margin-top: 0.83em !important;
+    margin-bottom: 0.83em !important;
+}
+.ql-snow .ql-editor h3 {
+    margin-top: 1em !important;
+    margin-bottom: 1em !important;
+}
+.ql-snow .ql-editor h4 {
+    margin-top: 1.33em !important;
+    margin-bottom: 1.33em !important;
+}
+.ql-snow .ql-editor h5 {
+    margin-top: 1.67em !important;
+    margin-bottom: 1.67em !important;
+}
+.ql-snow .ql-editor h6 {
+    margin-top: 2.33em !important;
+    margin-bottom: 2.33em !important;
 }
 .ql-snow .ql-editor a {
     text-decoration: underline;
@@ -648,6 +669,13 @@
 }
 .ql-snow .ql-editor img {
     max-width: 100%;
+}
+
+/* Default width for images without explicit width attribute */
+/* This allows the resize module to work properly while providing a default size */
+.ql-snow .ql-editor img:not([width]) {
+    width: 500px;
+    height: auto;
 }
 .ql-snow .ql-picker {
     color: #444;
