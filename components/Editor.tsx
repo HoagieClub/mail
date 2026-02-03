@@ -801,6 +801,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                         if (source !== 'user') return;
 
                         let index = 0;
+                        let hasDeletion = false;
 
                         delta.ops?.forEach((op) => {
                             if (typeof op.insert === 'string') {
@@ -857,8 +858,21 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                 index += text.length;
                             } else if (typeof op.retain === 'number') {
                                 index += op.retain;
+                            } else if (typeof op.delete === 'number') {
+                                hasDeletion = true;
                             }
                         });
+
+                        // After deletions, update lastFont and lastFontSize to match current cursor format
+                        if (hasDeletion) {
+                            const range = quill.getSelection(true);
+                            if (range) {
+                                const currentFormat = quill.getFormat(range);
+                                // Update font and size- use current format or default to last set values
+                                lastFont.current = currentFormat.font || lastFont.current;
+                                lastFontSize.current = currentFormat.size || lastFontSize.current;
+                            }
+                        }
                     }
                 );
             })();
