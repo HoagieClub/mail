@@ -278,8 +278,18 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                         // Remove all formatting
                                         quill.removeFormat(range);
                                         // Set default font size
-                                        quill.formatText(range.index, range.length, 'size', '14px');
-                                        quill.formatText(range.index, range.length, 'font', 'arial');
+                                        quill.formatText(
+                                            range.index,
+                                            range.length,
+                                            'size',
+                                            '14px'
+                                        );
+                                        quill.formatText(
+                                            range.index,
+                                            range.length,
+                                            'font',
+                                            'arial'
+                                        );
                                     }
                                 },
                                 fullscreen: function () {
@@ -302,30 +312,41 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                  * ---------------------------------------------- */
                 const toolbarModule = quill.getModule('toolbar');
                 const updatePicker = (pickerClass: string, value: string) => {
-                    const picker = toolbarModule.container.querySelector(pickerClass);
+                    const picker =
+                        toolbarModule.container.querySelector(pickerClass);
                     const label = picker?.querySelector('.ql-picker-label');
                     // Picker options may not be in DOM until first opened, so we need to trigger their creation
-                    const pickerButton = picker?.querySelector('.ql-picker-label') as HTMLElement;
-                    if (pickerButton && !picker?.querySelector('.ql-picker-options')) {
+                    const pickerButton = picker?.querySelector(
+                        '.ql-picker-label'
+                    ) as HTMLElement;
+                    if (
+                        pickerButton &&
+                        !picker?.querySelector('.ql-picker-options')
+                    ) {
                         // Trigger picker to render options by simulating a click
                         pickerButton.click();
                         pickerButton.click(); // Click again to close it
                     }
-                    
+
                     const options = picker?.querySelector('.ql-picker-options');
-                    const option = options?.querySelector(`[data-value="${value}"]`) as HTMLElement;
-                    
+                    const option = options?.querySelector(
+                        `[data-value="${value}"]`
+                    ) as HTMLElement;
+
                     if (label && option) {
                         const labelSpan = label.querySelector('span');
-                        if (labelSpan) labelSpan.textContent = option.textContent;
+                        if (labelSpan)
+                            labelSpan.textContent = option.textContent;
                         label.setAttribute('data-value', value);
-                        options.querySelectorAll('.ql-picker-item').forEach((item: any) => {
-                            item.classList.remove('ql-selected');
-                        });
+                        options
+                            .querySelectorAll('.ql-picker-item')
+                            .forEach((item: any) => {
+                                item.classList.remove('ql-selected');
+                            });
                         option.classList.add('ql-selected');
                     }
                 };
-                
+
                 updatePicker('.ql-size', '14px');
                 updatePicker('.ql-font', 'arial');
 
@@ -869,8 +890,10 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             if (range) {
                                 const currentFormat = quill.getFormat(range);
                                 // Update font and size- use current format or default to last set values
-                                lastFont.current = currentFormat.font || lastFont.current;
-                                lastFontSize.current = currentFormat.size || lastFontSize.current;
+                                lastFont.current =
+                                    currentFormat.font || lastFont.current;
+                                lastFontSize.current =
+                                    currentFormat.size || lastFontSize.current;
                             }
                         }
                     }
