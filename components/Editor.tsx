@@ -271,6 +271,27 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                 redo: function () {
                                     (this as any).quill.history.redo();
                                 },
+                                clean: function () {
+                                    const quill = (this as any).quill;
+                                    const range = quill.getSelection(true);
+                                    if (range) {
+                                        // Remove all formatting
+                                        quill.removeFormat(range);
+                                        // Set default font size
+                                        quill.formatText(
+                                            range.index,
+                                            range.length,
+                                            'size',
+                                            '14px'
+                                        );
+                                        quill.formatText(
+                                            range.index,
+                                            range.length,
+                                            'font',
+                                            'arial'
+                                        );
+                                    }
+                                },
                                 fullscreen: function () {
                                     // Handled by manual event listener below (needs to toggle icon and fullscreen state)
                                 },
@@ -282,8 +303,52 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                 quillRef.current = quill;
 
+                // Set default formats
                 quill.format('size', '14px');
                 quill.format('font', 'arial');
+
+                /** ----------------------------------------------
+                 *  Update toolbar pickers to show active state on initial load
+                 * ---------------------------------------------- */
+                const toolbarModule = quill.getModule('toolbar');
+                const updatePicker = (pickerClass: string, value: string) => {
+                    const picker =
+                        toolbarModule.container.querySelector(pickerClass);
+                    const label = picker?.querySelector('.ql-picker-label');
+                    // Picker options may not be in DOM until first opened, so we need to trigger their creation
+                    const pickerButton = picker?.querySelector(
+                        '.ql-picker-label'
+                    ) as HTMLElement;
+                    if (
+                        pickerButton &&
+                        !picker?.querySelector('.ql-picker-options')
+                    ) {
+                        // Trigger picker to render options by simulating a click
+                        pickerButton.click();
+                        pickerButton.click(); // Click again to close it
+                    }
+
+                    const options = picker?.querySelector('.ql-picker-options');
+                    const option = options?.querySelector(
+                        `[data-value="${value}"]`
+                    ) as HTMLElement;
+
+                    if (label && option) {
+                        const labelSpan = label.querySelector('span');
+                        if (labelSpan)
+                            labelSpan.textContent = option.textContent;
+                        label.setAttribute('data-value', value);
+                        options
+                            .querySelectorAll('.ql-picker-item')
+                            .forEach((item: any) => {
+                                item.classList.remove('ql-selected');
+                            });
+                        option.classList.add('ql-selected');
+                    }
+                };
+
+                updatePicker('.ql-size', '14px');
+                updatePicker('.ql-font', 'arial');
 
                 /** ----------------------------------------------
                  *  Enhanced color picker with hex input and remove button
@@ -687,6 +752,9 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             const currentFormat = quill.getFormat(range);
                             const hadHeader = currentFormat.header;
 
+                            // Update lastFontSize ref when size is changed
+                            lastFontSize.current = value;
+
                             // Apply the size change
                             const result = originalFormat(name, value, source);
 
@@ -711,6 +779,12 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                             return result;
                         }
                     }
+
+                    // When font is being changed, update lastFont ref
+                    if (name === 'font' && value !== null && value !== false) {
+                        lastFont.current = value;
+                    }
+
                     return originalFormat(name, value, source);
                 };
 
@@ -726,12 +800,29 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     if (f.font) lastFont.current = f.font;
                 });
 
+                // Update last font/size when format is changed via toolbar
+                quill.on(
+                    Quill.events.TEXT_CHANGE,
+                    (delta, oldDelta, source) => {
+                        // When format is applied via toolbar (source === 'api'), update refs
+                        if (source === 'api') {
+                            const range = quill.getSelection(true);
+                            if (range) {
+                                const f = quill.getFormat(range);
+                                if (f.size) lastFontSize.current = f.size;
+                                if (f.font) lastFont.current = f.font;
+                            }
+                        }
+                    }
+                );
+
                 quill.on(
                     Quill.events.TEXT_CHANGE,
                     (delta, oldDelta, source) => {
                         if (source !== 'user') return;
 
                         let index = 0;
+                        let hasDeletion = false;
 
                         delta.ops?.forEach((op) => {
                             if (typeof op.insert === 'string') {
@@ -788,8 +879,23 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                                 index += text.length;
                             } else if (typeof op.retain === 'number') {
                                 index += op.retain;
+                            } else if (typeof op.delete === 'number') {
+                                hasDeletion = true;
                             }
                         });
+
+                        // After deletions, update lastFont and lastFontSize to match current cursor format
+                        if (hasDeletion) {
+                            const range = quill.getSelection(true);
+                            if (range) {
+                                const currentFormat = quill.getFormat(range);
+                                // Update font and size- use current format or default to last set values
+                                lastFont.current =
+                                    currentFormat.font || lastFont.current;
+                                lastFontSize.current =
+                                    currentFormat.size || lastFontSize.current;
+                            }
+                        }
                     }
                 );
             })();
