@@ -73,17 +73,11 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     const handleTemplateSelect = (type: TemplateType) => {
         const template = EMAIL_TEMPLATES.find((t) => t.type === type);
         if (!template) return;
-
-        // Normalize HTML content by stripping tags and non-breaking spaces,
-        // then trimming. This treats "<p><br></p>", "<p></p>", and similar
-        // editor-empty HTML as empty so selecting a template won't show the
-        // replace warning when the editor is effectively blank.
         const normalize = (s: string | undefined | null) =>
             (s || '')
                 .replace(/&nbsp;/g, ' ')
                 .replace(/<[^>]*>/g, '')
                 .trim();
-
         const hasEditorContent = normalize(body) !== '';
         const wouldChangeBody = normalize(template.bodyTemplate) !== normalize(body);
 
@@ -93,7 +87,6 @@ export default function Mail({ onSend, errorMessage, success, user }) {
             return;
         }
 
-        // Safe to apply immediately (only change body now)
         setSelectedTemplate(type);
         setBody(template.bodyTemplate);
     };
@@ -162,6 +155,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 onHTMLChange={(content) => {
                     setBody(content);
                 }}
+                initialValue={body}
             />
 
             <Pane>

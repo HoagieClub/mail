@@ -24,6 +24,7 @@ interface RichTextEditorProps {
     onTextChange?: (...args: any[]) => void;
     onSelectionChange?: (...args: any[]) => void;
     onHTMLChange?: (html: string) => void;
+    initialValue?: string;
 }
 
 /**
@@ -99,6 +100,23 @@ const normalizeHTMLForEmail = (html: string): string => {
     return normalizedHTML;
 };
 
+const cleanupListSpacing = (root: HTMLElement) => {
+    const lists = Array.from(root.querySelectorAll('ul, ol'));
+    lists.forEach((list) => {
+        const prev = list.previousElementSibling as HTMLElement | null;
+        if (
+            prev &&
+            prev.tagName === 'P' &&
+            (prev.innerHTML.trim() === '' ||
+                prev.innerHTML.trim() === '<br>' ||
+                prev.innerHTML.trim() === '<br/>' ||
+                prev.textContent?.trim() === '')
+        ) {
+            prev.remove();
+        }
+    });
+};
+
 const fontSizeArr = [
     '10px',
     '12px',
@@ -152,7 +170,7 @@ const toolbarOptions = [
 ];
 
 const Editor = forwardRef<any, RichTextEditorProps>(
-    ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
+    ({ onTextChange, onSelectionChange, onHTMLChange, initialValue }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
         const quillRef = ref as MutableRefObject<any | null>;
 
@@ -164,12 +182,31 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
         const lastFontSize = useRef<string>('14px');
         const lastFont = useRef<string>('arial');
+        const lastSetValue = useRef<string | undefined>(undefined);
 
         useLayoutEffect(() => {
             onTextChangeRef.current = onTextChange;
             onSelectionChangeRef.current = onSelectionChange;
             onHTMLChangeRef.current = onHTMLChange;
         });
+
+        // Update editor content when initialValue changes externally (not from user typing)
+        useEffect(() => {
+            if (quillRef.current && initialValue !== undefined && initialValue !== lastSetValue.current) {
+                const quill = quillRef.current;
+                quill.clipboard.dangerouslyPasteHTML(initialValue, 'api');
+                const contentLength = quill.getLength();
+                if (contentLength > 1) {
+                    quill.formatText(0, contentLength, { font: 'arial', size: '14px' }, 'api');
+                }
+                const normalizedValue = normalizeHTMLForEmail(quill.root.innerHTML);
+                lastSetValue.current = normalizedValue;
+
+                if (onHTMLChangeRef.current) {
+                    onHTMLChangeRef.current(normalizedValue);
+                }
+            }
+        }, [initialValue]);
 
         const saveToServer = async (file: File) => {
             // Uncomment below for local image testing (default Hoagie image)
@@ -670,6 +707,9 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                     // Normalize HTML for email clients to fix paragraph spacing
                     const normalizedHTML = normalizeHTMLForEmail(html);
+
+                    // Update lastSetValue to track the normalized content and prevent loops
+                    lastSetValue.current = normalizedHTML;
 
                     localStorage.setItem('mailBody', JSON.stringify(html));
                     localStorage.setItem(
