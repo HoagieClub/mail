@@ -136,6 +136,7 @@ def print_debug(message, schedule=None):
 	"""Prints email contents for debugging purposes"""
 	logger.debug("Email:")
 	logger.debug(f"From: {message['From']['Name']} <{message['From']['Email']}>")
+	logger.debug(f"ReplyTo: {message['ReplyTo']['Name']} <{message['ReplyTo']['Email']}>")
 	logger.debug(f"To: {message['To'][0]['Email']}")
 	logger.debug(f"Subject: {message['Subject']}")
 	logger.debug(f"Body: {message['TextPart']}")
@@ -149,20 +150,26 @@ def print_debug(message, schedule=None):
 
 def send_email(mail_data, sender_email):
 	"""Sends email using Mailjet API"""
+	# Create the message with actual content
 	if mail_data["schedule"] != "test":
-		message = create_message(mail_data, sender_email, HOAGIE_EMAIL)
-		message["Cc"] = get_listservs()
+		actual_message = create_message(mail_data, sender_email, HOAGIE_EMAIL)
+		actual_message["Cc"] = get_listservs()
 	else:
-		message = create_message(mail_data, sender_email, sender_email)
+		actual_message = create_message(mail_data, sender_email, sender_email)
 
-	# In debug mode, print email contents instead of sending
-	if settings.DEBUG:
-		print_debug(message)
+	print_debug(actual_message)
+
+	if not settings.SEND_EMAIL:
 		return
+
+	# Send email only to self if not in production
+	to_send = actual_message
+	if not settings.PROD and mail_data["schedule"] != "test":
+		to_send = create_message(mail_data, sender_email, sender_email)
 
 	# Send email via Mailjet
 	mailjet = get_mailjet_client()
-	result = mailjet.send.create(data={"Messages": [message]})
+	result = mailjet.send.create(data={"Messages": [to_send]})
 
 	result_status = result.status_code
 	if result_status == 200:
@@ -200,10 +207,8 @@ def handle_scheduled_email(mail_data, user):
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
-	if settings.DEBUG:
-		message = create_message(mail_data, user.email, HOAGIE_EMAIL)
-		print_debug(message, schedule=schedule_time_et)
-		return
+	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
+	print_debug(message, schedule=schedule_time_et)
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
