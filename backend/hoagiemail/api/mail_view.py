@@ -7,6 +7,7 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from hoagiemail.email.limiter import Visitor
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.email.sanitize import sanitize_html
 from hoagiemail.models import ScheduledEmail
@@ -218,11 +219,17 @@ def handle_scheduled_email(mail_data, user):
 
 
 def handle_email_now(mail_data, user):
-	if not settings.DEBUG:
-		# TODO: rate limiting check
-		pass
+	is_test = mail_data["schedule"] == "test"
 
-	if mail_data["schedule"] == "test":
+	if not settings.DEBUG:
+		visitor = Visitor(user)
+
+		if is_test and not visitor.allow_test_email():
+			return "You can only send one test email every 1 minute."
+		elif not visitor.allow_instant_email():
+			return "You can only send one instant email every 6 hours."
+
+	if is_test:
 		mail_data["body"] += TEST_EMAIL_FOOTER % (user.username, user.email)
 	else:
 		mail_data["body"] += NORMAL_EMAIL_FOOTER % (user.username, user.email)
