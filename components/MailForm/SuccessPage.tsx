@@ -89,9 +89,8 @@ export default function SuccessPage({ digest = false, schedule = 'now' }) {
                         Your message has been added to the Hoagie Stuff Digest,
                         and will be included in the upcoming weekly digest
                         email. Digest emails are sent
-                        <b>
-                            at noon every Tuesday, Thursday, and Saturday
-                        </b> so you can expect your message to be sent then.
+                        <b>at noon every Tuesday, Thursday, and Saturday</b> so
+                        you can expect your message to be sent then.
                         <br /> <br />
                         Thank you for using Hoagie Mail! If you would like to
                         give feedback or are interested in our future projects,

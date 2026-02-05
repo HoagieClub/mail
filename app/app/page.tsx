@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@auth0/nextjs-auth0';
 import {
     RadioGroup,
     Text,
@@ -17,12 +17,7 @@ import Link from 'next/link';
 
 import View from '@/components/View';
 
-export default withPageAuthRequired(() => {
-    const { user, isLoading } = useUser();
-    if (isLoading) {
-        return <Spinner />;
-    }
-
+export default function App() {
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
@@ -69,13 +64,18 @@ export default withPageAuthRequired(() => {
         </Pane>
     );
 
-    const [options] = useState([
+    const options = [
         { label: studentOrgLabel, value: 'studentorg' },
         { label: sellabel, value: 'sale' },
         { label: lostFoundLabel, value: 'lost' },
         { label: bulletinLabel, value: 'bulletin' },
-    ]);
+    ];
     const [optionValue, setOptionValue] = useState('studentorg');
+
+    const { user, isLoading } = useUser();
+    if (isLoading) {
+        return <Spinner />;
+    }
 
     const bottomButtons = (
         <Pane>
@@ -112,6 +112,7 @@ export default withPageAuthRequired(() => {
             <Text size={500}> Would you like to send an email about...</Text>
 
             <RadioGroup
+                name='email-category'
                 size={16}
                 value={optionValue}
                 options={options}
@@ -141,4 +142,4 @@ export default withPageAuthRequired(() => {
             {bottomButtons}
         </View>
     );
-});
+}

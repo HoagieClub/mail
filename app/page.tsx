@@ -1,6 +1,6 @@
 'use client';
 
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@auth0/nextjs-auth0';
 import {
     Pane,
     majorScale,
@@ -16,10 +16,9 @@ import Link from 'next/link';
 import AuthButton from '@/lib/hoagie-ui/AuthButton';
 
 export default function Index() {
-    const { user, error, isLoading } = useUser();
+    const { user, isLoading } = useUser();
     let Profile;
     if (isLoading) Profile = <Spinner />;
-    else if (error) Profile = <div>{error.message}</div>;
     else if (user) {
         Profile = (
             <Pane>

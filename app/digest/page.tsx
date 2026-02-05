@@ -86,7 +86,6 @@ export default withPageAuthRequired(() => {
     return (
         <MailForm
             success={success}
-            onError={setErrorMessage}
             onSend={addDigest}
             errorMessage={errorMessage}
             isDigest

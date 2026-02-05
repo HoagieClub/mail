@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import { useUser } from '@auth0/nextjs-auth0/client';
+import { useUser } from '@auth0/nextjs-auth0';
 
 import Layout from '@/lib/hoagie-ui/Layout';
 import Nav from '@/lib/hoagie-ui/Nav';
@@ -19,12 +19,12 @@ export default function Content({
         { title: 'Current Digest', href: '/digest?type=current' },
     ];
 
-    const user = useUser();
+    const { user } = useUser();
 
     return (
         <Theme palette='orange'>
             <Layout>
-                <Nav name='mail' tabs={tabs} user={user?.user} />
+                <Nav name='mail' tabs={tabs} user={user ?? undefined} />
                 {children}
             </Layout>
         </Theme>

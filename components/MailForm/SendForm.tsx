@@ -17,28 +17,47 @@ import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 import SuccessPage from '@/components/MailForm/SuccessPage';
 import { TemplateSelector } from '@/components/MailForm/TemplateSelector';
-import RichTextEditor from '@/components/RichSunEditor';
 import { EMAIL_TEMPLATES } from '@/constants/emailTemplates';
 import { TemplateType } from '@/types/template';
+
+import QuillJSEditor from '../QuillJSEditor';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
 organization if you have permission to do so. Your full name will be included in the
 footer of the email regardless of your sender name.`;
 
-export default function Mail({ onSend, onError, errorMessage, success, user }) {
-    const [header, setHeader] = useState('');
+export default function Mail({ onSend, errorMessage, success, user }) {
+    const [header, setHeader] = useLocalStorage('mailHeader', '');
     const [headerInvalid, setHeaderInvalid] = useState(false);
-    const [sender, setSender] = useState(user.name);
+    const [sender, setSender] = useLocalStorage('mailSender', user.name);
     const [senderInvalid, setSenderInvalid] = useState(false);
     const hasInteracted = useRef(false);
-    const [body, setBody] = useState('');
-    const [schedule, setSchedule] = useState('now');
+    const [body, setBody] = useLocalStorage('mailBody', '');
+    const [schedule, setSchedule] = useLocalStorage('mailSchedule', 'now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
     const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('blank');
     const [showReplaceConfirm, setShowReplaceConfirm] = useState(false);
     const [pendingTemplate, setPendingTemplate] = useState<TemplateType | null>(null);
+    const [isSending, setIsSending] = useState(false);
+
+    function useLocalStorage(key, initialValue) {
+        const [storedValue, setStoredValue] = useState(() => {
+            try {
+                const item = localStorage.getItem(key);
+                return item ? JSON.parse(item) : initialValue;
+            } catch {
+                return initialValue;
+            }
+        });
+
+        useEffect(() => {
+            localStorage.setItem(key, JSON.stringify(storedValue));
+        }, [key, storedValue]);
+
+        return [storedValue, setStoredValue];
+    }
 
     useEffect(() => {
         if (!hasInteracted.current && header !== '') {
@@ -97,6 +116,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
             </Pane>
             <ErrorMessage text={errorMessage} />
             <ScheduleSelectField
+                id='schedule-select-field'
                 label='Scheduled Time'
                 description='Send emails now or schedule them up to four days
                 in advance! Emails will be sent out in batches at 8am,
@@ -107,6 +127,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 handleScheduleChange={(e) => setSchedule(e.target.value)}
             />
             <TextInputField
+                id='email-header-input'
                 label='Email Header'
                 isInvalid={headerInvalid}
                 required
@@ -119,6 +140,7 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 onChange={(e) => setHeader(e.target.value)}
             />
             <TextInputField
+                id='sender-name-input'
                 label='Displayed Sender Name'
                 required
                 isInvalid={senderInvalid}
@@ -134,16 +156,14 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                     selectedTemplate={selectedTemplate}
                     onSelectTemplate={handleTemplateSelect}
                 />
-            <RichTextEditor
-                value={body}
-                onChange={(content) => setBody(content)}
-                onError={onError}
+            <QuillJSEditor
                 label='Body Content'
-                required
-                placeholder='Hello there!'
-                description={`
-        This is the content of your email. `}
+                description='This is the content of your email.'
+                onHTMLChange={(content) => {
+                    setBody(content);
+                }}
             />
+
             <Pane>
                 <Button
                     onClick={() => setShowConfirm(true)}
@@ -172,13 +192,16 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 isShown={showConfirm}
                 hasHeader={false}
                 hasClose={false}
+                isConfirmLoading={isSending}
                 onConfirm={async () => {
+                    setIsSending(true);
                     await onSend({
                         sender,
                         header,
                         body,
                         schedule,
                     });
+                    setIsSending(false);
                     setShowConfirm(false);
                 }}
                 onCloseComplete={() => setShowConfirm(false)}
@@ -218,13 +241,16 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 isShown={showTestConfirm}
                 hasHeader={false}
                 hasClose={false}
+                isConfirmLoading={isSending}
                 onConfirm={async () => {
+                    setIsSending(true);
                     await onSend({
                         sender,
                         header,
                         body,
                         schedule: 'test',
                     });
+                    setIsSending(false);
                     setShowTestConfirm(false);
                 }}
                 onCloseComplete={() => setShowTestConfirm(false)}
