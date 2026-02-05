@@ -1,3 +1,4 @@
+import React, { useEffect, useRef } from 'react';
 import { FormField } from 'evergreen-ui';
 import dynamic from 'next/dynamic';
 import 'suneditor/dist/css/suneditor.min.css';
@@ -19,6 +20,7 @@ interface ImageResult {
 interface RichTextEditorProps {
     onError: (error: string) => void;
     onChange: (content: string) => void;
+    value?: string;
     label: string;
     placeholder?: string;
     description?: string;
@@ -31,12 +33,31 @@ export default function RichTextEditor({
     onError,
     onChange,
     label,
+    value,
     placeholder,
     description,
     getEditor,
     required = false,
     isDisabled = false,
 }: RichTextEditorProps) {
+    const editorRef = useRef<SunEditorCore | null>(null);
+
+    const handleGetInstance = (instance: SunEditorCore) => {
+        editorRef.current = instance;
+        if (getEditor) {
+            getEditor(instance);
+        }
+    };
+
+    useEffect(() => {
+        if (editorRef.current && typeof value === 'string') {
+            try {
+                editorRef.current.setContents(value);
+            } catch (e) {
+                // ignore if editor not ready
+            }
+        }
+    }, [value]);
     // Upload Image to Image Server such as AWS S3, Cloudinary, Cloud Storage, etc..
     const saveToServer = async (file: File) => {
         const body = new FormData();
@@ -108,7 +129,7 @@ export default function RichTextEditor({
                 disable={isDisabled}
                 onImageUploadBefore={onImageUploadBefore}
                 onImageUploadError={onImageUploadError}
-                getSunEditorInstance={getEditor}
+                getSunEditorInstance={handleGetInstance}
             />
         </FormField>
     );

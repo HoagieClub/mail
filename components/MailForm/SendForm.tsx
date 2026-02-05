@@ -16,7 +16,10 @@ import Link from 'next/link';
 import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 import SuccessPage from '@/components/MailForm/SuccessPage';
+import { TemplateSelector } from '@/components/MailForm/TemplateSelector';
 import RichTextEditor from '@/components/RichSunEditor';
+import { EMAIL_TEMPLATES } from '@/constants/emailTemplates';
+import { TemplateType } from '@/types/template';
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
@@ -33,6 +36,9 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
     const [schedule, setSchedule] = useState('now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('blank');
+    const [showReplaceConfirm, setShowReplaceConfirm] = useState(false);
+    const [pendingTemplate, setPendingTemplate] = useState<TemplateType | null>(null);
 
     useEffect(() => {
         if (!hasInteracted.current && header !== '') {
@@ -44,6 +50,34 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
         }
         setSenderInvalid(sender === '');
     }, [header, sender]);
+
+    const handleTemplateSelect = (type: TemplateType) => {
+        const template = EMAIL_TEMPLATES.find((t) => t.type === type);
+        if (!template) return;
+
+        // Normalize HTML content by stripping tags and non-breaking spaces,
+        // then trimming. This treats "<p><br></p>", "<p></p>", and similar
+        // editor-empty HTML as empty so selecting a template won't show the
+        // replace warning when the editor is effectively blank.
+        const normalize = (s: string | undefined | null) =>
+            (s || '')
+                .replace(/&nbsp;/g, ' ')
+                .replace(/<[^>]*>/g, '')
+                .trim();
+
+        const hasEditorContent = normalize(body) !== '';
+        const wouldChangeBody = normalize(template.bodyTemplate) !== normalize(body);
+
+        if (hasEditorContent && wouldChangeBody) {
+            setPendingTemplate(type);
+            setShowReplaceConfirm(true);
+            return;
+        }
+
+        // Safe to apply immediately (only change body now)
+        setSelectedTemplate(type);
+        setBody(template.bodyTemplate);
+    };
 
     const MailForm = (
         <Pane>
@@ -96,7 +130,12 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                 value={sender}
                 onChange={(e) => setSender(e.target.value)}
             />
+            <TemplateSelector
+                    selectedTemplate={selectedTemplate}
+                    onSelectTemplate={handleTemplateSelect}
+                />
             <RichTextEditor
+                value={body}
                 onChange={(content) => setBody(content)}
                 onError={onError}
                 label='Body Content'
@@ -208,6 +247,40 @@ export default function Mail({ onSend, onError, errorMessage, success, user }) {
                     email to
                     <b> your Princeton email</b>.
                 </Text>
+            </Dialog>
+            <Dialog
+                isShown={showReplaceConfirm}
+                hasHeader={false}
+                hasClose={false}
+                onConfirm={() => {
+                    if (!pendingTemplate) return;
+                    const template = EMAIL_TEMPLATES.find(
+                        (t) => t.type === pendingTemplate
+                    );
+                    if (template) {
+                        setSelectedTemplate(pendingTemplate);
+                        setBody(template.bodyTemplate);
+                    }
+                    setPendingTemplate(null);
+                    setShowReplaceConfirm(false);
+                }}
+                onCloseComplete={() => {
+                    setPendingTemplate(null);
+                    setShowReplaceConfirm(false);
+                }}
+                confirmLabel='Replace Text'
+                intent='warning'
+            >
+                <Pane
+                    marginTop={35}
+                    marginBottom={20}
+                    display='flex'
+                    alignItems='center'
+                >
+                    <InfoSignIcon marginRight={10} />
+                    Are you sure you want to replace the existing text in the
+                    editor with this template?
+                </Pane>
             </Dialog>
         </Pane>
     );
