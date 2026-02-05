@@ -207,9 +207,8 @@ def handle_scheduled_email(mail_data, user):
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
-	if settings.DEBUG:
-		message = create_message(mail_data, user.email, HOAGIE_EMAIL)
-		print_debug(message, schedule=schedule_time_et)
+	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
+	print_debug(message, schedule=schedule_time_et)
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
