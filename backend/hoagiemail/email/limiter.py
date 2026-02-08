@@ -4,7 +4,7 @@ from typing import Final
 from django.db import models
 from django.utils import timezone
 
-from .models import User
+from ..models import User
 
 
 class UserLimits(models.Model):
