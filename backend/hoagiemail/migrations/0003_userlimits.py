@@ -20,5 +20,8 @@ class Migration(migrations.Migration):
                 ('last_test_email', models.DateTimeField(blank=True, null=True)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
+            options={
+                "db_table": "UserLimits",
+            }
         ),
     ]
