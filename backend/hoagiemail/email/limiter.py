@@ -1,16 +1,10 @@
 from datetime import timedelta
 from typing import Final
 
-from django.db import models
 from django.utils import timezone
 
-from ..models import User
+from ..models import User, UserLimits
 
-
-class UserLimits(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    last_send_now = models.DateTimeField(blank=True, null=True)
-    last_test_email = models.DateTimeField(blank=True, null=True)
 
 class Visitor:
     SEND_NOW_LIMIT_PERIOD: Final[timedelta] = timedelta(hours=6)

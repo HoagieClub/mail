@@ -224,8 +224,9 @@ def handle_email_now(mail_data, user):
 	if not settings.DEBUG:
 		visitor = Visitor(user)
 
-		if is_test and not visitor.allow_test_email():
-			return "You can only send one test email every 1 minute."
+		if is_test:
+			if not visitor.allow_test_email():
+				return "You can only send one test email every 1 minute."
 		elif not visitor.allow_instant_email():
 			return "You can only send one instant email every 6 hours."
 
