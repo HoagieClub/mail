@@ -7,7 +7,8 @@ from hoagiemail.models import StuffPost
 
 class StuffUserView(APIView):
 	def get(self, request) -> Response:
-
+		return Response({"status": "OK", "message": "Stuff posts retrieved successfully"}, status=status.HTTP_200_OK)
+		
 	def post(self, request) -> Response:
 		# Logic to make a post
 		user = request.user
