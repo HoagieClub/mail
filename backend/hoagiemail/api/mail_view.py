@@ -226,7 +226,7 @@ def handle_scheduled_email(mail_data, user):
 def handle_email_now(mail_data, user):
 	is_test = mail_data["schedule"] == "test"
 
-	if not settings.DEBUG:
+	if settings.SEND_EMAIL:
 		visitor = Visitor(user)
 
 		if is_test:
