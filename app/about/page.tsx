@@ -9,6 +9,7 @@ import Image from 'next/image';
 interface member {
 	name: string;
 	role: string;
+    year: string;
 	imgSrc: string;
 	socials: {
 		linkedin: string;
@@ -51,6 +52,7 @@ const teamLeads: member[] = [
 	{
 		name: 'Jenny Fan',
 		role: 'Team Lead',
+        year: '2025 - 2026',
 		imgSrc: 'https://media.licdn.com/dms/image/v2/D4E03AQFOQEWyofLFhw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1710648138236?e=1773273600&v=beta&t=oWwpbTq8Ncnv6eWnBsFcGUMpDx2l1iWu1_nbT4ijRQE',
 		socials: {
 			linkedin: 'https://www.linkedin.com/in/jennyfan04/',
@@ -60,12 +62,17 @@ const teamLeads: member[] = [
 
 const teamMembers: member[] = [
 	// Add your name, role, and image here!
+    
+];
+
+const pastLeadership: member[] = [
     {
-		name: 'Jenny Fan',
+		name: 'Spencer Doyle',
 		role: 'Team Lead',
-		imgSrc: 'https://media.licdn.com/dms/image/v2/D4E03AQFOQEWyofLFhw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1710648138236?e=1773273600&v=beta&t=oWwpbTq8Ncnv6eWnBsFcGUMpDx2l1iWu1_nbT4ijRQE',
+        year: '2024 - 2025',
+		imgSrc: 'https://media.licdn.com/dms/image/v2/D4E03AQFgKlbpu5PV9Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1710630696392?e=1773273600&v=beta&t=1k-bOwMR0VcGoJpjI3S8eTs3E-x52eNoya-LOO6080I',
 		socials: {
-			linkedin: 'https://www.linkedin.com/in/jennyfan04/',
+			linkedin: 'https://www.linkedin.com/in/spencer-doyle3/',
 		},
 	},
 ];
@@ -107,11 +114,11 @@ export function App() {
 					<h2 className='text-3xl font-bold text-slate-900 mb-12 text-center'>
 						Team Leadership
 					</h2>
-					<div className='grid grid-cols-1 lg:grid-cols-1 gap-10 max-w-lg mx-auto'>
+					<div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto ${teamLeads.length === 1 ? 'justify-items-center' : ''}`}>
 						{teamLeads.map((lead) => (
 							<div
 								key={lead.name}
-								className='bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-300 ease-in-out'
+								className={`bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-300 ease-in-out w-full ${teamLeads.length === 1 ? 'lg:col-span-2 max-w-lg' : ''}`}
 							>
 								<div className='p-8 flex flex-col sm:flex-row items-center'>
 									<Pane
@@ -153,9 +160,9 @@ export function App() {
 				</section>
 
 				{/* Team Members Section */}
-				<section>
+				<section className='mb-16'>
 					<h2 className='text-3xl font-bold text-slate-900 mb-12 text-center'>
-						Our Amazing Team
+						Contributors
 					</h2>
 					<div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8'>
 						{teamMembers.map((member) => (
@@ -179,6 +186,56 @@ export function App() {
 									<SocialIcon href={member.socials.linkedin}>
 										<LinkedinIcon />
 									</SocialIcon>
+								</div>
+							</div>
+						))}
+					</div>
+				</section>
+
+                {/* Past Leadership Section */}
+				<section className='mb-16'>
+					<h2 className='text-3xl font-bold text-slate-900 mb-12 text-center'>
+						Past Leadership
+					</h2>
+					<div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto ${pastLeadership.length === 1 ? 'justify-items-center' : ''}`}>
+						{pastLeadership.map((lead) => (
+							<div
+								key={lead.name}
+								className={`bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition-transform duration-300 ease-in-out w-full ${pastLeadership.length === 1 ? 'lg:col-span-2 max-w-lg' : ''}`}
+							>
+								<div className='p-8 flex flex-col sm:flex-row items-center'>
+									<Pane
+										flexShrink={0}
+										marginBottom={majorScale(3)}
+										marginRight={majorScale(4)}
+										width={128}
+										height={128}
+										borderRadius='50%'
+										border={`4px solid ${theme.colors.blue300}`}
+										boxShadow='0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+										overflow='hidden'
+									>
+										<Image
+											src={lead.imgSrc}
+											alt={lead.name}
+											height={128}
+											width={128}
+											style={{ objectFit: 'cover' }}
+										/>
+									</Pane>
+									<div className='text-center sm:text-left'>
+										<h3 className='text-2xl font-bold text-slate-900'>
+											{lead.name}
+										</h3>
+										<p className='text-md font-semibold mb-2' style={{ color: theme.colors.blue500 }}>
+											{lead.year}
+										</p>
+										<div className='flex justify-center sm:justify-start space-x-4'>
+											<SocialIcon href={lead.socials.linkedin}>
+												<LinkedinIcon />
+											</SocialIcon>
+										</div>
+									</div>
 								</div>
 							</div>
 						))}
