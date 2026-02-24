@@ -33,21 +33,21 @@ body {
 }
 
 .template-card {
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
 }
 
 .template-card:hover {
-  transform: translateY(-2px);
+    transform: translateY(-2px);
 }
 
 .template-preview-box {
-  transition: all 0.2s;
+    transition: all 0.2s;
 }
 
 .template-preview-box:hover {
-  border-color: #FFCB97;
+    border-color: #ffcb97;
 }
 
 @keyframes stroke {

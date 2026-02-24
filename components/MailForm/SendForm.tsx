@@ -16,11 +16,19 @@ import Link from 'next/link';
 import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 import SuccessPage from '@/components/MailForm/SuccessPage';
-import { TemplateSelector } from '@/components/MailForm/TemplateSelector';
-import { EMAIL_TEMPLATES } from '@/constants/emailTemplates';
+import { EMAIL_TEMPLATES } from '@/components/MailForm/Templates/emailTemplates';
+import { TemplateSelector } from '@/components/MailForm/Templates/TemplateSelector';
 import { TemplateType } from '@/types/template';
 
 import QuillJSEditor from '../QuillJSEditor';
+
+const normalizeEditorContent = (value: string | undefined | null) =>
+    (value || '')
+        .replace(/&nbsp;|&#160;/gi, ' ')
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&[a-z0-9#]+;/gi, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
@@ -37,9 +45,16 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     const [schedule, setSchedule] = useLocalStorage('mailSchedule', 'now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
-    const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>('blank');
+    const [selectedTemplate, setSelectedTemplate] =
+        useState<TemplateType>('blank');
     const [showReplaceConfirm, setShowReplaceConfirm] = useState(false);
-    const [pendingTemplate, setPendingTemplate] = useState<TemplateType | null>(null);
+    const [pendingTemplate, setPendingTemplate] = useState<TemplateType | null>(
+        null
+    );
+    const [hasEditedBody, setHasEditedBody] = useState(false);
+    const bodyBaselineRef = useRef(normalizeEditorContent(body));
+    const isApplyingTemplateRef = useRef(false);
+    const applyModeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isSending, setIsSending] = useState(false);
 
     function useLocalStorage(key, initialValue) {
@@ -70,25 +85,40 @@ export default function Mail({ onSend, errorMessage, success, user }) {
         setSenderInvalid(sender === '');
     }, [header, sender]);
 
+    // On mount: if there's existing content from localStorage, mark as edited
+    useEffect(() => {
+        const normalizedBody = normalizeEditorContent(body);
+        if (normalizedBody !== '') {
+            setHasEditedBody(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleTemplateSelect = (type: TemplateType) => {
         const template = EMAIL_TEMPLATES.find((t) => t.type === type);
         if (!template) return;
-        const normalize = (s: string | undefined | null) =>
-            (s || '')
-                .replace(/&nbsp;/g, ' ')
-                .replace(/<[^>]*>/g, '')
-                .trim();
-        const hasEditorContent = normalize(body) !== '';
-        const wouldChangeBody = normalize(template.bodyTemplate) !== normalize(body);
 
-        if (hasEditorContent && wouldChangeBody) {
+        const normalizedCurrentBody = normalizeEditorContent(body);
+        const normalizedTemplateBody = normalizeEditorContent(
+            template.bodyTemplate
+        );
+        const wouldChangeBody =
+            normalizedTemplateBody !== normalizedCurrentBody;
+
+        if (hasEditedBody && wouldChangeBody) {
             setPendingTemplate(type);
             setShowReplaceConfirm(true);
             return;
         }
 
+        if (applyModeTimeoutRef.current) {
+            clearTimeout(applyModeTimeoutRef.current);
+        }
+        isApplyingTemplateRef.current = true;
+        bodyBaselineRef.current = normalizedTemplateBody;
         setSelectedTemplate(type);
         setBody(template.bodyTemplate);
+        setHasEditedBody(false);
     };
 
     const MailForm = (
@@ -146,13 +176,35 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 onChange={(e) => setSender(e.target.value)}
             />
             <TemplateSelector
-                    selectedTemplate={selectedTemplate}
-                    onSelectTemplate={handleTemplateSelect}
-                />
+                selectedTemplate={selectedTemplate}
+                onSelectTemplate={handleTemplateSelect}
+            />
             <QuillJSEditor
                 label='Body Content'
                 description='This is the content of your email.'
-                onHTMLChange={(content) => {
+                onHTMLChange={(content, source) => {
+                    // Reset debounce timer on every event during apply mode
+                    if (isApplyingTemplateRef.current) {
+                        if (applyModeTimeoutRef.current) {
+                            clearTimeout(applyModeTimeoutRef.current);
+                        }
+                        applyModeTimeoutRef.current = setTimeout(() => {
+                            isApplyingTemplateRef.current = false;
+                            applyModeTimeoutRef.current = null;
+                        }, 50);
+                    }
+
+                    if (source === 'user') {
+                        if (!isApplyingTemplateRef.current) {
+                            setHasEditedBody(true);
+                        }
+                        setBody(content);
+                        return;
+                    }
+
+                    if (isApplyingTemplateRef.current) {
+                        setHasEditedBody(false);
+                    }
                     setBody(content);
                 }}
                 initialValue={body}
@@ -278,8 +330,17 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                         (t) => t.type === pendingTemplate
                     );
                     if (template) {
+                        const normalizedTemplateBody = normalizeEditorContent(
+                            template.bodyTemplate
+                        );
+                        if (applyModeTimeoutRef.current) {
+                            clearTimeout(applyModeTimeoutRef.current);
+                        }
+                        isApplyingTemplateRef.current = true;
+                        bodyBaselineRef.current = normalizedTemplateBody;
                         setSelectedTemplate(pendingTemplate);
                         setBody(template.bodyTemplate);
+                        setHasEditedBody(false);
                     }
                     setPendingTemplate(null);
                     setShowReplaceConfirm(false);
