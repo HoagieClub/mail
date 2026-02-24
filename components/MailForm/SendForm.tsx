@@ -16,9 +16,11 @@ import Link from 'next/link';
 import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 import SuccessPage from '@/components/MailForm/SuccessPage';
-import { EMAIL_TEMPLATES } from '@/components/MailForm/Templates/emailTemplates';
+import {
+    EMAIL_TEMPLATES,
+    TemplateType,
+} from '@/components/MailForm/Templates/emailTemplates';
 import { TemplateSelector } from '@/components/MailForm/Templates/TemplateSelector';
-import { TemplateType } from '@/types/template';
 
 import QuillJSEditor from '../QuillJSEditor';
 
@@ -52,7 +54,6 @@ export default function Mail({ onSend, errorMessage, success, user }) {
         null
     );
     const [hasEditedBody, setHasEditedBody] = useState(false);
-    const bodyBaselineRef = useRef(normalizeEditorContent(body));
     const isApplyingTemplateRef = useRef(false);
     const applyModeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isSending, setIsSending] = useState(false);
@@ -95,7 +96,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     }, []);
 
     const handleTemplateSelect = (type: TemplateType) => {
-        const template = EMAIL_TEMPLATES.find((t) => t.type === type);
+        const template = EMAIL_TEMPLATES[type];
         if (!template) return;
 
         const normalizedCurrentBody = normalizeEditorContent(body);
@@ -115,7 +116,6 @@ export default function Mail({ onSend, errorMessage, success, user }) {
             clearTimeout(applyModeTimeoutRef.current);
         }
         isApplyingTemplateRef.current = true;
-        bodyBaselineRef.current = normalizedTemplateBody;
         setSelectedTemplate(type);
         setBody(template.bodyTemplate);
         setHasEditedBody(false);
@@ -326,18 +326,12 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 hasClose={false}
                 onConfirm={() => {
                     if (!pendingTemplate) return;
-                    const template = EMAIL_TEMPLATES.find(
-                        (t) => t.type === pendingTemplate
-                    );
+                    const template = EMAIL_TEMPLATES[pendingTemplate];
                     if (template) {
-                        const normalizedTemplateBody = normalizeEditorContent(
-                            template.bodyTemplate
-                        );
                         if (applyModeTimeoutRef.current) {
                             clearTimeout(applyModeTimeoutRef.current);
                         }
                         isApplyingTemplateRef.current = true;
-                        bodyBaselineRef.current = normalizedTemplateBody;
                         setSelectedTemplate(pendingTemplate);
                         setBody(template.bodyTemplate);
                         setHasEditedBody(false);

@@ -1,18 +1,18 @@
-import { EmailTemplate } from '../../../types/template';
+interface TemplateDefinition {
+    name: string;
+    icon: string;
+    bodyTemplate: string;
+}
 
-export const EMAIL_TEMPLATES: EmailTemplate[] = [
-    {
-        type: 'blank',
+export const EMAIL_TEMPLATES = {
+    blank: {
         name: 'Blank',
         icon: '📝',
-        subjectTemplate: '',
         bodyTemplate: '',
     },
-    {
-        type: 'event',
+    event: {
         name: 'Event Invite',
         icon: '🎉',
-        subjectTemplate: "You're Invited! [Event Name]",
         bodyTemplate: `
     <p><strong>Hey Princeton!</strong></p>
     <br>
@@ -27,12 +27,9 @@ export const EMAIL_TEMPLATES: EmailTemplate[] = [
     <p>Hope to see you there!</p>
     <p>— [Organization Name]</p>`,
     },
-    {
-        type: 'application',
+    application: {
         name: 'Application',
         icon: '📨',
-        subjectTemplate:
-            'Applications Now Open: [Position / Program / Opportunity Name]',
         bodyTemplate: `
     <p><strong>Hi Princeton!</strong></p>
     <br>
@@ -62,11 +59,9 @@ export const EMAIL_TEMPLATES: EmailTemplate[] = [
     <p>We can’t wait to see your application and learn more about what you can bring to <strong>[Organization / Program Name]</strong>!</p>
     <p>— [Organization Name]</p>`,
     },
-    {
-        type: 'survey',
+    survey: {
         name: 'Survey',
         icon: '🔎',
-        subjectTemplate: 'Fill out our survey on [Subject]!',
         bodyTemplate: `
     <p><strong>Hi Princeton!</strong></p>
     <br>
@@ -86,4 +81,12 @@ export const EMAIL_TEMPLATES: EmailTemplate[] = [
     <p>Thank you for taking a moment to share your thoughts. We really appreciate your help!<br>
     — [Organization / Team Name]</p>`,
     },
-];
+} satisfies Record<string, TemplateDefinition>;
+
+export type TemplateType = keyof typeof EMAIL_TEMPLATES;
+export type EmailTemplate = (typeof EMAIL_TEMPLATES)[TemplateType];
+
+export const EMAIL_TEMPLATE_ENTRIES = Object.entries(EMAIL_TEMPLATES) as [
+    TemplateType,
+    EmailTemplate,
+][];

@@ -2,9 +2,11 @@ import React from 'react';
 
 import { Pane, Heading, Text, majorScale } from 'evergreen-ui';
 
-import { TemplateType } from '../../../types/template';
-
-import { EMAIL_TEMPLATES } from './emailTemplates';
+import {
+    EMAIL_TEMPLATE_ENTRIES,
+    EmailTemplate,
+    TemplateType,
+} from './emailTemplates';
 
 interface TemplateSelectorProps {
     selectedTemplate: TemplateType;
@@ -40,12 +42,13 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
                 gridTemplateColumns='repeat(auto-fill, minmax(100px, 1fr))'
                 gap={majorScale(2)}
             >
-                {EMAIL_TEMPLATES.map((template) => (
+                {EMAIL_TEMPLATE_ENTRIES.map(([type, template]) => (
                     <TemplateCard
-                        key={template.type}
+                        key={type}
                         template={template}
-                        isSelected={selectedTemplate === template.type}
-                        onSelect={() => onSelectTemplate(template.type)}
+                        type={type}
+                        isSelected={selectedTemplate === type}
+                        onSelect={() => onSelectTemplate(type)}
                     />
                 ))}
             </Pane>
@@ -54,25 +57,20 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({
 };
 
 interface TemplateCardProps {
-    template: (typeof EMAIL_TEMPLATES)[number];
+    template: EmailTemplate;
+    type: TemplateType;
     isSelected: boolean;
     onSelect: () => void;
 }
 
 const TemplateCard: React.FC<TemplateCardProps> = ({
     template,
+    type,
     isSelected,
     onSelect,
 }) => {
     return (
-        <Pane
-            // textAlign="center"
-            // cursor="pointer"
-            onClick={onSelect}
-            // transition="transform 0.2s"
-            className='template-card'
-            //   _hover={{ transform: 'translateY(-2px)' }}
-        >
+        <Pane onClick={onSelect} className='template-card'>
             {/* Preview Box */}
             <Pane
                 background='white'
@@ -87,18 +85,14 @@ const TemplateCard: React.FC<TemplateCardProps> = ({
                     isSelected ? '0 0 0 3px rgba(255, 105, 0, 0.1)' : undefined
                 }
                 transition='all 0.2s'
-                // _hover={{ borderColor: '#E77500' }}
                 position='relative'
                 overflow='hidden'
                 className='template-preview-box'
             >
-                {template.type === 'blank' ? (
+                {type === 'blank' ? (
                     <Text fontSize={24}>{template.icon}</Text>
                 ) : (
-                    <TemplateMiniPreview
-                        type={template.type}
-                        icon={template.icon}
-                    />
+                    <TemplateMiniPreview type={type} icon={template.icon} />
                 )}
             </Pane>
 
