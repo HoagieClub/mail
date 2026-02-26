@@ -24,14 +24,6 @@ import { TemplateSelector } from '@/components/MailForm/Templates/TemplateSelect
 
 import QuillJSEditor from '../QuillJSEditor';
 
-const normalizeEditorContent = (value: string | undefined | null) =>
-    (value || '')
-        .replace(/&nbsp;|&#160;/gi, ' ')
-        .replace(/<[^>]*>/g, ' ')
-        .replace(/&[a-z0-9#]+;/gi, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-
 const senderNameDesc = `This is the name of the sender displayed in the email.
 You can either keep it as your name or use the name of your club, department, or 
 organization if you have permission to do so. Your full name will be included in the
@@ -86,27 +78,11 @@ export default function Mail({ onSend, errorMessage, success, user }) {
         setSenderInvalid(sender === '');
     }, [header, sender]);
 
-    // On mount: if there's existing content from localStorage, mark as edited
-    useEffect(() => {
-        const normalizedBody = normalizeEditorContent(body);
-        if (normalizedBody !== '') {
-            setHasEditedBody(true);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     const handleTemplateSelect = (type: TemplateType) => {
         const template = EMAIL_TEMPLATES[type];
         if (!template) return;
 
-        const normalizedCurrentBody = normalizeEditorContent(body);
-        const normalizedTemplateBody = normalizeEditorContent(
-            template.bodyTemplate
-        );
-        const wouldChangeBody =
-            normalizedTemplateBody !== normalizedCurrentBody;
-
-        if (hasEditedBody && wouldChangeBody) {
+        if (hasEditedBody) {
             setPendingTemplate(type);
             setShowReplaceConfirm(true);
             return;
