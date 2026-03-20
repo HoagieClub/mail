@@ -1,11 +1,14 @@
+import logging
+
+from hoagiemail.serializers import StuffPostSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from hoagiemail.models import StuffPost
-from hoagiemail.serializers import StuffPostSerializer
-import logging
 
 logger = logging.getLogger(__name__)
+
 
 class StuffUserView(APIView):
 	def get(self, request) -> Response:
