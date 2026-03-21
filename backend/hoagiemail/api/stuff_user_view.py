@@ -1,7 +1,7 @@
 import logging
 
-from django.utils import timezone
 from rest_framework import serializers, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -11,31 +11,31 @@ from hoagiemail.models import Category, StuffPost, Tag
 class StuffPostSerializer(serializers.ModelSerializer):
 	title = serializers.CharField(
 		max_length=100,
-		min_length=3,
+		required=False,
+		allow_blank=True,
 		error_messages={
-			"blank": "Title cannot be blank.",
-			"min_length": "Title must be at least 3 characters.",
 			"max_length": "Title must be at most 100 characters.",
 		},
 	)
 	description_text = serializers.CharField(
-		max_length=300,
+		max_length=200,
 		min_length=3,
 		error_messages={
 			"blank": "Description cannot be blank.",
 			"min_length": "Description must be at least 3 characters.",
-			"max_length": "Description must be at most 300 characters.",
+			"max_length": "Description must be at most 200 characters.",
 		},
 	)
 	thumbnail_url = serializers.URLField(
+		required=False,
+		allow_blank=True,
 		error_messages={
-			"blank": "Thumbnail URL cannot be blank.",
 			"invalid": "Invalid thumbnail URL.",
-			"required": "Thumbnail URL is required.",
 		},
 	)
-	category = serializers.PrimaryKeyRelatedField(
+	category = serializers.SlugRelatedField(
 		queryset=Category.objects.all(),
+		slug_field="name",
 		error_messages={
 			"does_not_exist": "Category does not exist.",
 			"incorrect_type": "Category must be a valid ID.",
@@ -44,21 +44,13 @@ class StuffPostSerializer(serializers.ModelSerializer):
 		},
 	)
 	link_url = serializers.URLField(
-		error_messages={
-			"blank": "Link URL cannot be blank.",
-			"invalid": "Invalid link URL.",
-			"required": "Link URL is required.",
-		},
-	)
-	tags = serializers.PrimaryKeyRelatedField(
-		queryset=Tag.objects.all(),
-		many=True,
 		required=False,
+		allow_blank=True,
 		error_messages={
-			"does_not_exist": "One or more tags do not exist.",
-			"incorrect_type": "Tags must be provided as valid IDs.",
+			"invalid": "Invalid link URL.",
 		},
 	)
+	tags = serializers.ListField(child=serializers.CharField())
 
 	class Meta:
 		model = StuffPost
@@ -76,36 +68,26 @@ class StuffPostSerializer(serializers.ModelSerializer):
 		]
 		read_only_fields = ["id", "author", "has_sent", "created_at"]
 
+	def validate_title(self, value):
+		if value and len(value) < 3:
+			raise serializers.ValidationError("Title must be at least 3 characters.")
+		return value
+
 	def validate(self, attrs):
 		category = attrs.get("category")
-		tags = attrs.get("tags", [])
+		tag_names = attrs.get("tags", [])
 
-		invalid_tags = [tag.name for tag in tags if tag.category_id != category.id]
-		if invalid_tags:
-			raise serializers.ValidationError(
-				{"tags": f"Tags must belong to category '{category}'. Invalid tags: {', '.join(invalid_tags)}"}
-			)
+		resolved_tags = []
+		for name in tag_names:
+			try:
+				resolved_tags.append(Tag.objects.get(name=name, category=category))
+			except Tag.DoesNotExist as err:
+				raise serializers.ValidationError(
+					{"tags": f"Tag '{name}' does not exist in category '{category.name}'."}
+				) from err
 
+		attrs["tags"] = resolved_tags
 		return attrs
-
-	def create(self, validated_data):
-		category = validated_data.pop("category")
-		tags = validated_data.pop("tags", [])
-		post = StuffPost.objects.create(
-			author=validated_data["author"],
-			title=validated_data["title"],
-			description_text=validated_data["description_text"],
-			thumbnail_url=validated_data["thumbnail_url"],
-			category=category,
-			link_url=validated_data["link_url"],
-			has_sent=False,
-			created_at=timezone.now(),
-		)
-
-		if tags:
-			post.tags.set(tags)
-
-		return post
 
 
 logger = logging.getLogger(__name__)
@@ -122,12 +104,11 @@ class StuffUserView(APIView):
 				logger.error(f"Stuff post already exists for {user.email}")
 				return Response({"error": "You already have a post."}, status=status.HTTP_400_BAD_REQUEST)
 			serializer = StuffPostSerializer(data=request.data)
-			# serializer.isvalid() automatically calls the validate function
-			if not serializer.is_valid():
-				return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-			# serializer.save uses the create method defined in the serializer
+			serializer.is_valid(raise_exception=True)
 			serializer.save(author=user)
 			return Response({"status": "OK", "message": "Post made successfully"}, status=status.HTTP_200_OK)
+		except ValidationError:
+			raise
 		except Exception as e:
 			logger.error(f"Stuff post not created for {user.email}: {e}")
 			return Response({"error": "Unexpected error creating stuff post."}, status=status.HTTP_400_BAD_REQUEST)
@@ -137,12 +118,6 @@ class StuffUserView(APIView):
 		try:
 			StuffPost.objects.filter(author=user).delete()
 			return Response({"Status": "OK"}, status=status.HTTP_200_OK)
-		except StuffPost.DoesNotExist:
-			logger.error(f"Stuff post not found for user {user.email}")
-			return Response(
-				{"error": "You do not have an existing digest message. Please create one first."},
-				status=status.HTTP_400_BAD_REQUEST,
-			)
 		except Exception as e:
 			logger.error(f"Unexpected error deleting scheduled post: {str(e)}")
 			return Response(

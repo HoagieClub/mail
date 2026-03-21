@@ -30,14 +30,14 @@ class Tag(models.Model):
 
 class StuffPost(models.Model):
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
-	title = models.CharField(max_length=100)
-	description_text = models.CharField(max_length=300)
-	thumbnail_url = models.URLField()
+	title = models.CharField(max_length=100, blank=True)
+	description_text = models.CharField(max_length=200)
+	thumbnail_url = models.URLField(blank=True)
 	category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-	link_url = models.URLField()
+	link_url = models.URLField(blank=True)
 	tags = models.ManyToManyField(Tag, related_name="posts", blank=True, db_index=True)
 	has_sent = models.BooleanField(default=False)
-	created_at = models.DateTimeField()
+	created_at = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
 		ordering = ["-created_at"]

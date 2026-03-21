@@ -9,9 +9,9 @@ def populate_categories_tags(apps, schema_editor):
 
 	# Example categories and tags
 	categories_tags = {
-		"Anything": ["Announcement", "Opportunity", "Request"],
-		"Student Sale": ["Accessories", "Clothing", "Tech", "Furniture", "School", "Tickets", "Other"],
-		"Lost & Found": ["Lost", "Found"],
+		"bulletin": ["announcement", "opportunity", "request"],
+		"sale": ["accessories", "clothing", "tech", "furniture", "school", "tickets", "other"],
+		"lost": ["lost", "found"],
 	}
 
 	for category_name, tag_names in categories_tags.items():
