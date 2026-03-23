@@ -100,19 +100,15 @@ class MailView(APIView):
 		try:
 			scheduled_emails = ScheduledEmail.objects.filter(sender=user).order_by("scheduled_at")
 			if not len(scheduled_emails):
-				return Response(
-					{"status": "unused", "mail": None}, status=status.HTTP_200_OK
-				)
-			
+				return Response({"status": "unused", "mail": None}, status=status.HTTP_200_OK)
+
 			seralizer = ScheduledMailSerializer(scheduled_emails, many=True)
 			return Response({"status": "used", "mail": seralizer.data}, status=status.HTTP_200_OK)
 		except ScheduledEmail.DoesNotExist:
-			return Response(
-				{"status": "unused", "mail": None}, status=status.HTTP_200_OK
-			)
+			return Response({"status": "unused", "mail": None}, status=status.HTTP_200_OK)
 		except Exception as e:
 			logger.error(f"Unexpected error retrieving email: {str(e)}")
-			
+
 			return Response(
 				{"error": "Unexpected error getting scheduled mails", "status": status.HTTP_500_INTERNAL_SERVER_ERROR}
 			)
