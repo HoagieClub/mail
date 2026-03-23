@@ -31,7 +31,7 @@ class StuffPostsView(APIView):
 			stuff_posts = StuffPost.objects.all()[offset:limit]
 			if not stuff_posts:
 				return Response({"mail": None}, status=status.HTTP_200_OK)
-			
+
 			seralizer = StuffPostSerializer(stuff_posts, many=True)
 
 			return Response({"mail": seralizer.data})
@@ -40,4 +40,6 @@ class StuffPostsView(APIView):
 		except Exception as e:
 			logger.error(f"Unexpected error retrieving posts: {e}")
 
-			return Response({"error": f"Unexpected error retrieving posts: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+			return Response(
+				{"error": f"Unexpected error retrieving posts: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+			)
