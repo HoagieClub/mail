@@ -99,7 +99,7 @@ class MailView(APIView):
 
 		try:
 			scheduled_emails = ScheduledEmail.objects.filter(sender=user).order_by("scheduled_at")
-			if not len(scheduled_emails):
+			if not scheduled_emails:
 				return Response({"status": "unused", "mail": None}, status=status.HTTP_200_OK)
 
 			seralizer = ScheduledMailSerializer(scheduled_emails, many=True)
