@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from rest_framework import serializers
 
 
 class User(AbstractUser):
@@ -7,3 +8,9 @@ class User(AbstractUser):
 
 	class Meta:
 		db_table = "User"
+
+
+class UserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = User
+		fields = ["first_name", "last_name", "email"]

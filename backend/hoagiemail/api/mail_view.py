@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from hoagiemail.email.limiter import Visitor
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.email.sanitize import sanitize_html
-from hoagiemail.models import ScheduledEmail
+from hoagiemail.models import ScheduledEmail, UserSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,14 @@ class MailRequestSerializer(serializers.Serializer):
 	)
 	body = serializers.CharField(error_messages={"blank": "Email body cannot be blank."})
 	schedule = serializers.CharField()
+
+
+class ScheduledMailSerializer(serializers.ModelSerializer):
+	sender = UserSerializer()
+
+	class Meta:
+		model = ScheduledEmail
+		fields = ["custom_sender_name", "sender", "header_text", "body_text", "scheduled_at", "created_at"]
 
 
 HOAGIE_EMAIL = "hoagie@princeton.edu"
@@ -87,10 +95,27 @@ class MailView(APIView):
 		return Response({"status": "OK", "message": "Mail sent successfully"}, status=status.HTTP_200_OK)
 
 	def get(self, request) -> Response:
-		# Logic to get scheduled mails
-		return Response(
-			{"status": "unused", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
-		)
+		user = request.user
+
+		try:
+			scheduled_emails = ScheduledEmail.objects.filter(sender=user).order_by("scheduled_at")
+			if not len(scheduled_emails):
+				return Response(
+					{"status": "unused", "mail": None}, status=status.HTTP_200_OK
+				)
+			
+			seralizer = ScheduledMailSerializer(scheduled_emails, many=True)
+			return Response({"status": "used", "mail": seralizer.data}, status=status.HTTP_200_OK)
+		except ScheduledEmail.DoesNotExist:
+			return Response(
+				{"status": "unused", "mail": None}, status=status.HTTP_200_OK
+			)
+		except Exception as e:
+			logger.error(f"Unexpected error retrieving email: {str(e)}")
+			
+			return Response(
+				{"error": "Unexpected error getting scheduled mails", "status": status.HTTP_500_INTERNAL_SERVER_ERROR}
+			)
 
 	def put(self, request) -> Response:
 		# Logic to update a scheduled mail
