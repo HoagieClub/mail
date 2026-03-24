@@ -6,9 +6,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from hoagiemail.models import Category, StuffPost, Tag
+from hoagiemail.models.user import UserSerializer
+
+
+class TagNameField(serializers.ListField):
+	child = serializers.CharField()
+
+	def to_representation(self, data):
+		return [tag.name for tag in data.all()]
 
 
 class StuffPostSerializer(serializers.ModelSerializer):
+	user = UserSerializer(read_only=True)
 	title = serializers.CharField(
 		max_length=100,
 		required=False,
@@ -17,7 +26,7 @@ class StuffPostSerializer(serializers.ModelSerializer):
 			"max_length": "Title must be at most 100 characters.",
 		},
 	)
-	description_text = serializers.CharField(
+	description = serializers.CharField(
 		max_length=200,
 		min_length=3,
 		error_messages={
@@ -26,7 +35,7 @@ class StuffPostSerializer(serializers.ModelSerializer):
 			"max_length": "Description must be at most 200 characters.",
 		},
 	)
-	thumbnail_url = serializers.URLField(
+	thumbnail = serializers.URLField(
 		required=False,
 		allow_blank=True,
 		error_messages={
@@ -43,30 +52,30 @@ class StuffPostSerializer(serializers.ModelSerializer):
 			"required": "Category is required.",
 		},
 	)
-	link_url = serializers.URLField(
+	link = serializers.URLField(
 		required=False,
 		allow_blank=True,
 		error_messages={
 			"invalid": "Invalid link URL.",
 		},
 	)
-	tags = serializers.ListField(child=serializers.CharField())
+	tags = TagNameField()
 
 	class Meta:
 		model = StuffPost
 		fields = [
 			"id",
-			"author",
+			"user",
 			"title",
-			"description_text",
-			"thumbnail_url",
+			"description",
+			"thumbnail",
 			"category",
-			"link_url",
+			"link",
 			"tags",
 			"has_sent",
 			"created_at",
 		]
-		read_only_fields = ["id", "author", "has_sent", "created_at"]
+		read_only_fields = ["id", "user", "has_sent", "created_at"]
 
 	def validate_title(self, value):
 		if value and len(value) < 3:
@@ -100,12 +109,12 @@ class StuffUserView(APIView):
 	def post(self, request) -> Response:
 		user = request.user
 		try:
-			if StuffPost.objects.filter(author=user).exists():
+			if StuffPost.objects.filter(user=user).exists():
 				logger.error(f"Stuff post already exists for {user.email}")
 				return Response({"error": "You already have a post."}, status=status.HTTP_400_BAD_REQUEST)
 			serializer = StuffPostSerializer(data=request.data)
 			serializer.is_valid(raise_exception=True)
-			serializer.save(author=user)
+			serializer.save(user=user)
 			return Response({"status": "OK", "message": "Post made successfully"}, status=status.HTTP_200_OK)
 		except ValidationError:
 			raise
@@ -116,7 +125,7 @@ class StuffUserView(APIView):
 	def delete(self, request) -> Response:
 		user = request.user
 		try:
-			StuffPost.objects.filter(author=user).delete()
+			StuffPost.objects.filter(user=user).delete()
 			return Response({"Status": "OK"}, status=status.HTTP_200_OK)
 		except Exception as e:
 			logger.error(f"Unexpected error deleting scheduled post: {str(e)}")
