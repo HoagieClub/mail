@@ -27,16 +27,19 @@ class StuffPostsView(APIView):
 			except ValueError:
 				offset = None
 
+		category = request.query_params.get("category")
+
 		try:
-			stuff_posts = StuffPost.objects.all()[offset:limit]
+			queryset = StuffPost.objects.filter(category__name=category) if category else StuffPost.objects.all()
+			stuff_posts = queryset[offset : offset + limit] if offset and limit else queryset[:limit]
 			if not stuff_posts:
-				return Response({"mail": None}, status=status.HTTP_200_OK)
+				return Response([], status=status.HTTP_200_OK)
 
-			seralizer = StuffPostSerializer(stuff_posts, many=True)
+			serializer = StuffPostSerializer(stuff_posts, many=True)
 
-			return Response({"mail": seralizer.data})
+			return Response(serializer.data, status=status.HTTP_200_OK)
 		except StuffPost.DoesNotExist:
-			return Response({"mail": None})
+			return Response([], status=status.HTTP_200_OK)
 		except Exception as e:
 			logger.error(f"Unexpected error retrieving posts: {e}")
 
