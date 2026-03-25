@@ -11,6 +11,11 @@ class User(AbstractUser):
 
 
 class UserSerializer(serializers.ModelSerializer):
+	name = serializers.SerializerMethodField()
+
+	def get_name(self, obj):
+		return obj.get_full_name()
+
 	class Meta:
 		model = User
-		fields = ["first_name", "last_name", "email"]
+		fields = ["name", "email"]
