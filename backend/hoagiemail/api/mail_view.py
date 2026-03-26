@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from hoagiemail.email.limiter import Visitor
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.email.sanitize import sanitize_html
-from hoagiemail.models import ScheduledEmail, UserSerializer
+from hoagiemail.models import ScheduledEmail
 
 logger = logging.getLogger(__name__)
 
@@ -39,11 +39,9 @@ class MailRequestSerializer(serializers.Serializer):
 
 
 class ScheduledMailSerializer(serializers.ModelSerializer):
-	sender = UserSerializer()
-
 	class Meta:
 		model = ScheduledEmail
-		fields = ["custom_sender_name", "sender", "header_text", "body_text", "scheduled_at", "created_at"]
+		fields = ["sender", "header", "body", "schedule", "createdAt"]
 
 
 HOAGIE_EMAIL = "hoagie@princeton.edu"
@@ -98,14 +96,14 @@ class MailView(APIView):
 		user = request.user
 
 		try:
-			scheduled_emails = ScheduledEmail.objects.filter(sender=user).order_by("scheduled_at")
+			scheduled_emails = ScheduledEmail.objects.filter(user=user).order_by("schedule")
 			if not scheduled_emails:
-				return Response({"status": "unused", "mail": None}, status=status.HTTP_200_OK)
+				return Response({"status": "unused", "scheduledMail": None}, status=status.HTTP_200_OK)
 
 			seralizer = ScheduledMailSerializer(scheduled_emails, many=True)
-			return Response({"status": "used", "mail": seralizer.data}, status=status.HTTP_200_OK)
+			return Response({"status": "used", "scheduledMail": seralizer.data}, status=status.HTTP_200_OK)
 		except ScheduledEmail.DoesNotExist:
-			return Response({"status": "unused", "mail": None}, status=status.HTTP_200_OK)
+			return Response({"status": "unused", "scheduledMail": None}, status=status.HTTP_200_OK)
 		except Exception as e:
 			logger.error(f"Unexpected error retrieving email: {str(e)}")
 
@@ -225,7 +223,7 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
 	# Check if already scheduled mail at this time for this user
-	if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
+	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time_et).exists():
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
@@ -234,11 +232,11 @@ def handle_scheduled_email(mail_data, user):
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
-		sender=user,
-		custom_sender_name=mail_data["sender"],
-		header_text=mail_data["header"],
-		body_text=mail_data["body"],
-		scheduled_at=schedule_time_et,
+		user=user,
+		sender=mail_data["sender"],
+		header=mail_data["header"],
+		body=mail_data["body"],
+		schedule=schedule_time_et,
 	)
 
 	return None
