@@ -107,7 +107,7 @@ class StuffUserView(APIView):
 		# return a user's stuff post, if one exists
 		user = request.user
 		try:
-			post = StuffPost.objects.get(author=user)
+			post = StuffPost.objects.get(user=user)
 			serializer = StuffPostSerializer(post)
 			return Response({"status": "used", **serializer.data}, status=status.HTTP_200_OK)
 
