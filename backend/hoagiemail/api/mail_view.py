@@ -7,6 +7,7 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from hoagiemail.email import get_listservs
 from hoagiemail.email.limiter import Visitor
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.email.sanitize import sanitize_html
@@ -118,20 +119,6 @@ class MailView(APIView):
 	def delete(self, request) -> Response:
 		# Logic to delete a scheduled mail
 		return Response({"status": "OK", "message": "Scheduled mail deleted successfully"}, status=status.HTTP_200_OK)
-
-
-def get_listservs():
-	"""Returns list of college listserv recipients"""
-	return [
-		{"Email": "BUTLERBUZZ@PRINCETON.EDU", "Name": "Butler"},
-		{"Email": "WHITMANWIRE@PRINCETON.EDU", "Name": "Whitman"},
-		{"Email": "RockyWire@PRINCETON.EDU", "Name": "Rocky"},
-		{"Email": "Re-INNformer@PRINCETON.EDU", "Name": "Forbes"},
-		{"Email": "westwire@princeton.edu", "Name": "NCW"},
-		{"Email": "matheymail@PRINCETON.EDU", "Name": "Mathey"},
-		{"Email": "yehyellowpages@princeton.edu", "Name": "Yeh"},
-		{"Email": "hoagiemailgradstudents@princeton.edu", "Name": "hoagiemailgradstudents"},
-	]
 
 
 def create_message(mail_data, sender_email, to_email):
