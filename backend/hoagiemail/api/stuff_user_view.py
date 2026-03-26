@@ -104,7 +104,26 @@ logger = logging.getLogger(__name__)
 
 class StuffUserView(APIView):
 	def get(self, request) -> Response:
-		return Response({"status": "OK", "message": "Stuff posts retrieved successfully"}, status=status.HTTP_200_OK)
+		# return a user's stuff post, if one exists
+		user = request.user
+		try:
+			post = StuffPost.objects.get(user=user)
+			serializer = StuffPostSerializer(post)
+			return Response({"status": "used", **serializer.data}, status=status.HTTP_200_OK)
+
+		except StuffPost.DoesNotExist:
+			logger.error(f"No stuff post found for {user.email}")
+			return Response(
+				{"status": "empty"},
+				status=status.HTTP_200_OK,
+			)
+
+		except Exception as e:
+			logger.error(f"Error retrieving stuff post for {user.email}: {e}")
+			return Response(
+				{"error": "Unexpected error retrieving stuff post."},
+				status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+			)
 
 	def post(self, request) -> Response:
 		user = request.user
