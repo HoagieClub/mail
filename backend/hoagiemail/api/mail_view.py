@@ -38,6 +38,12 @@ class MailRequestSerializer(serializers.Serializer):
 	schedule = serializers.CharField()
 
 
+class ScheduledMailSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ScheduledEmail
+		fields = ["sender", "header", "body", "schedule", "createdAt"]
+
+
 HOAGIE_EMAIL = "hoagie@princeton.edu"
 
 NORMAL_EMAIL_FOOTER = (
@@ -87,10 +93,23 @@ class MailView(APIView):
 		return Response({"status": "OK", "message": "Mail sent successfully"}, status=status.HTTP_200_OK)
 
 	def get(self, request) -> Response:
-		# Logic to get scheduled mails
-		return Response(
-			{"status": "unused", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
-		)
+		user = request.user
+
+		try:
+			scheduled_emails = ScheduledEmail.objects.filter(user=user).order_by("schedule")
+			if not scheduled_emails:
+				return Response({"status": "unused", "scheduledMail": None}, status=status.HTTP_200_OK)
+
+			seralizer = ScheduledMailSerializer(scheduled_emails, many=True)
+			return Response({"status": "used", "scheduledMail": seralizer.data}, status=status.HTTP_200_OK)
+		except ScheduledEmail.DoesNotExist:
+			return Response({"status": "unused", "scheduledMail": None}, status=status.HTTP_200_OK)
+		except Exception as e:
+			logger.error(f"Unexpected error retrieving email: {str(e)}")
+
+			return Response(
+				{"error": "Unexpected error getting scheduled mails", "status": status.HTTP_500_INTERNAL_SERVER_ERROR}
+			)
 
 	def put(self, request) -> Response:
 		# Logic to update a scheduled mail
@@ -204,7 +223,7 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
 	# Check if already scheduled mail at this time for this user
-	if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
+	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time_et).exists():
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
@@ -213,11 +232,11 @@ def handle_scheduled_email(mail_data, user):
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
-		sender=user,
-		custom_sender_name=mail_data["sender"],
-		header_text=mail_data["header"],
-		body_text=mail_data["body"],
-		scheduled_at=schedule_time_et,
+		user=user,
+		sender=mail_data["sender"],
+		header=mail_data["header"],
+		body=mail_data["body"],
+		schedule=schedule_time_et,
 	)
 
 	return None
