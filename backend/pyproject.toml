@@ -114,6 +114,11 @@ line-ending = "auto"                    # Automatically detect line endings
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[dependency-groups]
+dev = [
+    "ruff>=0.14.13",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["hoagiemail"]
 

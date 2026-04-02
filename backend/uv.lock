@@ -245,6 +245,11 @@ dependencies = [
     { name = "ruff" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "ruff" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "dj-database-url", specifier = ">=3.0.1" },
@@ -258,6 +263,9 @@ requires-dist = [
     { name = "requests", specifier = ">=2.32.0" },
     { name = "ruff", specifier = ">=0.14.5" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ruff", specifier = ">=0.14.13" }]
 
 [[package]]
 name = "idna"

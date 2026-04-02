@@ -23,7 +23,8 @@ interface ImageResult {
 interface RichTextEditorProps {
     onTextChange?: (...args: any[]) => void;
     onSelectionChange?: (...args: any[]) => void;
-    onHTMLChange?: (html: string) => void;
+    onHTMLChange?: (html: string, source?: string) => void;
+    initialValue?: string;
 }
 
 /**
@@ -152,7 +153,7 @@ const toolbarOptions = [
 ];
 
 const Editor = forwardRef<any, RichTextEditorProps>(
-    ({ onTextChange, onSelectionChange, onHTMLChange }, ref) => {
+    ({ onTextChange, onSelectionChange, onHTMLChange, initialValue }, ref) => {
         const containerRef = useRef<HTMLDivElement | null>(null);
         const quillRef = ref as MutableRefObject<any | null>;
 
@@ -164,12 +165,42 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
         const lastFontSize = useRef<string>('14px');
         const lastFont = useRef<string>('arial');
+        const lastSetValue = useRef<string | undefined>(undefined);
 
         useLayoutEffect(() => {
             onTextChangeRef.current = onTextChange;
             onSelectionChangeRef.current = onSelectionChange;
             onHTMLChangeRef.current = onHTMLChange;
         });
+
+        // Update editor content when initialValue changes externally (not from user typing)
+        useEffect(() => {
+            if (
+                quillRef.current &&
+                initialValue !== undefined &&
+                initialValue !== lastSetValue.current
+            ) {
+                const quill = quillRef.current;
+                quill.clipboard.dangerouslyPasteHTML(initialValue, 'api');
+                const contentLength = quill.getLength();
+                if (contentLength > 1) {
+                    quill.formatText(
+                        0,
+                        contentLength,
+                        { font: 'arial', size: '14px' },
+                        'api'
+                    );
+                }
+                const normalizedValue = normalizeHTMLForEmail(
+                    quill.root.innerHTML
+                );
+                lastSetValue.current = normalizedValue;
+
+                if (onHTMLChangeRef.current) {
+                    onHTMLChangeRef.current(normalizedValue, 'api');
+                }
+            }
+        }, [initialValue, quillRef]);
 
         const saveToServer = async (file: File) => {
             // Uncomment below for local image testing (default Hoagie image)
@@ -303,10 +334,6 @@ const Editor = forwardRef<any, RichTextEditorProps>(
 
                 quillRef.current = quill;
 
-                // Set default formats
-                quill.format('size', '14px');
-                quill.format('font', 'arial');
-
                 /** ----------------------------------------------
                  *  Update toolbar pickers to show active state on initial load
                  * ---------------------------------------------- */
@@ -315,19 +342,6 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     const picker =
                         toolbarModule.container.querySelector(pickerClass);
                     const label = picker?.querySelector('.ql-picker-label');
-                    // Picker options may not be in DOM until first opened, so we need to trigger their creation
-                    const pickerButton = picker?.querySelector(
-                        '.ql-picker-label'
-                    ) as HTMLElement;
-                    if (
-                        pickerButton &&
-                        !picker?.querySelector('.ql-picker-options')
-                    ) {
-                        // Trigger picker to render options by simulating a click
-                        pickerButton.click();
-                        pickerButton.click(); // Click again to close it
-                    }
-
                     const options = picker?.querySelector('.ql-picker-options');
                     const option = options?.querySelector(
                         `[data-value="${value}"]`
@@ -664,6 +678,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                  * ---------------------------------------------- */
                 quill.on(Quill.events.TEXT_CHANGE, (...args) => {
                     onTextChangeRef.current?.(...args);
+                    const source = args[2];
 
                     const html = quill.root.innerHTML;
                     const delta = quill.getContents();
@@ -671,13 +686,16 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     // Normalize HTML for email clients to fix paragraph spacing
                     const normalizedHTML = normalizeHTMLForEmail(html);
 
+                    // Update lastSetValue to track the normalized content and prevent loops
+                    lastSetValue.current = normalizedHTML;
+
                     localStorage.setItem('mailBody', JSON.stringify(html));
                     localStorage.setItem(
                         'mailBodyDelta',
                         JSON.stringify(delta)
                     );
 
-                    onHTMLChangeRef.current?.(normalizedHTML);
+                    onHTMLChangeRef.current?.(normalizedHTML, source);
                 });
 
                 /** ----------------------------------------------
@@ -806,7 +824,7 @@ const Editor = forwardRef<any, RichTextEditorProps>(
                     (delta, oldDelta, source) => {
                         // When format is applied via toolbar (source === 'api'), update refs
                         if (source === 'api') {
-                            const range = quill.getSelection(true);
+                            const range = quill.getSelection();
                             if (range) {
                                 const f = quill.getFormat(range);
                                 if (f.size) lastFontSize.current = f.size;
