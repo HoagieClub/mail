@@ -43,7 +43,7 @@ export default function Scheduled() {
         setLoading(true);
         const response = await fetch('/api/hoagie/mail/scheduled/user', {
             body: JSON.stringify(scheduleData),
-            method: 'POST',
+            method: 'PUT',
         });
         if (!response.ok) {
             const errorJson = await response.json();

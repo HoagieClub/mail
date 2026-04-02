@@ -18,6 +18,7 @@ class Auth0JWTAuthentication(authentication.BaseAuthentication):
 			raise exceptions.AuthenticationFailed("Invalid token header")
 
 		token = auth_header.split(" ")[1]
+		print(token)
 		try:
 			# Verify and decode the token
 			payload = self.verify_token(token)

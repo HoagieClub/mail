@@ -7,7 +7,6 @@ from rest_framework import serializers, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from hoagiemail.email.limiter import Visitor
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.email.sanitize import sanitize_html
 from hoagiemail.models import ScheduledEmail
@@ -36,12 +35,6 @@ class MailRequestSerializer(serializers.Serializer):
 	)
 	body = serializers.CharField(error_messages={"blank": "Email body cannot be blank."})
 	schedule = serializers.CharField()
-
-
-class ScheduledMailSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = ScheduledEmail
-		fields = ["sender", "header", "body", "schedule", "createdAt"]
 
 
 HOAGIE_EMAIL = "hoagie@princeton.edu"
@@ -93,26 +86,32 @@ class MailView(APIView):
 		return Response({"status": "OK", "message": "Mail sent successfully"}, status=status.HTTP_200_OK)
 
 	def get(self, request) -> Response:
-		user = request.user
-
-		try:
-			scheduled_emails = ScheduledEmail.objects.filter(user=user).order_by("schedule")
-			if not scheduled_emails:
-				return Response({"status": "unused", "scheduledMail": None}, status=status.HTTP_200_OK)
-
-			seralizer = ScheduledMailSerializer(scheduled_emails, many=True)
-			return Response({"status": "used", "scheduledMail": seralizer.data}, status=status.HTTP_200_OK)
-		except ScheduledEmail.DoesNotExist:
-			return Response({"status": "unused", "scheduledMail": None}, status=status.HTTP_200_OK)
-		except Exception as e:
-			logger.error(f"Unexpected error retrieving email: {str(e)}")
-
-			return Response(
-				{"error": "Unexpected error getting scheduled mails", "status": status.HTTP_500_INTERNAL_SERVER_ERROR}
-			)
+		# Logic to get scheduled mails
+		return Response(
+			{"status": "unused", "message": "Scheduled mails retrieved successfully"}, status=status.HTTP_200_OK
+		)
 
 	def put(self, request) -> Response:
 		# Logic to update a scheduled mail
+		schedule = request.data.get("schedule")
+		new_schedule = request.data.get("new_schedule")
+		if not valid_schedule(schedule) :
+			return Response({"Invalid Schedule"}, status=status.HTTP_400_BAD_REQUEST)
+		if not valid_schedule(new_schedule) :
+			return Response({"Invalid New Schedule"}, status=status.HTTP_400_BAD_REQUEST)
+		
+		user = request.user
+		email_time = datetime.fromisoformat(schedule).astimezone(ZoneInfo("America/New_York"))
+		new_email_time = datetime.fromisoformat(new_schedule).astimezone(ZoneInfo("America/New_York"))
+
+		scheduled_email = ScheduledEmail.objects.filter(sender=user, schedule_at=email_time)
+		if not scheduled_email:
+			return Response({"Scheduled email not found"}, status=status.HTTP_400_BAD_REQUEST)
+	
+		scheduled_email.scheduled_at = new_email_time
+		scheduled_email.save()
+	
+
 		return Response({"status": "OK", "message": "Scheduled mail updated successfully"}, status=status.HTTP_200_OK)
 
 	def delete(self, request) -> Response:
@@ -156,7 +155,6 @@ def print_debug(message, schedule=None):
 	"""Prints email contents for debugging purposes"""
 	logger.debug("Email:")
 	logger.debug(f"From: {message['From']['Name']} <{message['From']['Email']}>")
-	logger.debug(f"ReplyTo: {message['ReplyTo']['Name']} <{message['ReplyTo']['Email']}>")
 	logger.debug(f"To: {message['To'][0]['Email']}")
 	logger.debug(f"Subject: {message['Subject']}")
 	logger.debug(f"Body: {message['TextPart']}")
@@ -170,26 +168,20 @@ def print_debug(message, schedule=None):
 
 def send_email(mail_data, sender_email):
 	"""Sends email using Mailjet API"""
-	# Create the message with actual content
 	if mail_data["schedule"] != "test":
-		actual_message = create_message(mail_data, sender_email, HOAGIE_EMAIL)
-		actual_message["Cc"] = get_listservs()
+		message = create_message(mail_data, sender_email, HOAGIE_EMAIL)
+		message["Cc"] = get_listservs()
 	else:
-		actual_message = create_message(mail_data, sender_email, sender_email)
+		message = create_message(mail_data, sender_email, sender_email)
 
-	print_debug(actual_message)
-
-	if not settings.SEND_EMAIL:
+	# In debug mode, print email contents instead of sending
+	if settings.DEBUG:
+		print_debug(message)
 		return
-
-	# Send email only to self if not in production
-	to_send = actual_message
-	if not settings.PROD and mail_data["schedule"] != "test":
-		to_send = create_message(mail_data, sender_email, sender_email)
 
 	# Send email via Mailjet
 	mailjet = get_mailjet_client()
-	result = mailjet.send.create(data={"Messages": [to_send]})
+	result = mailjet.send.create(data={"Messages": [message]})
 
 	result_status = result.status_code
 	if result_status == 200:
@@ -223,38 +215,32 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
 	# Check if already scheduled mail at this time for this user
-	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time_et).exists():
+	if ScheduledEmail.objects.filter(sender=user, scheduled_at=schedule_time_et).exists():
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
-	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
-	print_debug(message, schedule=schedule_time_et)
+	if settings.DEBUG:
+		message = create_message(mail_data, user.email, HOAGIE_EMAIL)
+		print_debug(message, schedule=schedule_time_et)
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
-		user=user,
-		sender=mail_data["sender"],
-		header=mail_data["header"],
-		body=mail_data["body"],
-		schedule=schedule_time_et,
+		sender=user,
+		custom_sender_name=mail_data["sender"],
+		header_text=mail_data["header"],
+		body_text=mail_data["body"],
+		scheduled_at=schedule_time_et,
 	)
 
 	return None
 
 
 def handle_email_now(mail_data, user):
-	is_test = mail_data["schedule"] == "test"
+	if not settings.DEBUG:
+		# TODO: rate limiting check
+		pass
 
-	if settings.SEND_EMAIL:
-		visitor = Visitor(user)
-
-		if is_test:
-			if not visitor.allow_test_email():
-				return "You can only send one test email every 1 minute."
-		elif not visitor.allow_instant_email():
-			return "You can only send one instant email every 6 hours."
-
-	if is_test:
+	if mail_data["schedule"] == "test":
 		mail_data["body"] += TEST_EMAIL_FOOTER % (user.username, user.email)
 	else:
 		mail_data["body"] += NORMAL_EMAIL_FOOTER % (user.username, user.email)

@@ -64,3 +64,4 @@ async function proxyRequest(url: string, fetchReq: RequestInit) {
 export const GET = handler;
 export const POST = handler;
 export const DELETE = handler;
+export const PUT = handler
