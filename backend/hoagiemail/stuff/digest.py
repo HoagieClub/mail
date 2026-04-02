@@ -198,7 +198,7 @@ def run_digest_script() -> None:
 
 	if IS_PRODUCTON:
 		mail_request(
-			header=f"📬 DIGEST {timezone.now().strftime('m/d')}: Sales, Lost & Found, and more!",
+			header=f"📬 DIGEST {timezone.now().strftime('%m/%d')}: Sales, Lost & Found, and more!",
 			sender="Hoagie Mail",
 			body=body,
 			email="hoagie@princeton.edu",
