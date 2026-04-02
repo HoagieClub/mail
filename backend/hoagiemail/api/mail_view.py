@@ -93,6 +93,25 @@ class MailView(APIView):
 
 	def put(self, request) -> Response:
 		# Logic to update a scheduled mail
+		schedule = request.data.get("schedule")
+		new_schedule = request.data.get("new_schedule")
+		if not valid_schedule(schedule) :
+			return Response({"Invalid Schedule"}, status=status.HTTP_400_BAD_REQUEST)
+		if not valid_schedule(new_schedule) :
+			return Response({"Invalid New Schedule"}, status=status.HTTP_400_BAD_REQUEST)
+		
+		user = request.user
+		email_time = datetime.fromisoformat(schedule).astimezone(ZoneInfo("America/New_York"))
+		new_email_time = datetime.fromisoformat(new_schedule).astimezone(ZoneInfo("America/New_York"))
+
+		scheduled_email = ScheduledEmail.objects.filter(sender=user, schedule_at=email_time)
+		if not scheduled_email:
+			return Response({"Scheduled email not found"}, status=status.HTTP_400_BAD_REQUEST)
+	
+		scheduled_email.scheduled_at = new_email_time
+		scheduled_email.save()
+	
+
 		return Response({"status": "OK", "message": "Scheduled mail updated successfully"}, status=status.HTTP_200_OK)
 
 	def delete(self, request) -> Response:
@@ -203,7 +222,6 @@ def handle_scheduled_email(mail_data, user):
 	if settings.DEBUG:
 		message = create_message(mail_data, user.email, HOAGIE_EMAIL)
 		print_debug(message, schedule=schedule_time_et)
-		return
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
