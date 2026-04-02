@@ -11,7 +11,7 @@ from hoagiemail.models import StuffPost
 
 REQUEST_TIMEOUT: Final[timedelta] = timedelta(seconds=10)
 SUMMER: Final[bool] = False
-SANDWITCH: Final[str] = "<img height=\"22\" src='https://i.imgur.com/gkEZQ4x.png' title='Hoagie' />"
+HOAGIE_SANDWICH_LOGO: Final[str] = "<img height=\"22\" src='https://i.imgur.com/gkEZQ4x.png' title='Hoagie' />"
 LOGO: Final[str] = "<img height=\"180px\" src='https://i.imgur.com/kidY9cT.png' alt='Hoagie Digest' />"
 IS_PRODUCTON: Final[bool] = getenv("HOAGIE_MODE") == "production"
 
@@ -187,7 +187,7 @@ def run_digest_script() -> None:
     <p>You don't need to wait for the next digest to see what's new, check out the <a target="_blank" href="https://stuff.hoagie.io/">Hoagie Stuff</a>
         to keep up to date with the latest posts before others.</p>
     <center>
-        {SANDWITCH} <br />
+        {HOAGIE_SANDWICH_LOGO} <br />
         <div style="font-size:8pt; margin-top:8px;">
         Powered by <a target="_blank" href="https://mail.hoagie.io/">HoagieMail</a><br />
         In the Hoagie world, hoagies digest you!
