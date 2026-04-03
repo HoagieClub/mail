@@ -1,6 +1,5 @@
 import logging
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from rest_framework import serializers, status
@@ -238,12 +237,12 @@ def handle_scheduled_email(mail_data, user):
 	schedule_time = datetime.fromisoformat(schedule)
 
 	# Check if already scheduled mail at this time for this user
-	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time_et).exists():
+	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time).exists():
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
 	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
-	print_debug(message, schedule=schedule_time_et)
+	print_debug(message, schedule=schedule_time)
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
@@ -251,7 +250,7 @@ def handle_scheduled_email(mail_data, user):
 		sender=mail_data["sender"],
 		header=mail_data["header"],
 		body=mail_data["body"],
-		schedule=schedule_time_et,
+		schedule=schedule_time,
 	)
 
 	return None
