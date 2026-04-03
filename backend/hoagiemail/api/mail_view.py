@@ -101,7 +101,7 @@ class MailView(APIView):
 		try:
 			schedule = request.data["schedule"]
 			schedule_time = datetime.fromisoformat(schedule)
-			scheduled_email = ScheduledEmail.objects.get(sender=user, scheduled_at=schedule_time)
+			scheduled_email = ScheduledEmail.objects.get(user=user, schedule=schedule_time)
 			scheduled_email.delete()
 			return Response(
 				{"status": "OK", "message": "Scheduled mail deleted successfully"}, status=status.HTTP_200_OK
