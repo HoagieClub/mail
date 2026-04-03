@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 from config import settings
-from hoagiemail.api.mail_view import HOAGIE_EMAIL, create_message, get_listservs, print_debug
+from hoagiemail.api.mail_view import HOAGIE_EMAIL, NORMAL_EMAIL_FOOTER, create_message, get_listservs, print_debug
 from hoagiemail.email.mailjet_client import get_mailjet_client
 from hoagiemail.models import ScheduledEmail
 
@@ -28,7 +28,7 @@ def scheduled_mail_script():
 		logger.info("Current hour is not in send hours")
 		return
 
-	emails = ScheduledEmail.objects.filter(scheduled_at__lte=current_time)
+	emails = ScheduledEmail.objects.filter(schedule__lte=current_time)
 	mailjet = get_mailjet_client()
 
 	# Send each email and delete if successful, log error if not
@@ -37,12 +37,14 @@ def scheduled_mail_script():
 		logger.info(f"Sending email with ID: {email.id}")
 		mail_data = {
 			"sender": email.get_sender_name(),
-			"header": email.header_text,
-			"body": email.body_text,
+			"header": email.header,
+			"body": email.body,
 		}
 
+		mail_data["body"] += NORMAL_EMAIL_FOOTER % (email.user.username, email.user.email)
+
 		# The message that would be sent
-		actual_message = create_message(mail_data, email.sender.email, HOAGIE_EMAIL)
+		actual_message = create_message(mail_data, email.user.email, HOAGIE_EMAIL)
 		actual_message["Cc"] = get_listservs()
 		print_debug(actual_message)
 
@@ -52,7 +54,7 @@ def scheduled_mail_script():
 		to_send = actual_message
 		# Change recipient if not in production to avoid sending to everyone
 		if not settings.PROD:
-			to_send = create_message(mail_data, email.sender.email, test_email)
+			to_send = create_message(mail_data, email.user.email, test_email)
 
 		result = mailjet.send.create(data={"Messages": [to_send]})
 
