@@ -32,6 +32,24 @@ body {
     animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
 
+.template-card {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.template-card:hover {
+    transform: translateY(-2px);
+}
+
+.template-preview-box {
+    transition: all 0.2s;
+}
+
+.template-preview-box:hover {
+    border-color: #ffcb97;
+}
+
 @keyframes stroke {
     100% {
         stroke-dashoffset: 0;
