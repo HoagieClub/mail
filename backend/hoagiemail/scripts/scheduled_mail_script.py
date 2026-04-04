@@ -14,8 +14,6 @@ test_email = HOAGIE_EMAIL  # Change to your own email when testing this script
 
 
 def scheduled_mail_script():
-	logger.info("Running scheduled mail script")
-
 	# Current time with grace period because Heroku Scheduler is not exact
 	current_time = datetime.now(timezone.utc) + timedelta(minutes=grace_period)
 	current_time_et = current_time.astimezone(ZoneInfo("America/New_York"))
@@ -25,7 +23,6 @@ def scheduled_mail_script():
 
 	# Make sure local hour is in the send hours (accounts for daylight savings)
 	if hour not in send_hours:
-		logger.info("Current hour is not in send hours")
 		return
 
 	emails = ScheduledEmail.objects.filter(schedule__lte=current_time)
@@ -34,7 +31,6 @@ def scheduled_mail_script():
 	# Send each email and delete if successful, log error if not
 	total = 0
 	for email in emails:
-		logger.info(f"Sending email with ID: {email.id}")
 		mail_data = {
 			"sender": email.get_sender_name(),
 			"header": email.header,
@@ -70,4 +66,3 @@ def scheduled_mail_script():
 		logger.info("No emails sent at this time.")
 	else:
 		logger.info(f"Successfully sent {total}/{len(emails)} emails.")
-	logger.info("Finished scheduled mail script")
