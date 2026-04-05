@@ -149,5 +149,5 @@ class StuffUserView(APIView):
 		except Exception as e:
 			logger.error(f"Unexpected error deleting scheduled post: {str(e)}")
 			return Response(
-				{"error": "Unexpected error deleting scheduled mail"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+				{"error": "Unexpected error deleting scheduled post"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
 			)

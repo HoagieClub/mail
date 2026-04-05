@@ -1,6 +1,5 @@
 import logging
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
 
 from django.conf import settings
 from rest_framework import serializers, status
@@ -117,7 +116,23 @@ class MailView(APIView):
 
 	def delete(self, request) -> Response:
 		# Logic to delete a scheduled mail
-		return Response({"status": "OK", "message": "Scheduled mail deleted successfully"}, status=status.HTTP_200_OK)
+		user = request.user
+		try:
+			schedule = request.data["schedule"]
+			schedule_time = datetime.fromisoformat(schedule)
+			scheduled_email = ScheduledEmail.objects.get(user=user, schedule=schedule_time)
+			scheduled_email.delete()
+			return Response(
+				{"status": "OK", "message": "Scheduled mail deleted successfully"}, status=status.HTTP_200_OK
+			)
+		except ScheduledEmail.DoesNotExist:
+			logger.error(f"Scheduled mail not found for user {user.email} and scheduled at {schedule}")
+			return Response({"error": "Scheduled mail not found"}, status=status.HTTP_404_NOT_FOUND)
+		except Exception as e:
+			logger.error(f"Unexpected error deleting scheduled mail: {str(e)}")
+			return Response(
+				{"error": "Unexpected error deleting scheduled mail"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+			)
 
 
 def get_listservs():
@@ -220,15 +235,14 @@ def handle_scheduled_email(mail_data, user):
 		)
 
 	schedule_time = datetime.fromisoformat(schedule)
-	schedule_time_et = schedule_time.astimezone(ZoneInfo("America/New_York"))
 
 	# Check if already scheduled mail at this time for this user
-	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time_et).exists():
+	if ScheduledEmail.objects.filter(user=user, schedule=schedule_time).exists():
 		return "You already have an email scheduled for this time. If you would like to change your message, please \
 			delete your mail in the Scheduled Emails page and try again."
 
 	message = create_message(mail_data, user.email, HOAGIE_EMAIL)
-	print_debug(message, schedule=schedule_time_et)
+	print_debug(message, schedule=schedule_time)
 
 	# Create scheduled email
 	ScheduledEmail.objects.create(
@@ -236,7 +250,7 @@ def handle_scheduled_email(mail_data, user):
 		sender=mail_data["sender"],
 		header=mail_data["header"],
 		body=mail_data["body"],
-		schedule=schedule_time_et,
+		schedule=schedule_time,
 	)
 
 	return None
