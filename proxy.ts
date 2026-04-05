@@ -11,8 +11,10 @@ export async function proxy(request: NextRequest) {
     }
 
     // Allow access to public routes without requiring a session
-    if (request.nextUrl.pathname === '/' ||
-        request.nextUrl.pathname === "/about") {
+    if (
+        request.nextUrl.pathname === '/' ||
+        request.nextUrl.pathname === '/about'
+    ) {
         return authRes;
     }
 
