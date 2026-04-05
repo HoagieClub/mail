@@ -59,7 +59,7 @@ const teamLeads: member[] = [
         name: 'Jenny Fan',
         role: 'Team Lead',
         year: '2025 - 2026',
-        imgSrc: 'https://media.licdn.com/dms/image/v2/D4E03AQFOQEWyofLFhw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1710648138236?e=1773273600&v=beta&t=oWwpbTq8Ncnv6eWnBsFcGUMpDx2l1iWu1_nbT4ijRQE',
+        imgSrc: 'https://i.imgur.com/zDqurNZ.jpeg',
         socials: {
             linkedin: 'https://www.linkedin.com/in/jennyfan04/',
         },
@@ -75,7 +75,7 @@ const pastLeadership: member[] = [
         name: 'Spencer Doyle',
         role: 'Team Lead',
         year: '2024 - 2025',
-        imgSrc: 'https://media.licdn.com/dms/image/v2/D4E03AQFgKlbpu5PV9Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1710630696392?e=1773273600&v=beta&t=1k-bOwMR0VcGoJpjI3S8eTs3E-x52eNoya-LOO6080I',
+        imgSrc: 'https://i.imgur.com/kUbzXL9.png',
         socials: {
             linkedin: 'https://www.linkedin.com/in/spencer-doyle3/',
         },
