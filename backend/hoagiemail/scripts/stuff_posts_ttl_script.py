@@ -14,4 +14,4 @@ def stuff_posts_ttl() -> None:
 	try:
 		StuffPost.objects.filter(created_at__lt=threshold_time).delete()
 	except Exception as e:
-		logging.error(f"Error occurred while deleting expired stuff posts: {e}")
+		logger.error(f"Error occurred while deleting expired stuff posts: {e}")
