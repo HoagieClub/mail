@@ -2,6 +2,7 @@
 
 import { useUser } from '@auth0/nextjs-auth0';
 import {
+    Alert,
     Pane,
     majorScale,
     minorScale,
@@ -22,6 +23,12 @@ export default function Index() {
     else if (user) {
         Profile = (
             <Pane>
+                <Alert intent="none">
+                    On Friday, August 14th, HoagieMail will begin delivering emails to HuoHub, instead of Westwire, 
+                    as part of the University's naming transition for Huo College (formerly New College West). 
+                    No action from any user is needed. HoagieMail will continue to function as intended.
+                     All Huo students are automatically subscribed to the new listserv.<em></em></Alert>
+                <br/>
                 <Link href='/app'>
                     <Button
                         height={56}
