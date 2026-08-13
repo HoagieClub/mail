@@ -2,6 +2,7 @@
 
 import { useUser } from '@auth0/nextjs-auth0';
 import {
+    Alert,
     Pane,
     majorScale,
     minorScale,
@@ -22,6 +23,17 @@ export default function Index() {
     else if (user) {
         Profile = (
             <Pane>
+                <Alert
+                    intent='none'
+                    hasIcon={false}
+                    title='Migration to Huohub'
+                    marginBottom={20}
+                    appearance='card'
+                >
+                    HoagieMail will deliver emails to Huohub. No action is
+                    required from users or Huo College students. HoagieMail will
+                    continue to function as intended.
+                </Alert>
                 <Link href='/app'>
                     <Button
                         height={56}
