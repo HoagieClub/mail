@@ -23,16 +23,10 @@ export default function Index() {
     else if (user) {
         Profile = (
             <Pane>
-                <Alert intent='none'>
-                    On Friday, August 14th, HoagieMail will begin delivering
-                    emails to HuoHub, instead of Westwire, as part of the
-                    University&apos;s naming transition for Huo College
-                    (formerly New College West). No action from any user is
-                    needed. HoagieMail will continue to function as intended.
-                    All Huo students are automatically subscribed to the new
-                    listserv.<em></em>
-                </Alert>
-                <br />
+                <Alert intent="none" hasIcon={false} title="Migration to Huohub" marginBottom={20} appearance="card">
+                    HoagieMail will deliver emails to Huohub. No action is required from users or Huo College students.
+                    HoagieMail will continue to function as intended.
+                    </Alert>
                 <Link href='/app'>
                     <Button
                         height={56}
