@@ -26,13 +26,14 @@ export default function Index() {
                 <Alert
                     intent='none'
                     hasIcon={false}
-                    title='Migration to Huohub'
+                    title='Migration to HuoHub'
                     marginBottom={20}
                     appearance='card'
                 >
-                    HoagieMail will deliver emails to Huohub. No action is
-                    required from users or Huo College students. HoagieMail will
-                    continue to function as intended.
+                    Starting Friday, August 14th, HoagieMail will deliver emails
+                    to HuoHub instead of WestWire. No action is required from
+                    users or Huo College students. HoagieMail will continue to
+                    function as intended.
                 </Alert>
                 <Link href='/app'>
                     <Button
