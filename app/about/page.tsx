@@ -69,19 +69,9 @@ const GitHubIcon = () => (
 // Team data organized for easier management
 const teamLeads: member[] = [
     {
-        name: 'Jenny Fan',
-        role: 'Team Lead',
-        year: '2025 - 2026',
-        imgSrc: 'https://i.imgur.com/zDqurNZ.jpeg',
-        socials: {
-            linkedin: 'https://www.linkedin.com/in/jennyfan04/',
-            github: 'https://github.com/jfmath04',
-        },
-    },
-    {
         name: 'Zhao Song Zhou',
         role: 'Team Lead',
-        year: '2025 - 2026',
+        year: '2026 - 2027',
         imgSrc: 'https://i.imgur.com/JeUh9dc.jpeg',
         socials: {
             linkedin: 'https://www.linkedin.com/in/zhao-song-zhou/',
@@ -91,7 +81,7 @@ const teamLeads: member[] = [
     {
         name: 'Alvin Sze',
         role: 'Team Lead',
-        year: '2025 - 2026',
+        year: '2026 - 2027',
         imgSrc: 'https://i.imgur.com/mZy9kzp.jpeg',
         socials: {
             linkedin: 'https://www.linkedin.com/in/alvinsze/',
@@ -104,7 +94,7 @@ const teamMembers: member[] = [
     {
         name: 'Allison Lee',
         role: 'Product Manager',
-        year: '',
+        year: '2026 - 2027',
         imgSrc: 'https://i.imgur.com/3SPqM7z.jpeg',
         socials: {
             linkedin: 'https://www.linkedin.com/in/allisonelee/',
@@ -114,7 +104,7 @@ const teamMembers: member[] = [
     {
         name: 'Christal Chen',
         role: 'Software Engineer',
-        year: '',
+        year: '2026 - 2027',
         imgSrc: 'https://i.imgur.com/ZshQ3Fj.jpeg',
         socials: {
             linkedin: 'https://www.linkedin.com/in/christalchen/',
@@ -134,7 +124,52 @@ const pastLeadership: member[] = [
             github: 'https://github.com/Spencer04Hire',
         },
     },
+    {
+        name: 'Jenny Fan',
+        role: 'Team Lead',
+        year: '2025 - 2026',
+        imgSrc: 'https://i.imgur.com/zDqurNZ.jpeg',
+        socials: {
+            linkedin: 'https://www.linkedin.com/in/jennyfan04/',
+            github: 'https://github.com/jfmath04',
+        },
+    },
 ];
+
+// Small pill-style badge used to display role + year together with proper spacing
+const MemberBadges = ({
+    role,
+    year,
+    align = 'left',
+}: {
+    role: string;
+    year: string;
+    align?: 'left' | 'center';
+}) => {
+    const theme = useTheme();
+    return (
+        <div
+            className={`flex flex-wrap gap-2 mt-1 mb-3 ${
+                align === 'center'
+                    ? 'justify-center'
+                    : 'justify-center sm:justify-start'
+            }`}
+        >
+            <span
+                className='inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide'
+                style={{
+                    backgroundColor: theme.colors.blue50 ?? '#EBF5FF',
+                    color: theme.colors.blue600 ?? theme.colors.blue500,
+                }}
+            >
+                {role}
+            </span>
+            <span className='inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide bg-slate-100 text-slate-500'>
+                {year}
+            </span>
+        </div>
+    );
+};
 
 /**
  * Modern "Meet the Team" page component.
@@ -224,14 +259,10 @@ export function App() {
                                         <h3 className='text-2xl font-bold text-slate-900'>
                                             {lead.name}
                                         </h3>
-                                        <p
-                                            className='text-md font-semibold mb-2'
-                                            style={{
-                                                color: theme.colors.blue500,
-                                            }}
-                                        >
-                                            {lead.role}
-                                        </p>
+                                        <MemberBadges
+                                            role={lead.role}
+                                            year={lead.year}
+                                        />
                                         <div className='flex justify-center sm:justify-start space-x-4'>
                                             {lead.socials.github ? (
                                                 <SocialIcon
@@ -275,13 +306,12 @@ export function App() {
                                 <h4 className='font-bold text-slate-800 text-lg'>
                                     {member.name}
                                 </h4>
-                                <p
-                                    className='!text-sm'
-                                    style={{ color: theme.colors.blue500 }}
-                                >
-                                    {member.role}
-                                </p>
-                                <div className='flex mx-auto w-min mt-2 justify-center sm:justify-start space-x-4'>
+                                <MemberBadges
+                                    role={member.role}
+                                    year={member.year}
+                                    align='center'
+                                />
+                                <div className='flex mx-auto w-min justify-center sm:justify-start space-x-4'>
                                     {member.socials.github ? (
                                         <SocialIcon
                                             href={member.socials.github}
@@ -335,14 +365,10 @@ export function App() {
                                         <h3 className='text-2xl font-bold text-slate-900'>
                                             {lead.name}
                                         </h3>
-                                        <p
-                                            className='text-md font-semibold mb-2'
-                                            style={{
-                                                color: theme.colors.blue500,
-                                            }}
-                                        >
-                                            {lead.year}
-                                        </p>
+                                        <MemberBadges
+                                            role={lead.role}
+                                            year={lead.year}
+                                        />
                                         <div className='flex justify-center sm:justify-start space-x-4'>
                                             {lead.socials.github ? (
                                                 <SocialIcon
