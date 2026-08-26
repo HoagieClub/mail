@@ -5,7 +5,7 @@ def get_listservs():
 		{"Email": "WHITMANWIRE@PRINCETON.EDU", "Name": "Whitman"},
 		{"Email": "RockyWire@PRINCETON.EDU", "Name": "Rocky"},
 		{"Email": "Re-INNformer@PRINCETON.EDU", "Name": "Forbes"},
-		{"Email": "westwire@princeton.edu", "Name": "NCW"},
+		{"Email": "huohub@princeton.edu", "Name": "Huo"},
 		{"Email": "matheymail@PRINCETON.EDU", "Name": "Mathey"},
 		{"Email": "yehyellowpages@princeton.edu", "Name": "Yeh"},
 		{"Email": "hoagiemailgradstudents@princeton.edu", "Name": "hoagiemailgradstudents"},
