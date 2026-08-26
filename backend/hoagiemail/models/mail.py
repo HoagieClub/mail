@@ -12,7 +12,7 @@ class ScheduledEmail(models.Model):
 	createdAt = models.DateTimeField(auto_now_add=True)
 
 	def get_sender_name(self) -> str:
-		return self.custom_sender_name if self.custom_sender_name else self.sender.get_full_name()
+		return self.sender if self.sender else self.user.get_full_name()
 
 	class Meta:
 		db_table = "ScheduledEmail"
