@@ -13,7 +13,7 @@ REQUEST_TIMEOUT: Final[timedelta] = timedelta(seconds=10)
 SUMMER: Final[bool] = False
 HOAGIE_SANDWICH_LOGO: Final[str] = "<img height=\"22\" src='https://i.imgur.com/gkEZQ4x.png' title='Hoagie' />"
 LOGO: Final[str] = "<img height=\"180px\" src='https://i.imgur.com/kidY9cT.png' alt='Hoagie Digest' />"
-IS_PRODUCTON: Final[bool] = getenv("HOAGIE_MODE") == "production"
+IS_PRODUCTION: Final[bool] = getenv("HOAGIE_MODE") == "production"
 
 logger = logging.getLogger(__name__)
 
@@ -30,15 +30,16 @@ def format_tag(text: str) -> str:
 	return f'<span style="color: #474d66; background-color:#edeff5; padding: 0px 6px; border-radius:4px; margin-right: 1px;">{text.title()}</span>'
 
 
-def add_tags(email: str, tags: Iterable[str]) -> str:
-	email += "<div style='margin-top: 6px;'>"
+def add_tags(tags: Iterable[str]) -> str:
+	res = ""
+	res += "<div style='margin-top: 6px;'>"
 
 	for tag in tags:
-		email += format_tag(tag) + " "
+		res += format_tag(tag) + " "
 
-	email += "</div>"
+	res += "</div>"
 
-	return email
+	return res
 
 
 def format_message(message: StuffPost) -> str:
@@ -56,7 +57,7 @@ def format_message(message: StuffPost) -> str:
 
 			email += f"<div style='margin:10px 0px;'>{message.description}</div>"
 			email += f"<span><b>Contact: </b>{name} ({link_email})</span><br />"
-			add_tags(email, tags)
+			email += add_tags(tags)
 		case "lost":
 			if message.thumbnail:
 				email += '<span><a target=\'_blank\' href="" + message.thumbnail + "">See Picture</a></span><br />'
@@ -68,7 +69,7 @@ def format_message(message: StuffPost) -> str:
 			email += "<span><b>" + message.title + "</b></span><br />"
 			email += "<div style='margin:5px 0px;'>" + message.description + "</div>"
 			email += f"<span><b>From: </b>{name} ({link_email})</span><br />"
-			add_tags(email, [str(t) for t in message.tags.all()])
+			email += add_tags([str(t) for t in message.tags.all()])
 
 	return email
 
@@ -122,7 +123,7 @@ def run_digest_script() -> None:
 		category_posts.append(post)
 		digest[post.category.name] = category_posts
 
-	if len(digest) < 5:
+	if len(posts) < 5:
 		is_weekday = timezone.now().weekday() in {1, 3, 5}
 
 		is_digest_day = is_weekday and not SUMMER
@@ -152,7 +153,7 @@ def run_digest_script() -> None:
     <hr />
     """
 
-	if lost_posts := digest["lost"]:
+	if lost_posts := digest.get("lost"):
 		body += """
         <h2>🧭 Lost & Found</h2>
         <div style="margin-bottom:20px; margin-top:-10px;">Access anytime through <a href="https://stuff.hoagie.io/lost">stuff.hoagie.io/lost</a></div>
@@ -166,7 +167,7 @@ def run_digest_script() -> None:
 
 			body += "<hr />"
 
-	if bulletin_posts := digest["bulletin"]:
+	if bulletin_posts := digest.get("bulletin"):
 		body += """
         <h2>✉️ Bulletins</h2>
         <div style="margin-bottom:20px; margin-top:-10px;">Accessible anytime with <a href="https://stuff.hoagie.io/bulletins">stuff.hoagie.io/bulletins</a></div>
@@ -180,7 +181,7 @@ def run_digest_script() -> None:
 
 			body += "<hr />"
 
-	if len(digest) != 1:
+	if len(posts) != 1:
 		body += f"<p>That's all! This could have been {len(digest)} emails in your inbox but instead it is just one!<br /><br /></p>"
 
 	body += f"""
@@ -196,7 +197,7 @@ def run_digest_script() -> None:
     </div>
     """
 
-	if IS_PRODUCTON:
+	if IS_PRODUCTION:
 		mail_request(
 			header=f"📬 DIGEST {timezone.now().strftime('%m/%d')}: Sales, Lost & Found, and more!",
 			sender="Hoagie Mail",
