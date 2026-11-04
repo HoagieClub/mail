@@ -1,7 +1,4 @@
-import { Pane, majorScale } from "evergreen-ui";
-
-import { useTheme } from "evergreen-ui";
-
+import { Pane, majorScale, useTheme } from "evergreen-ui";
 
 export const PAGE_MARGIN = majorScale(5);
 

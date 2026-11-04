@@ -153,10 +153,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                                 content={
                                     <Pane padding={16} maxWidth={320}>
                                         <Text>
-                                            Use your own name, or the name of
-                                            your club, department or
-                                            organization if you have permission
-                                            to do so.
+                                            {senderNameDesc}
                                         </Text>
                                     </Pane>
                                 }

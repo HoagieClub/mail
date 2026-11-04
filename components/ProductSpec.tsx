@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useState } from 'react';
+import { ReactNode } from 'react';
 
 import {
     Pane,
@@ -9,6 +9,8 @@ import {
     majorScale,
     useTheme,
 } from 'evergreen-ui';
+import Image from 'next/image';
+
 import Divider from './Divider';
 
 function Pill({ children }: { children: ReactNode }) {
@@ -84,7 +86,7 @@ export default function ProductSpec() {
                     overflow='hidden'
                     background='white'
                 >
-                    <img
+                    <Image
                         src='/listserv.webp'
                         alt='One email fanning out to the university listservs'
                         width={1120}
@@ -96,7 +98,7 @@ export default function ProductSpec() {
                             height: 'auto',
                             display: 'block',
                         }}
-                    />
+                    ></Image>
                 </Pane>
             </Section>
 
@@ -113,7 +115,7 @@ export default function ProductSpec() {
                     overflow='hidden'
                     background='white'
                 >
-                    <img
+                    <Image
                         src='/integration.webp'
                         alt='One email fanning out to the university listservs'
                         width={1120}
@@ -125,7 +127,8 @@ export default function ProductSpec() {
                             height: 'auto',
                             display: 'block',
                         }}
-                    />
+                    ></Image>
+
                 </Pane>
             </Section>
 
@@ -181,7 +184,7 @@ export default function ProductSpec() {
                                 </Pane>
                             </Pane>
 
-                            <img
+                            <Image
                                 src={item.img}
                                 alt='One email fanning out to the university listservs'
                                 width={1120}
@@ -193,7 +196,7 @@ export default function ProductSpec() {
                                     height: 'auto',
                                     display: 'block',
                                 }}
-                            />
+                            ></Image>
                         </Pane>
                     ))}
                 </Pane>
