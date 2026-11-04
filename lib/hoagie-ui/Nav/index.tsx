@@ -25,14 +25,18 @@ import {
     TabNavigation,
     Tab,
     useTheme,
-    ButtonProps,
     Button,
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
 import ProfileCard from '@/lib/hoagie-ui/ProfileCard';
-import type { TabType } from 'evergreen-ui';
+
+export type TabType = {
+    title: string;
+    href: string;
+    purpose?: 'primary' | 'secondary';
+};
 
 export type Nav = {
     // The name of the app for generating the `hoagie{name}` title.
@@ -135,36 +139,35 @@ function Nav({
                     </Link>
                     <Pane display='flex' alignItems='center'>
                         <TabNavigation>
-                            {tabs.map((tab) => (
-                                tab.purpose == "secondary" ? (
-                                <Tab
-                                    key={tab.title}
-                                    id={tab.title}
-                                    isSelected={pathname === tab.href}
-                                    appearance='secondary'
-                                    onSelect={() => router.push(tab.href)}
-                                    fontSize={14}
-                                >
-                                    {tab.title}
-                                </Tab>
-                                ) : (
-                                <Tab
-                                    key={tab.title}
-                                    id={tab.title}
-                                    appearance='secondary'
-                                    onSelect={() => router.push(tab.href)}
-                                    fontSize={14}
-                                >
-                                    <Button
-                                        height={32}
-                                        appearance='primary'
+                            {tabs.map((tab) =>
+                                tab.purpose === 'secondary' ? (
+                                    <Tab
+                                        key={tab.title}
+                                        id={tab.title}
+                                        isSelected={pathname === tab.href}
+                                        appearance='secondary'
+                                        onSelect={() => router.push(tab.href)}
+                                        fontSize={14}
                                     >
                                         {tab.title}
-                                    </Button>
- 
-                                </Tab>       
+                                    </Tab>
+                                ) : (
+                                    <Tab
+                                        key={tab.title}
+                                        id={tab.title}
+                                        appearance='secondary'
+                                        onSelect={() => router.push(tab.href)}
+                                        fontSize={14}
+                                    >
+                                        <Button
+                                            height={32}
+                                            appearance='primary'
+                                        >
+                                            {tab.title}
+                                        </Button>
+                                    </Tab>
                                 )
-                            ))}
+                            )}
                         </TabNavigation>
 
                         {user && (

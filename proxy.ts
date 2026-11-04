@@ -39,7 +39,8 @@ export const config = {
          * - _next/static (static files)
          * - _next/image (image optimization files)
          * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+         * - static assets served from /public (images, videos, fonts, etc.)
          */
-        '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+        '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:webm|mp4|webp|png|jpg|jpeg|gif|svg|ico|woff2?)$).*)',
     ],
 };

@@ -2,22 +2,22 @@
 
 import { ReactNode, useState } from 'react';
 
-import Image from 'next/image';
-import {
-    Pane,
-    Heading,
-    Text,
-    Tab,
-    TabNavigation,
-    majorScale,
-    useTheme,
-} from 'evergreen-ui';
+import { Pane, Heading, Text, majorScale, useTheme } from 'evergreen-ui';
 
 const steps = [
     { title: 'Sign in', body: 'Log in to Hoagie Mail to get started.' },
-    { title: 'Write your email', body: 'Add your message, plus any images or PDFs.' },
-    { title: 'Send yourself a test', body: 'Check exactly how it looks before it goes out.' },
-    { title: 'Send or schedule', body: 'Send to the university’s listservs now, or schedule it for later.' },
+    {
+        title: 'Write your email',
+        body: 'Add your message, plus any images or PDFs.',
+    },
+    {
+        title: 'Send yourself a test',
+        body: 'Check exactly how it looks before it goes out.',
+    },
+    {
+        title: 'Send or schedule',
+        body: 'Send to the university’s listservs now, or schedule it for later.',
+    },
 ];
 
 const examples = [
@@ -80,41 +80,40 @@ function Pill({ children }: { children: ReactNode }) {
     );
 }
 
-
 function Section({
-  title,
-  body,
-  children,
+    title,
+    body,
+    children,
 }: {
-  title: string;
-  body: string;
-  children: ReactNode;
+    title: string;
+    body: string;
+    children: ReactNode;
 }) {
-  return (
-      <Pane display='flex' flexDirection='column' marginTop={majorScale(12)}>
-          {/* Header row: title left, body right */}
-          <Pane
-              display='flex'
-              flexWrap='wrap'
-              justifyContent='space-between'
-              alignItems='flex-start'
-              gap={majorScale(4)}
-              marginBottom={majorScale(6)}
-          >
-              <Pane flex='1 1 320px' maxWidth={400}>
-                  <Heading size={900}>{title}</Heading>
-              </Pane>
-              <Pane flex='1 1 320px' maxWidth={440}>
-                  <Text size={500} color='muted' display='block'>
-                      {body}
-                  </Text>
-              </Pane>
-          </Pane>
+    return (
+        <Pane display='flex' flexDirection='column'>
+            {/* Header row: title left, body right */}
+            <Pane
+                display='flex'
+                flexWrap='wrap'
+                justifyContent='space-between'
+                alignItems='flex-start'
+                gap={majorScale(4)}
+                marginBottom={majorScale(6)}
+            >
+                <Pane flex='1 1 320px' maxWidth={400}>
+                    <Heading size={900}>{title}</Heading>
+                </Pane>
+                <Pane flex='1 1 320px' maxWidth={440}>
+                    <Text size={500} color='muted' display='block'>
+                        {body}
+                    </Text>
+                </Pane>
+            </Pane>
 
-          {/* Visual: full width below the header */}
-          <Pane width='100%'>{children}</Pane>
-      </Pane>
-  );
+            {/* Visual: full width below the header */}
+            <Pane width='100%'>{children}</Pane>
+        </Pane>
+    );
 }
 
 function EmailPreview({ subject, body }: { subject: string; body: string }) {
@@ -145,29 +144,41 @@ export default function ProductSpec() {
     const theme = useTheme();
 
     return (
-        <Pane maxWidth={1120} width='100%' marginTop={majorScale(3)}>
-
+        // Every section sits 152px below the thing above it. The first one also
+        // gets the 32px gap from the landing page, so its top margin is 120px.
+        <Pane
+            maxWidth={1120}
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            gap={majorScale(19)}
+            marginTop={majorScale(15)}
+        >
             {/* 2. Reach: text left, your graphic on the right */}
             <Section
                 title='Reaches the whole university'
                 body='Your email goes out to all the university’s listservs, so nobody has to forward it.'
             >
-            <Pane
-                border='default'
-                borderRadius={8}
-                overflow='hidden'
-                background='white'
-            >
-              <img
-                  src='/listserv.webp'
-                  alt='One email fanning out to the university listservs'
-                  width={1120}
-                  height={630}
-                  loading='lazy'
-                  decoding='async'
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
-              />
-            </Pane>
+                <Pane
+                    border='default'
+                    borderRadius={8}
+                    overflow='hidden'
+                    background='white'
+                >
+                    <img
+                        src='/listserv.webp'
+                        alt='One email fanning out to the university listservs'
+                        width={1120}
+                        height={630}
+                        loading='lazy'
+                        decoding='async'
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'block',
+                        }}
+                    />
+                </Pane>
             </Section>
 
             {/* 3. Announcement types: preview left, text right, tabs swap the example */}
@@ -175,22 +186,26 @@ export default function ProductSpec() {
                 title='For every campus announcement'
                 body='Share club news, university events, student sales, and lost and found.'
             >
-              <Pane
-                  border='default'
-                  borderRadius={8}
-                  overflow='hidden'
-                  background='white'
-              >
-                <img
-                    src='/integration.webp'
-                    alt='One email fanning out to the university listservs'
-                    width={1120}
-                    height={630}
-                    loading='lazy'
-                    decoding='async'
-                    style={{ width: '100%', height: 'auto', display: 'block' }}
-                />
-              </Pane>
+                <Pane
+                    border='default'
+                    borderRadius={8}
+                    overflow='hidden'
+                    background='white'
+                >
+                    <img
+                        src='/integration.webp'
+                        alt='One email fanning out to the university listservs'
+                        width={1120}
+                        height={630}
+                        loading='lazy'
+                        decoding='async'
+                        style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'block',
+                        }}
+                    />
+                </Pane>
             </Section>
 
             {/* 4. Write it your way, plus what is coming soon */}
@@ -198,23 +213,22 @@ export default function ProductSpec() {
                 title='Write it your way'
                 body='Format your message like any email, and add images and PDFs, like a flyer or a poster. More is on the way.'
             >
-                <Pane 
-                  display='flex' 
-                  flexDirection='row'
-                  gap={majorScale(2)}
-                  width='100%'
+                <Pane
+                    display='flex'
+                    flexDirection='row'
+                    gap={majorScale(2)}
+                    width='100%'
                 >
-
                     {[
                         {
                             title: 'Email templates',
                             body: 'Start from a template instead of a blank email.',
-                            img: '/templates.webp'
+                            img: '/templates.webp',
                         },
                         {
                             title: 'HoagieCalendar integration',
                             body: 'Connect Hoagie Mail to HoagieCalendar.',
-                            img: '/calendar.webp'
+                            img: '/calendar.webp',
                         },
                     ].map((item) => (
                         <Pane
@@ -227,35 +241,37 @@ export default function ProductSpec() {
                             flexDirection='column'
                             gap={majorScale(4)}
                         >
-                          <Pane
-                              display='flex'
-                              flexDirection='column'
-                              gap={majorScale(1)}
-                          >
-                            <Text size={300}>{item.body}</Text>
                             <Pane
-                              display='flex'
-                              justifyContent='space-between'
+                                display='flex'
+                                flexDirection='column'
+                                gap={majorScale(1)}
                             >
-                              <Heading display='inline' size={800}>{item.title}</Heading>
-                              <Pill>(Coming soon)</Pill>
+                                <Text size={300}>{item.body}</Text>
+                                <Pane
+                                    display='flex'
+                                    justifyContent='space-between'
+                                >
+                                    <Heading display='inline' size={800}>
+                                        {item.title}
+                                    </Heading>
+                                    <Pill>(Coming soon)</Pill>
+                                </Pane>
                             </Pane>
-                          </Pane>
 
-
-
-                          <img
-                              src={item.img}
-                              alt='One email fanning out to the university listservs'
-                              width={1120}
-                              height={630}
-                              loading='lazy'
-                              decoding='async'
-                              style={{ width: '100%', height: 'auto', display: 'block' }}
-                          />
-
+                            <img
+                                src={item.img}
+                                alt='One email fanning out to the university listservs'
+                                width={1120}
+                                height={630}
+                                loading='lazy'
+                                decoding='async'
+                                style={{
+                                    width: '100%',
+                                    height: 'auto',
+                                    display: 'block',
+                                }}
+                            />
                         </Pane>
-                        
                     ))}
                 </Pane>
             </Section>

@@ -269,7 +269,6 @@ export const hoagiePurple = {
     },
 };
 
-
 export const hoagieOrange = {
     ...hoagieUI,
     title: 'orange',

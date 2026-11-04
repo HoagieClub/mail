@@ -21,7 +21,6 @@ export default function View({ children }: { children: ReactNode }) {
             display='flex'
             justifyContent='center'
             alignItems='center'
-
             paddingBottom='24px'
             paddingTop='64px'
         >

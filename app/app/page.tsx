@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { useUser } from '@auth0/nextjs-auth0';
 import {
-    RadioGroup,
     Text,
     Heading,
     Pane,
@@ -12,15 +11,15 @@ import {
     Spinner,
     Button,
     Alert,
+    useTheme,
 } from 'evergreen-ui';
 import Link from 'next/link';
-import { useTheme } from 'evergreen-ui';
 
 import View from '@/components/View';
 
 export default function App() {
     const theme = useTheme();
-    
+
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
@@ -100,7 +99,6 @@ export default function App() {
             </Link>
         </Pane>
     );
-
 
     const CategoryGrid = (
         <Pane

@@ -5,9 +5,9 @@ import { ReactNode } from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 
 import Layout from '@/lib/hoagie-ui/Layout';
-import Nav from '@/lib/hoagie-ui/Nav';
+import Nav, { type TabType } from '@/lib/hoagie-ui/Nav';
 import Theme from '@/lib/hoagie-ui/Theme';
-import type { TabType } from 'evergreen-ui';
+
 export default function Content({
     children,
 }: {
@@ -15,7 +15,11 @@ export default function Content({
 }): React.JSX.Element {
     const tabs: TabType[] = [
         { title: 'Scheduled Emails', href: '/scheduled', purpose: 'secondary' },
-        { title: 'Current Digest', href: '/digest?type=current', purpose: 'secondary' },
+        {
+            title: 'Current Digest',
+            href: '/digest?type=current',
+            purpose: 'secondary',
+        },
         { title: 'Send Mail', href: '/app', purpose: 'primary' },
     ];
 

@@ -1,7 +1,8 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
+
 import { useUser } from '@auth0/nextjs-auth0';
-import {useRef, useEffect} from 'react'
 import {
     Pane,
     majorScale,
@@ -13,8 +14,8 @@ import {
 } from 'evergreen-ui';
 import Link from 'next/link';
 
-import AuthButton from '@/lib/hoagie-ui/AuthButton';
 import ProductSpec from '@/components/ProductSpec';
+import AuthButton from '@/lib/hoagie-ui/AuthButton';
 
 export default function Index() {
     const theme = useTheme();
@@ -57,7 +58,7 @@ export default function Index() {
                 flexDirection='column'
                 justifyContent='flex-end'
                 alignItems='center'
-                minHeight='max(480px, calc(100vh - 212px))'
+                minHeight='clamp(360px, 60vh, 640px)'
                 width='100%'
                 paddingTop={majorScale(8)}
             >
@@ -90,11 +91,9 @@ export default function Index() {
                 width='100%'
                 background={theme.colors.gray200}
                 borderRadius={12}
-                padding={majorScale(8)}
+                padding={majorScale(3)}
             >
-                <Pane 
-                    elevation={1}
-                >
+                <Pane elevation={1}>
                     <DemoVideo />
                 </Pane>
             </Pane>
@@ -103,8 +102,6 @@ export default function Index() {
         </Pane>
     );
 }
-
-
 
 function DemoVideo() {
     const ref = useRef<HTMLVideoElement>(null);

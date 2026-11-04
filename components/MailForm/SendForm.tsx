@@ -11,7 +11,7 @@ import {
     Text,
     InfoSignIcon,
     Popover,
-    IconButton
+    IconButton,
 } from 'evergreen-ui';
 import Link from 'next/link';
 
@@ -67,16 +67,8 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     }, [header, sender]);
 
     const MailForm = (
-        <Pane
-            display='flex'
-            flexDirection='column'
-            gap={majorScale(4)}
-        >
-            <Pane 
-                display='flex'
-                justifyContent='space-between'
-
-            >
+        <Pane display='flex' flexDirection='column' gap={majorScale(4)}>
+            <Pane display='flex' justifyContent='space-between'>
                 <Heading size={800} marginY={majorScale(2)}>
                     Send an Email
                 </Heading>
@@ -91,20 +83,25 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 </Link>
             </Pane>
             <ErrorMessage text={errorMessage} />
-            
 
             <ScheduleSelectField
                 id='schedule-select-field'
                 label={
-                    <Pane display='inline-flex' alignItems='center' gap={4} height={20}>
+                    <Pane
+                        display='inline-flex'
+                        alignItems='center'
+                        gap={4}
+                        height={20}
+                    >
                         Scheduled Time
                         <Popover
                             content={
                                 <Pane padding={16} maxWidth={320}>
                                     <Text>
-                                        Emails go out in batches at 8am, 1pm, and 6pm EST.
-                                        You can schedule up to four days ahead, and only
-                                        one email per time slot.
+                                        Emails go out in batches at 8am, 1pm,
+                                        and 6pm EST. You can schedule up to four
+                                        days ahead, and only one email per time
+                                        slot.
                                     </Text>
                                 </Pane>
                             }
@@ -143,10 +140,9 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                         headerInvalid ? 'Must have subject line' : null
                     }
                     value={header}
-                    description="Title of your email"
+                    description='Title of your email'
                     onChange={(e) => setHeader(e.target.value)}
                 />
-
 
                 <TextInputField
                     id='email-header-input'
@@ -157,8 +153,9 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                                 content={
                                     <Pane padding={16} maxWidth={320}>
                                         <Text>
-                                            Use your own name, or the name of your club,
-                                            department or organization if you have permission
+                                            Use your own name, or the name of
+                                            your club, department or
+                                            organization if you have permission
                                             to do so.
                                         </Text>
                                     </Pane>
