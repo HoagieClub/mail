@@ -145,7 +145,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 />
 
                 <TextInputField
-                    id='email-header-input'
+                    id='sender-name-input'
                     label={
                         <Pane display='inline-flex' alignItems='center'>
                             Displayed Sender Name
@@ -171,6 +171,12 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                             </Popover>
                         </Pane>
                     }
+                    required
+                    isInvalid={senderInvalid}
+                    placeholder={user.name}
+                    validationMessage={senderInvalid ? 'Must have sender name' : null}
+                    value={sender}
+                    onChange={(e) => setSender(e.target.value)}
                     description='Shown as the sender. Your full name still appears in the footer.'
                 />
             </Pane>

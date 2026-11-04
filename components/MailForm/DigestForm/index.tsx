@@ -57,19 +57,25 @@ export default function DigestForm({
         return <Spinner />;
     }
     const NoDigest = (
-        <Pane>
+        <Pane
+            height='60vh'
+            display='flex'
+            flexDirection='column'
+            justifyContent='center'
+            alignItems='center'
+        >
             <Heading size={800} marginY={majorScale(2)}>
                 No Current Digest
             </Heading>
             <ErrorMessage text={errorMessage} />
-            <Alert intent='none'>
+            <Alert maxWidth={600} intent='none'>
                 Emails not relating to University Clubs, Departments, and
                 Organizations will be bundled into a Digest email. You can
                 modify your current Digest here.
             </Alert>
             <br />
             <Link href='/app'>
-                <Button size='large' float='left'>
+                <Button appearance='primary' size='large' float='left'>
                     Send an email
                 </Button>
             </Link>

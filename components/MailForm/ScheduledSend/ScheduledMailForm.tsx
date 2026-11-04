@@ -20,12 +20,18 @@ export default function ScheduledMailForm({
 }) {
     if (userScheduledMail?.status === 'unused') {
         return (
-            <Pane>
+            <Pane
+                height='60vh'
+                display='flex'
+                flexDirection='column'
+                justifyContent='center'
+                alignItems='center'
+            >
                 <Heading size={800} marginY={majorScale(2)}>
                     No Scheduled Emails
                 </Heading>
                 <ErrorMessage text={errorMessage} />
-                <Alert intent='none'>
+                <Alert maxWidth={600} intent='none'>
                     Emails relating to University Clubs, Departments, and
                     Organizations can be scheduled up to four days in advance.
                     Other emails will be bundled into a Digest email. You can
@@ -33,7 +39,7 @@ export default function ScheduledMailForm({
                 </Alert>
                 <br />
                 <Link href='/app'>
-                    <Button size='large' float='left'>
+                    <Button appearance='primary' size='large' float='left'>
                         Send an email
                     </Button>
                 </Link>
