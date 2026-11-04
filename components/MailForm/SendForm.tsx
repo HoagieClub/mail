@@ -10,6 +10,8 @@ import {
     Dialog,
     Text,
     InfoSignIcon,
+    Popover,
+    IconButton
 } from 'evergreen-ui';
 import Link from 'next/link';
 
@@ -65,8 +67,16 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     }, [header, sender]);
 
     const MailForm = (
-        <Pane>
-            <Pane display='flex' justifyContent='space-between'>
+        <Pane
+            display='flex'
+            flexDirection='column'
+            gap={majorScale(4)}
+        >
+            <Pane 
+                display='flex'
+                justifyContent='space-between'
+
+            >
                 <Heading size={800} marginY={majorScale(2)}>
                     Send an Email
                 </Heading>
@@ -81,43 +91,93 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 </Link>
             </Pane>
             <ErrorMessage text={errorMessage} />
+            
+
             <ScheduleSelectField
                 id='schedule-select-field'
-                label='Scheduled Time'
-                description='Send emails now or schedule them up to four days
-                in advance! Emails will be sent out in batches at 8am,
-                1pm, and 6pm EST. You may only schedule one email per time slot.'
+                label={
+                    <Pane display='inline-flex' alignItems='center' gap={4} height={20}>
+                        Scheduled Time
+                        <Popover
+                            content={
+                                <Pane padding={16} maxWidth={320}>
+                                    <Text>
+                                        Emails go out in batches at 8am, 1pm, and 6pm EST.
+                                        You can schedule up to four days ahead, and only
+                                        one email per time slot.
+                                    </Text>
+                                </Pane>
+                            }
+                        >
+                            <IconButton
+                                icon={InfoSignIcon}
+                                appearance='minimal'
+                                height={20}
+                                width={20}
+                                aria-label='More about scheduling'
+                            />
+                        </Popover>
+                    </Pane>
+                }
+                description='Send now, or schedule up to four days ahead.'
+                inputWidth='100%'
                 required
                 includeNow
                 schedule={schedule}
                 handleScheduleChange={(e) => setSchedule(e.target.value)}
             />
-            <TextInputField
-                id='email-header-input'
-                label='Email Header'
-                isInvalid={headerInvalid}
-                required
-                description='This is the title of the email to the listservs.'
-                placeholder='Hi from Hoagie!'
-                validationMessage={
-                    headerInvalid ? 'Must have subject line' : null
-                }
-                value={header}
-                onChange={(e) => setHeader(e.target.value)}
-            />
-            <TextInputField
-                id='sender-name-input'
-                label='Displayed Sender Name'
-                required
-                isInvalid={senderInvalid}
-                description={senderNameDesc}
-                placeholder={user.name}
-                validationMessage={
-                    senderInvalid ? 'Must have sender name' : null
-                }
-                value={sender}
-                onChange={(e) => setSender(e.target.value)}
-            />
+
+            <Pane
+                display='grid'
+                gridTemplateColumns='repeat(auto-fit, minmax(260px, 1fr))'
+                gap={majorScale(4)}
+                alignItems='start'
+            >
+                <TextInputField
+                    id='email-header-input'
+                    label='Email Header'
+                    isInvalid={headerInvalid}
+                    required
+                    placeholder='Hi from Hoagie!'
+                    validationMessage={
+                        headerInvalid ? 'Must have subject line' : null
+                    }
+                    value={header}
+                    description="Title of your email"
+                    onChange={(e) => setHeader(e.target.value)}
+                />
+
+
+                <TextInputField
+                    id='email-header-input'
+                    label={
+                        <Pane display='inline-flex' alignItems='center'>
+                            Displayed Sender Name
+                            <Popover
+                                content={
+                                    <Pane padding={16} maxWidth={320}>
+                                        <Text>
+                                            Use your own name, or the name of your club,
+                                            department or organization if you have permission
+                                            to do so.
+                                        </Text>
+                                    </Pane>
+                                }
+                            >
+                                <IconButton
+                                    icon={InfoSignIcon}
+                                    appearance='minimal'
+                                    height={12}
+                                    width={20}
+                                    aria-label='More about the sender name'
+                                />
+                            </Popover>
+                        </Pane>
+                    }
+                    description='Shown as the sender. Your full name still appears in the footer.'
+                />
+            </Pane>
+
             <QuillJSEditor
                 label='Body Content'
                 description='This is the content of your email.'

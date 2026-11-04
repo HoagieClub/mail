@@ -25,11 +25,14 @@ import {
     TabNavigation,
     Tab,
     useTheme,
+    ButtonProps,
+    Button,
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
 import ProfileCard from '@/lib/hoagie-ui/ProfileCard';
+import type { TabType } from 'evergreen-ui';
 
 export type Nav = {
     // The name of the app for generating the `hoagie{name}` title.
@@ -42,7 +45,7 @@ export type Nav = {
     HeaderComponent?: ComponentType;
 
     // A list of tab objects for the navbar, each with `title` and `href` fields.
-    tabs?: Array<any>;
+    tabs?: TabType[];
 
     // Authenticated user data.
     user?: User;
@@ -133,18 +136,37 @@ function Nav({
                     <Pane display='flex' alignItems='center'>
                         <TabNavigation>
                             {tabs.map((tab) => (
+                                tab.purpose == "secondary" ? (
                                 <Tab
                                     key={tab.title}
                                     id={tab.title}
                                     isSelected={pathname === tab.href}
-                                    appearance='primary'
+                                    appearance='secondary'
                                     onSelect={() => router.push(tab.href)}
                                     fontSize={14}
                                 >
                                     {tab.title}
                                 </Tab>
+                                ) : (
+                                <Tab
+                                    key={tab.title}
+                                    id={tab.title}
+                                    appearance='secondary'
+                                    onSelect={() => router.push(tab.href)}
+                                    fontSize={14}
+                                >
+                                    <Button
+                                        height={32}
+                                        appearance='primary'
+                                    >
+                                        {tab.title}
+                                    </Button>
+ 
+                                </Tab>       
+                                )
                             ))}
                         </TabNavigation>
+
                         {user && (
                             <Popover
                                 content={<ProfileCard user={user} />}

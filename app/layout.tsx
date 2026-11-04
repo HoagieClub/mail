@@ -20,7 +20,7 @@ export default async function RootLayout({
     children: ReactNode;
 }) {
     const session = await auth0.getSession();
-
+    
     return (
         <html lang='en'>
             <head>
@@ -31,8 +31,8 @@ export default async function RootLayout({
                 />
             </head>
             <Auth0Provider user={session?.user}>
-                <body>
-                    <Content>{children}</Content>
+                <body>                  
+                        <Content>{children}</Content>
                 </body>
             </Auth0Provider>
         </html>

@@ -269,6 +269,7 @@ export const hoagiePurple = {
     },
 };
 
+
 export const hoagieOrange = {
     ...hoagieUI,
     title: 'orange',
@@ -337,5 +338,23 @@ export const hoagieOrange = {
         3: '0 0 1px rgba(100, 100, 100, 0.3), 0 8px 10px -4px rgba(100, 100, 100, 0.47)',
         4: '0 0 1px rgba(100, 100, 100, 0.3), 0 16px 24px -8px rgba(100, 100, 100, 0.47)',
         focusRing: '0 0 0 2px #FFE3C6',
+    },
+};
+
+export const hoagieOrangeLight = {
+    ...hoagieOrange,
+    colors: {
+        ...hoagieOrange.colors,
+        blue50: '#FFFFFF',
+        blue25: '#FFFBF7',
+        tint1: '#FFFCF6',
+        tint2: '#FCFCFB',
+    },
+    intents: {
+        ...hoagieOrange.intents,
+        info: {
+            ...hoagieOrange.intents.info,
+            background: '#FFFBF7',
+        },
     },
 };

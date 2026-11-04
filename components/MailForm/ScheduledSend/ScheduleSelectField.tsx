@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 
 import { SelectField } from 'evergreen-ui';
 
@@ -12,7 +12,7 @@ const getESTDate = (date = new Date()) => {
 };
 
 export default function ScheduleSelectField({
-    label = '',
+    label = '' as ReactNode,
     description = '',
     required = false,
     includeNow = false,
