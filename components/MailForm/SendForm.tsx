@@ -152,9 +152,7 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                             <Popover
                                 content={
                                     <Pane padding={16} maxWidth={320}>
-                                        <Text>
-                                            {senderNameDesc}
-                                        </Text>
+                                        <Text>{senderNameDesc}</Text>
                                     </Pane>
                                 }
                             >
@@ -171,7 +169,9 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                     required
                     isInvalid={senderInvalid}
                     placeholder={user.name}
-                    validationMessage={senderInvalid ? 'Must have sender name' : null}
+                    validationMessage={
+                        senderInvalid ? 'Must have sender name' : null
+                    }
                     value={sender}
                     onChange={(e) => setSender(e.target.value)}
                     description='Shown as the sender. Your full name still appears in the footer.'

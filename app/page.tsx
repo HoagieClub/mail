@@ -10,7 +10,6 @@ import {
     Spinner,
     EnvelopeIcon,
     Button,
-    useTheme,
 } from 'evergreen-ui';
 import Link from 'next/link';
 
@@ -19,7 +18,6 @@ import ProductSpec from '@/components/ProductSpec';
 import AuthButton from '@/lib/hoagie-ui/AuthButton';
 
 export default function Index() {
-    const theme = useTheme();
     const { user, isLoading } = useUser();
 
     let Actions;
@@ -50,20 +48,24 @@ export default function Index() {
             display='flex'
             flexDirection='column'
             alignItems='center'
-            gap={majorScale(6)}
+            gap={majorScale(4)}
             marginX={PAGE_MARGIN}
             marginBottom={majorScale(4)}
         >
-            <Pane width='100%'>
+            <Pane
+                width='100%'
+                maxWidth={1120}
+                display='flex'
+                flexDirection='row'
+            >
                 {/* Hero: tall area with the text near the bottom */}
                 <Pane
                     display='flex'
                     flexDirection='column'
-                    justifyContent='flex-end'
+                    justifyContent='center'
                     alignItems='center'
-                    minHeight='max(480px, calc(100vh - 212px))'
+                    minHeight='100vh'
                     width='100%'
-                    paddingTop={majorScale(8)}
                 >
                     <Pane maxWidth={1120} width='100%'>
                         <Heading
@@ -72,7 +74,6 @@ export default function Index() {
                             className='hoagie'
                         >
                             Send emails to everyone <br />
-                            on campus, <b>instantly</b>.
                         </Heading>
                         <p>No more mail forwarding necessary.</p>
                         <Pane
@@ -93,20 +94,17 @@ export default function Index() {
                     maxWidth={1120}
                     width='100%'
                     marginX='auto'
-                    background={theme.colors.gray200}
-                    borderRadius={12}
-                    padding={majorScale(8)}
-                    marginBottom={majorScale(12)}
+                    display='flex'
+                    alignItems='center'
+                    justifyContent='center'
+                    borderRadius={8}
                 >
-                    <Pane elevation={1}>
-                        <DemoVideo />
-                    </Pane>
+                    <DemoVideo />
                 </Pane>
             </Pane>
 
             <Divider />
             <ProductSpec />
-
 
             {/* Closing call to action */}
             <Pane
@@ -161,7 +159,12 @@ function DemoVideo() {
             playsInline
             preload='metadata'
             poster='/hoagie-mail-poster.webp'
-            style={{ width: '100%', aspectRatio: '16 / 9', borderRadius: 12 }}
+            style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+                borderRadius: 12,
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.12)',
+            }}
         >
             <source src='/hoagie-mail-demo.webm' type='video/webm' />
             <source src='/hoagie-mail-demo.mp4' type='video/mp4' />

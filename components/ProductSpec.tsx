@@ -2,13 +2,7 @@
 
 import { ReactNode } from 'react';
 
-import {
-    Pane,
-    Heading,
-    Text,
-    majorScale,
-    useTheme,
-} from 'evergreen-ui';
+import { Pane, Heading, Text, majorScale, useTheme } from 'evergreen-ui';
 import Image from 'next/image';
 
 import Divider from './Divider';
@@ -30,8 +24,15 @@ function Pill({ children }: { children: ReactNode }) {
     );
 }
 
-
-function Section({ title, body, children }: { title: string; body: string; children: ReactNode }) {
+function Section({
+    title,
+    body,
+    children,
+}: {
+    title: string;
+    body: string;
+    children: ReactNode;
+}) {
     return (
         <Pane width='100%'>
             <Pane
@@ -67,16 +68,18 @@ function Section({ title, body, children }: { title: string; body: string; child
     );
 }
 
-
 export default function ProductSpec() {
     const theme = useTheme();
 
     return (
-        <Pane width='100%'  display="flex" flexDirection="column" gap={majorScale(6)}>
-
+        <Pane
+            width='100%'
+            display='flex'
+            flexDirection='column'
+            gap={majorScale(4)}
+        >
             {/* 2. Reach: text left, your graphic on the right */}
             <Section
-            
                 title='Reaches the whole university'
                 body='Your email goes out to all the university’s listservs, so nobody has to forward it.'
             >
@@ -128,7 +131,6 @@ export default function ProductSpec() {
                             display: 'block',
                         }}
                     ></Image>
-
                 </Pane>
             </Section>
 
