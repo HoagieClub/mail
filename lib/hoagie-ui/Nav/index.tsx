@@ -25,11 +25,18 @@ import {
     TabNavigation,
     Tab,
     useTheme,
+    Button,
 } from 'evergreen-ui';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 
 import ProfileCard from '@/lib/hoagie-ui/ProfileCard';
+
+export type TabType = {
+    title: string;
+    href: string;
+    purpose?: 'primary' | 'secondary';
+};
 
 export type Nav = {
     // The name of the app for generating the `hoagie{name}` title.
@@ -42,7 +49,7 @@ export type Nav = {
     HeaderComponent?: ComponentType;
 
     // A list of tab objects for the navbar, each with `title` and `href` fields.
-    tabs?: Array<any>;
+    tabs?: TabType[];
 
     // Authenticated user data.
     user?: User;
@@ -132,19 +139,37 @@ function Nav({
                     </Link>
                     <Pane display='flex' alignItems='center'>
                         <TabNavigation>
-                            {tabs.map((tab) => (
-                                <Tab
-                                    key={tab.title}
-                                    id={tab.title}
-                                    isSelected={pathname === tab.href}
-                                    appearance='primary'
-                                    onSelect={() => router.push(tab.href)}
-                                    fontSize={14}
-                                >
-                                    {tab.title}
-                                </Tab>
-                            ))}
+                            {tabs.map((tab) =>
+                                tab.purpose === 'primary' ? (
+                                    <Tab
+                                        key={tab.title}
+                                        id={tab.title}
+                                        appearance='primary'
+                                        onSelect={() => router.push(tab.href)}
+                                        fontSize={14}
+                                    >
+                                        <Button
+                                            height={32}
+                                            appearance='primary'
+                                        >
+                                            {tab.title}
+                                        </Button>
+                                    </Tab>
+                                ) : (
+                                    <Tab
+                                        key={tab.title}
+                                        id={tab.title}
+                                        isSelected={pathname === tab.href}
+                                        appearance='primary'
+                                        onSelect={() => router.push(tab.href)}
+                                        fontSize={14}
+                                    >
+                                        {tab.title}
+                                    </Tab>
+                                )
+                            )}
                         </TabNavigation>
+
                         {user && (
                             <Popover
                                 content={<ProfileCard user={user} />}

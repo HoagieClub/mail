@@ -1,19 +1,20 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+
 import { useUser } from '@auth0/nextjs-auth0';
 import {
-    Alert,
     Pane,
     majorScale,
-    minorScale,
     Heading,
     Spinner,
     EnvelopeIcon,
-    ArrowLeftIcon,
     Button,
 } from 'evergreen-ui';
 import Link from 'next/link';
 
+import Divider, { PAGE_MARGIN } from '@/components/Divider';
+import ProductSpec from '@/components/ProductSpec';
 import AuthButton from '@/lib/hoagie-ui/AuthButton';
 
 export default function Index() {
@@ -23,17 +24,6 @@ export default function Index() {
     else if (user) {
         Profile = (
             <Pane>
-                <Alert
-                    intent='none'
-                    hasIcon={false}
-                    title='Migration to Huohub'
-                    marginBottom={20}
-                    appearance='card'
-                >
-                    HoagieMail will deliver emails to Huohub. No action is
-                    required from users or Huo College students. HoagieMail will
-                    continue to function as intended.
-                </Alert>
                 <Link href='/app'>
                     <Button
                         height={56}
@@ -49,67 +39,117 @@ export default function Index() {
                 <AuthButton variant='logout' />
             </Pane>
         );
-    } else Profile = <AuthButton />;
+    } else {
+        Profile = <AuthButton />;
+    }
 
     return (
         <Pane
             display='flex'
-            justifyContent='center'
+            flexDirection='column'
             alignItems='center'
-            marginX={majorScale(1)}
-            paddingBottom={majorScale(4)}
-            paddingTop={majorScale(8)}
+            gap={majorScale(4)}
+            marginX={PAGE_MARGIN}
+            marginBottom={majorScale(4)}
         >
+            {/* Hero: text and video side by side, stacking when there isn't room */}
             <Pane
-                borderRadius={8}
-                textAlign='center'
-                elevation={1}
-                background='white'
-                marginX={20}
-                maxWidth='600px'
                 width='100%'
-                paddingX='10px'
-                paddingTop={majorScale(5)}
-                paddingBottom={majorScale(7)}
+                maxWidth={1120}
+                minHeight='100vh'
+                display='flex'
+                flexWrap='wrap'
+                alignItems='center'
+                alignContent='center'
+                gap={majorScale(6)}
             >
-                <EnvelopeIcon size={100} color='gray800' />
-                <Heading size={900} className='hoagie'>
-                    Send emails to everyone
-                    <br />
-                    on campus, <b>instantly</b>.
-                </Heading>
-                <p>No more mail forwarding necessary.</p>
-                <div>
+                <Pane flex='1 1 360px'>
+                    <Heading
+                        fontSize='clamp(40px, 4vw, 80px)'
+                        lineHeight={1.05}
+                        className='hoagie'
+                    >
+                        Send emails to everyone
+                    </Heading>
+                    <p>No more mail forwarding necessary.</p>
                     <Pane
                         display='flex'
-                        flexDirection='column'
+                        flexWrap='wrap'
                         alignItems='center'
-                        marginTop='30px'
+                        gap={majorScale(2)}
                     >
                         {Profile}
-                        <Link href='https://hoagie.io'>
-                            <Button
-                                height={56}
-                                width={majorScale(35)}
-                                appearance='default'
-                                marginTop={20}
-                                iconBefore={ArrowLeftIcon}
-                            >
-                                <Pane display='flex'>
-                                    Back to
-                                    <Pane
-                                        marginLeft={minorScale(1)}
-                                        className='hoagie'
-                                    >
-                                        hoagie<b>platform</b>
-                                    </Pane>
-                                </Pane>
-                            </Button>
-                        </Link>
-                        <br />
                     </Pane>
-                </div>
+                </Pane>
+
+                <Pane flex='1 1 480px' borderRadius={8}>
+                    <DemoVideo />
+                </Pane>
+            </Pane>
+
+            <Divider />
+            <ProductSpec />
+
+            {/* Closing call to action */}
+            <Pane
+                display='flex'
+                flexDirection='column'
+                gap={majorScale(6)}
+                justifyContent='center'
+                alignItems='center'
+                height='80vh'
+            >
+                <Heading
+                    fontSize='clamp(40px, 4vw, 80px)'
+                    lineHeight={1.25}
+                    textAlign='center'
+                    className='hoagie'
+                >
+                    Your announcement, <br />
+                    in every inbox
+                </Heading>
+
+                <Pane display='flex' gap={majorScale(2)}>
+                    {Profile}
+                </Pane>
             </Pane>
         </Pane>
+    );
+}
+
+function DemoVideo() {
+    const ref = useRef<HTMLVideoElement>(null);
+
+    useEffect(() => {
+        const video = ref.current;
+        if (!video) return undefined;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) video.play().catch(() => {});
+                else video.pause();
+            },
+            { threshold: 0.2 }
+        );
+        observer.observe(video);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <video
+            ref={ref}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload='metadata'
+            style={{
+                width: '100%',
+                aspectRatio: '16 / 9',
+                borderRadius: 12,
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.12)',
+            }}
+        >
+            <source src='/assets/hoagie-mail-demo.webm' type='video/webm' />
+        </video>
     );
 }

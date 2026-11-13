@@ -339,3 +339,21 @@ export const hoagieOrange = {
         focusRing: '0 0 0 2px #FFE3C6',
     },
 };
+
+export const hoagieOrangeLight = {
+    ...hoagieOrange,
+    colors: {
+        ...hoagieOrange.colors,
+        blue50: '#FEE9D2',
+        blue25: '#FFFBF7',
+        tint1: '#FFFCF6',
+        tint2: '#FCFCFB',
+    },
+    intents: {
+        ...hoagieOrange.intents,
+        info: {
+            ...hoagieOrange.intents.info,
+            background: '#FFFBF7',
+        },
+    },
+};

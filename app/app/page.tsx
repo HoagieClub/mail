@@ -4,7 +4,6 @@ import { useState } from 'react';
 
 import { useUser } from '@auth0/nextjs-auth0';
 import {
-    RadioGroup,
     Text,
     Heading,
     Pane,
@@ -12,19 +11,24 @@ import {
     Spinner,
     Button,
     Alert,
+    useTheme,
 } from 'evergreen-ui';
 import Link from 'next/link';
 
 import View from '@/components/View';
 
+import styles from './page.module.css';
+
 export default function App() {
+    const theme = useTheme();
+
     const studentOrgLabel = (
         <Pane>
             <Text size={500}>
                 <b>University Clubs, Departments, and Organizations</b>
                 <br />
             </Text>
-            <Text size={400}>
+            <Text size={300}>
                 Announcements on behalf of student clubs, departments, and
                 Princeton-affiliated organizations.
             </Text>
@@ -36,7 +40,7 @@ export default function App() {
                 <b>Lost and Found Items</b>
                 <br />
             </Text>
-            <Text size={400}>
+            <Text size={300}>
                 Announcements about found, lost, or stolen things.
             </Text>
         </Pane>
@@ -47,7 +51,7 @@ export default function App() {
                 <b>Student Sales</b>
                 <br />
             </Text>
-            <Text size={400}>
+            <Text size={300}>
                 Announcements about student sales of one or multiple items.
             </Text>
         </Pane>
@@ -58,7 +62,7 @@ export default function App() {
                 <b>Everything Else</b>
                 <br />
             </Text>
-            <Text size={400}>
+            <Text size={300}>
                 Emails that do not fit into any of these categories.
             </Text>
         </Pane>
@@ -97,6 +101,51 @@ export default function App() {
             </Link>
         </Pane>
     );
+
+    const CategoryGrid = (
+        <Pane
+            role='radiogroup'
+            aria-label='Email category'
+            className={styles.grid}
+            gap={majorScale(2)}
+            marginTop={majorScale(3)}
+        >
+            {options.map((option) => {
+                const selected = optionValue === option.value;
+                return (
+                    <Pane
+                        is='label'
+                        key={option.value}
+                        className={styles.card}
+                        position='relative'
+                        elevation={1}
+                        hoverElevation={2}
+                        background={selected ? theme.colors.blue25 : 'white'}
+                        border={`2px solid ${selected ? theme.colors.blue500 : 'transparent'}`}
+                        borderRadius={8}
+                        padding={majorScale(3)}
+                        cursor='pointer'
+                    >
+                        <input
+                            type='radio'
+                            name='email-category'
+                            value={option.value}
+                            checked={selected}
+                            onChange={() => setOptionValue(option.value)}
+                            style={{
+                                position: 'absolute',
+                                opacity: 0,
+                                width: 1,
+                                height: 1,
+                            }}
+                        />
+                        {option.label}
+                    </Pane>
+                );
+            })}
+        </Pane>
+    );
+
     const SelectForm = (
         <Pane marginBottom={majorScale(4)}>
             {user && (
@@ -111,15 +160,7 @@ export default function App() {
 
             <Text size={500}> Would you like to send an email about...</Text>
 
-            <RadioGroup
-                name='email-category'
-                size={16}
-                value={optionValue}
-                options={options}
-                isRequired
-                marginTop={majorScale(3)}
-                onChange={(event) => setOptionValue(event.target.value)}
-            />
+            {CategoryGrid}
         </Pane>
     );
 

@@ -7,6 +7,7 @@ import { ThemeProvider } from 'evergreen-ui';
 import {
     hoagiePurple,
     hoagieOrange,
+    hoagieOrangeLight,
     hoagieUI,
 } from '@/lib/hoagie-ui/Theme/themes';
 
@@ -31,6 +32,9 @@ function Theme({ palette = 'purple', children }: ThemeProps) {
             break;
         case 'blue':
             colorTheme = hoagieUI;
+            break;
+        case 'orange-light':
+            colorTheme = hoagieOrangeLight;
             break;
         case 'orange':
             colorTheme = hoagieOrange;
