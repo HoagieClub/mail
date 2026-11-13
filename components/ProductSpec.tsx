@@ -153,13 +153,13 @@ export default function ProductSpec() {
                             title: 'Email templates',
                             body: 'Start from a template instead of a blank email.',
                             img: '/templates.webp',
-                            alt: 'Start from a template instead of a blank email.'
+                            alt: 'Start from a template instead of a blank email.',
                         },
                         {
                             title: 'HoagieCalendar integration',
                             body: 'Connect Hoagie Mail to HoagieCalendar.',
                             img: '/calendar.webp',
-                            alt: 'Connect Hoagie Mail to HoagieCalendar.'
+                            alt: 'Connect Hoagie Mail to HoagieCalendar.',
                         },
                     ].map((item) => (
                         <Pane

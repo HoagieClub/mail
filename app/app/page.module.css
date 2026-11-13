@@ -1,18 +1,18 @@
 /* one column on phones, two by two on wider screens */
 .grid {
-  display: grid;
-  grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: 1fr;
 }
 
 @media (min-width: 640px) {
-  .grid {
-      grid-template-columns: repeat(2, 1fr);
-  }
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* shows keyboard users which category card they're on.
  :focus-visible keeps the ring off when someone clicks with a mouse */
 .card:has(input:focus-visible) {
-  outline: 2px solid #3366FF;
-  outline-offset: 2px;
+    outline: 2px solid #3366ff;
+    outline-offset: 2px;
 }

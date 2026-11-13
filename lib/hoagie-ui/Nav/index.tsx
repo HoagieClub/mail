@@ -139,32 +139,35 @@ function Nav({
                     </Link>
                     <Pane display='flex' alignItems='center'>
                         <TabNavigation>
-                        {tabs.map((tab) =>
-                            tab.purpose === 'primary' ? (
-                                <Tab
-                                    key={tab.title}
-                                    id={tab.title}
-                                    appearance='primary'
-                                    onSelect={() => router.push(tab.href)}
-                                    fontSize={14}
-                                >
-                                    <Button height={32} appearance='primary'>
+                            {tabs.map((tab) =>
+                                tab.purpose === 'primary' ? (
+                                    <Tab
+                                        key={tab.title}
+                                        id={tab.title}
+                                        appearance='primary'
+                                        onSelect={() => router.push(tab.href)}
+                                        fontSize={14}
+                                    >
+                                        <Button
+                                            height={32}
+                                            appearance='primary'
+                                        >
+                                            {tab.title}
+                                        </Button>
+                                    </Tab>
+                                ) : (
+                                    <Tab
+                                        key={tab.title}
+                                        id={tab.title}
+                                        isSelected={pathname === tab.href}
+                                        appearance='primary'
+                                        onSelect={() => router.push(tab.href)}
+                                        fontSize={14}
+                                    >
                                         {tab.title}
-                                    </Button>
-                                </Tab>
-                            ) : (
-                                <Tab
-                                    key={tab.title}
-                                    id={tab.title}
-                                    isSelected={pathname === tab.href}
-                                    appearance='primary'
-                                    onSelect={() => router.push(tab.href)}
-                                    fontSize={14}
-                                >
-                                    {tab.title}
-                                </Tab>
-                            )
-                        )}
+                                    </Tab>
+                                )
+                            )}
                         </TabNavigation>
 
                         {user && (

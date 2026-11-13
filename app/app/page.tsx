@@ -132,7 +132,12 @@ export default function App() {
                             value={option.value}
                             checked={selected}
                             onChange={() => setOptionValue(option.value)}
-                            style={{ position: 'absolute', opacity: 0, width: 1, height: 1 }}
+                            style={{
+                                position: 'absolute',
+                                opacity: 0,
+                                width: 1,
+                                height: 1,
+                            }}
                         />
                         {option.label}
                     </Pane>
