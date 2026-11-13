@@ -90,7 +90,7 @@ export default function ProductSpec() {
                     background='white'
                 >
                     <Image
-                        src='/listserv.webp'
+                        src='/assets/listserv.webp'
                         alt='One email fanning out to the university listservs'
                         width={1120}
                         height={630}
@@ -119,7 +119,7 @@ export default function ProductSpec() {
                     background='white'
                 >
                     <Image
-                        src='/integration.webp'
+                        src='/assets/integration.webp'
                         alt='Sales, events, lost and found, etc'
                         width={1120}
                         height={630}
@@ -152,13 +152,13 @@ export default function ProductSpec() {
                         {
                             title: 'Email templates',
                             body: 'Start from a template instead of a blank email.',
-                            img: '/templates.webp',
+                            img: '/assets/templates.webp',
                             alt: 'Start from a template instead of a blank email.',
                         },
                         {
                             title: 'HoagieCalendar integration',
                             body: 'Connect Hoagie Mail to HoagieCalendar.',
-                            img: '/calendar.webp',
+                            img: '/assets/calendar.webp',
                             alt: 'Connect Hoagie Mail to HoagieCalendar.',
                         },
                     ].map((item) => (
