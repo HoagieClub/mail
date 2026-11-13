@@ -17,6 +17,8 @@ import Link from 'next/link';
 
 import View from '@/components/View';
 
+import styles from './page.module.css';
+
 export default function App() {
     const theme = useTheme();
 
@@ -104,8 +106,7 @@ export default function App() {
         <Pane
             role='radiogroup'
             aria-label='Email category'
-            display='grid'
-            gridTemplateColumns='repeat(2, 1fr)'
+            className={styles.grid}
             gap={majorScale(2)}
             marginTop={majorScale(3)}
         >
@@ -113,10 +114,10 @@ export default function App() {
                 const selected = optionValue === option.value;
                 return (
                     <Pane
+                        is='label'
                         key={option.value}
-                        role='radio'
-                        aria-checked={selected}
-                        tabIndex={0}
+                        className={styles.card}
+                        position='relative'
                         elevation={1}
                         hoverElevation={2}
                         background={selected ? theme.colors.blue25 : 'white'}
@@ -124,14 +125,15 @@ export default function App() {
                         borderRadius={8}
                         padding={majorScale(3)}
                         cursor='pointer'
-                        onClick={() => setOptionValue(option.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                setOptionValue(option.value);
-                            }
-                        }}
                     >
+                        <input
+                            type='radio'
+                            name='email-category'
+                            value={option.value}
+                            checked={selected}
+                            onChange={() => setOptionValue(option.value)}
+                            style={{ position: 'absolute', opacity: 0, width: 1, height: 1 }}
+                        />
                         {option.label}
                     </Pane>
                 );

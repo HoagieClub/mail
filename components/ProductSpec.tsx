@@ -120,7 +120,7 @@ export default function ProductSpec() {
                 >
                     <Image
                         src='/integration.webp'
-                        alt='One email fanning out to the university listservs'
+                        alt='Sales, events, lost and found, etc'
                         width={1120}
                         height={630}
                         loading='lazy'
@@ -144,6 +144,7 @@ export default function ProductSpec() {
                 <Pane
                     display='flex'
                     flexDirection='row'
+                    flexWrap='wrap'
                     gap={majorScale(2)}
                     width='100%'
                 >
@@ -152,18 +153,20 @@ export default function ProductSpec() {
                             title: 'Email templates',
                             body: 'Start from a template instead of a blank email.',
                             img: '/templates.webp',
+                            alt: 'Start from a template instead of a blank email.'
                         },
                         {
                             title: 'HoagieCalendar integration',
                             body: 'Connect Hoagie Mail to HoagieCalendar.',
                             img: '/calendar.webp',
+                            alt: 'Connect Hoagie Mail to HoagieCalendar.'
                         },
                     ].map((item) => (
                         <Pane
                             key={item.title}
                             background={theme.colors.gray100}
                             borderRadius={8}
-                            width='100%'
+                            flex='1 1 360px'
                             padding={majorScale(3)}
                             display='flex'
                             flexDirection='column'
@@ -171,6 +174,7 @@ export default function ProductSpec() {
                         >
                             <Pane
                                 display='flex'
+                                flexWrap='wrap'
                                 flexDirection='column'
                                 gap={majorScale(1)}
                             >
@@ -188,7 +192,7 @@ export default function ProductSpec() {
 
                             <Image
                                 src={item.img}
-                                alt='One email fanning out to the university listservs'
+                                alt={item.alt}
                                 width={1120}
                                 height={630}
                                 loading='lazy'
@@ -197,6 +201,7 @@ export default function ProductSpec() {
                                     width: '100%',
                                     height: 'auto',
                                     display: 'block',
+                                    marginTop: 'auto',
                                 }}
                             ></Image>
                         </Pane>

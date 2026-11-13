@@ -38,9 +38,9 @@ export const config = {
          * Match all request paths except for the ones starting with:
          * - _next/static (static files)
          * - _next/image (image optimization files)
+         * - assets/ (public images and videos used on the logged out homepage)
          * - favicon.ico, sitemap.xml, robots.txt (metadata files)
-         * - static assets served from /public (images, videos, fonts, etc.)
          */
-        '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:png|jpg|jpeg|gif|webp|svg|mp4|webm)$).*)',
+        '/((?!_next/static|_next/image|assets/|favicon.ico|sitemap.xml|robots.txt).*)',
     ],
 };

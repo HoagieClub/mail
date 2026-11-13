@@ -344,7 +344,7 @@ export const hoagieOrangeLight = {
     ...hoagieOrange,
     colors: {
         ...hoagieOrange.colors,
-        blue50: '#FFFFFF',
+        blue50: '#FEE9D2',
         blue25: '#FFFBF7',
         tint1: '#FFFCF6',
         tint2: '#FCFCFB',

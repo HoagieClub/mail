@@ -52,53 +52,37 @@ export default function Index() {
             marginX={PAGE_MARGIN}
             marginBottom={majorScale(4)}
         >
+            {/* Hero: text and video side by side, stacking when there isn't room */}
             <Pane
                 width='100%'
                 maxWidth={1120}
+                minHeight='100vh'
                 display='flex'
-                flexDirection='row'
+                flexWrap='wrap'
+                alignItems='center'
+                alignContent='center'
+                gap={majorScale(6)}
             >
-                {/* Hero: tall area with the text near the bottom */}
-                <Pane
-                    display='flex'
-                    flexDirection='column'
-                    justifyContent='center'
-                    alignItems='center'
-                    minHeight='100vh'
-                    width='100%'
-                >
-                    <Pane maxWidth={1120} width='100%'>
-                        <Heading
-                            fontSize='clamp(40px, 4vw, 80px)'
-                            lineHeight={1.05}
-                            className='hoagie'
-                        >
-                            Send emails to everyone <br />
-                        </Heading>
-                        <p>No more mail forwarding necessary.</p>
-                        <Pane
-                            display='flex'
-                            flexDirection='row'
-                            alignItems='center'
-                            justifyContent='flex-start'
-                            gap={majorScale(2)}
-                            marginBottom={30}
-                        >
-                            {Actions}
-                        </Pane>
+                <Pane flex='1 1 360px'>
+                    <Heading
+                        fontSize='clamp(40px, 4vw, 80px)'
+                        lineHeight={1.05}
+                        className='hoagie'
+                    >
+                        Send emails to everyone
+                    </Heading>
+                    <p>No more mail forwarding necessary.</p>
+                    <Pane
+                        display='flex'
+                        flexWrap='wrap'
+                        alignItems='center'
+                        gap={majorScale(2)}
+                    >
+                        {Actions}
                     </Pane>
                 </Pane>
 
-                {/* Product panel: centered, peeks in above the fold */}
-                <Pane
-                    maxWidth={1120}
-                    width='100%'
-                    marginX='auto'
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='center'
-                    borderRadius={8}
-                >
+                <Pane flex='1 1 480px' borderRadius={8}>
                     <DemoVideo />
                 </Pane>
             </Pane>
@@ -158,7 +142,6 @@ function DemoVideo() {
             loop
             playsInline
             preload='metadata'
-            poster='/hoagie-mail-poster.webp'
             style={{
                 width: '100%',
                 aspectRatio: '16 / 9',
@@ -166,8 +149,7 @@ function DemoVideo() {
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.12)',
             }}
         >
-            <source src='/hoagie-mail-demo.webm' type='video/webm' />
-            <source src='/hoagie-mail-demo.mp4' type='video/mp4' />
+            <source src='/assets/hoagie-mail-demo.webm' type='video/webm' />
         </video>
     );
 }
