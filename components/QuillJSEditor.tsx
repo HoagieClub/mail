@@ -6,7 +6,7 @@ import Quill from 'quill';
 
 import Editor from './Editor';
 
-const QuillJSEditor = ({ label, description, onHTMLChange }) => {
+const QuillJSEditor = ({ label, description, onHTMLChange, initialValue }) => {
     const [, setRange] = useState();
     const [, setLastChange] = useState();
 
@@ -26,6 +26,7 @@ const QuillJSEditor = ({ label, description, onHTMLChange }) => {
                     onSelectionChange={setRange}
                     onTextChange={setLastChange}
                     onHTMLChange={onHTMLChange}
+                    initialValue={initialValue}
                 />
             </FormField>
         </div>

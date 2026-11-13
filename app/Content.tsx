@@ -14,6 +14,7 @@ export default function Content({
     children: ReactNode;
 }): React.JSX.Element {
     const tabs: TabType[] = [
+        { title: 'About', href: '/about' },
         { title: 'Scheduled Emails', href: '/scheduled', purpose: 'secondary' },
         {
             title: 'Current Digest',

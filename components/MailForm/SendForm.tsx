@@ -18,6 +18,11 @@ import Link from 'next/link';
 import ErrorMessage from '@/components/ErrorMessage';
 import ScheduleSelectField from '@/components/MailForm/ScheduledSend/ScheduleSelectField';
 import SuccessPage from '@/components/MailForm/SuccessPage';
+import {
+    EMAIL_TEMPLATES,
+    TemplateType,
+} from '@/components/MailForm/Templates/emailTemplates';
+import { TemplateSelector } from '@/components/MailForm/Templates/TemplateSelector';
 
 import QuillJSEditor from '../QuillJSEditor';
 
@@ -36,6 +41,15 @@ export default function Mail({ onSend, errorMessage, success, user }) {
     const [schedule, setSchedule] = useLocalStorage('mailSchedule', 'now');
     const [showConfirm, setShowConfirm] = useState(false);
     const [showTestConfirm, setShowTestConfirm] = useState(false);
+    const [selectedTemplate, setSelectedTemplate] =
+        useState<TemplateType>('blank');
+    const [showReplaceConfirm, setShowReplaceConfirm] = useState(false);
+    const [pendingTemplate, setPendingTemplate] = useState<TemplateType | null>(
+        null
+    );
+    const [hasEditedBody, setHasEditedBody] = useState(false);
+    const isApplyingTemplateRef = useRef(false);
+    const applyModeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isSending, setIsSending] = useState(false);
 
     function useLocalStorage(key, initialValue) {
@@ -65,6 +79,25 @@ export default function Mail({ onSend, errorMessage, success, user }) {
         }
         setSenderInvalid(sender === '');
     }, [header, sender]);
+
+    const handleTemplateSelect = (type: TemplateType) => {
+        const template = EMAIL_TEMPLATES[type];
+        if (!template) return;
+
+        if (hasEditedBody) {
+            setPendingTemplate(type);
+            setShowReplaceConfirm(true);
+            return;
+        }
+
+        if (applyModeTimeoutRef.current) {
+            clearTimeout(applyModeTimeoutRef.current);
+        }
+        isApplyingTemplateRef.current = true;
+        setSelectedTemplate(type);
+        setBody(template.bodyTemplate);
+        setHasEditedBody(false);
+    };
 
     const MailForm = (
         <Pane display='flex' flexDirection='column' gap={majorScale(4)}>
@@ -122,6 +155,36 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                 includeNow
                 schedule={schedule}
                 handleScheduleChange={(e) => setSchedule(e.target.value)}
+            />
+            <TextInputField
+                id='email-header-input'
+                label='Email Header'
+                isInvalid={headerInvalid}
+                required
+                description='This is the title of the email to the listservs.'
+                placeholder='Hi from Hoagie!'
+                validationMessage={
+                    headerInvalid ? 'Must have subject line' : null
+                }
+                value={header}
+                onChange={(e) => setHeader(e.target.value)}
+            />
+            <TextInputField
+                id='sender-name-input'
+                label='Displayed Sender Name'
+                required
+                isInvalid={senderInvalid}
+                description={senderNameDesc}
+                placeholder={user.name}
+                validationMessage={
+                    senderInvalid ? 'Must have sender name' : null
+                }
+                value={sender}
+                onChange={(e) => setSender(e.target.value)}
+            />
+            <TemplateSelector
+                selectedTemplate={selectedTemplate}
+                onSelectTemplate={handleTemplateSelect}
             />
 
             <Pane
@@ -181,9 +244,32 @@ export default function Mail({ onSend, errorMessage, success, user }) {
             <QuillJSEditor
                 label='Body Content'
                 description='This is the content of your email.'
-                onHTMLChange={(content) => {
+                onHTMLChange={(content, source) => {
+                    // Reset debounce timer on every event during apply mode
+                    if (isApplyingTemplateRef.current) {
+                        if (applyModeTimeoutRef.current) {
+                            clearTimeout(applyModeTimeoutRef.current);
+                        }
+                        applyModeTimeoutRef.current = setTimeout(() => {
+                            isApplyingTemplateRef.current = false;
+                            applyModeTimeoutRef.current = null;
+                        }, 50);
+                    }
+
+                    if (source === 'user') {
+                        if (!isApplyingTemplateRef.current) {
+                            setHasEditedBody(true);
+                        }
+                        setBody(content);
+                        return;
+                    }
+
+                    if (isApplyingTemplateRef.current) {
+                        setHasEditedBody(false);
+                    }
                     setBody(content);
                 }}
+                initialValue={body}
             />
 
             <Pane>
@@ -295,6 +381,43 @@ export default function Mail({ onSend, errorMessage, success, user }) {
                     email to
                     <b> your Princeton email</b>.
                 </Text>
+            </Dialog>
+            <Dialog
+                isShown={showReplaceConfirm}
+                hasHeader={false}
+                hasClose={false}
+                onConfirm={() => {
+                    if (!pendingTemplate) return;
+                    const template = EMAIL_TEMPLATES[pendingTemplate];
+                    if (template) {
+                        if (applyModeTimeoutRef.current) {
+                            clearTimeout(applyModeTimeoutRef.current);
+                        }
+                        isApplyingTemplateRef.current = true;
+                        setSelectedTemplate(pendingTemplate);
+                        setBody(template.bodyTemplate);
+                        setHasEditedBody(false);
+                    }
+                    setPendingTemplate(null);
+                    setShowReplaceConfirm(false);
+                }}
+                onCloseComplete={() => {
+                    setPendingTemplate(null);
+                    setShowReplaceConfirm(false);
+                }}
+                confirmLabel='Replace Text'
+                intent='warning'
+            >
+                <Pane
+                    marginTop={35}
+                    marginBottom={20}
+                    display='flex'
+                    alignItems='center'
+                >
+                    <InfoSignIcon marginRight={10} />
+                    Are you sure you want to replace the existing text in the
+                    editor with this template?
+                </Pane>
             </Dialog>
         </Pane>
     );

@@ -19,28 +19,28 @@ import AuthButton from '@/lib/hoagie-ui/AuthButton';
 
 export default function Index() {
     const { user, isLoading } = useUser();
-
-    let Actions;
-    if (isLoading) {
-        Actions = <Spinner />;
-    } else if (user) {
-        Actions = (
-            <>
-                <Button
-                    is={Link}
-                    href='/app'
-                    height={56}
-                    width={majorScale(28)}
-                    appearance='primary'
-                    iconBefore={EnvelopeIcon}
-                >
-                    Send a new Email
-                </Button>
+    let Profile;
+    if (isLoading) Profile = <Spinner />;
+    else if (user) {
+        Profile = (
+            <Pane>
+                <Link href='/app'>
+                    <Button
+                        height={56}
+                        width={majorScale(35)}
+                        appearance='primary'
+                        marginBottom={20}
+                        iconBefore={EnvelopeIcon}
+                    >
+                        Send a new Email
+                    </Button>
+                </Link>
+                <br />
                 <AuthButton variant='logout' />
-            </>
+            </Pane>
         );
     } else {
-        Actions = <AuthButton />;
+        Profile = <AuthButton />;
     }
 
     return (
@@ -78,7 +78,7 @@ export default function Index() {
                         alignItems='center'
                         gap={majorScale(2)}
                     >
-                        {Actions}
+                        {Profile}
                     </Pane>
                 </Pane>
 
@@ -110,7 +110,7 @@ export default function Index() {
                 </Heading>
 
                 <Pane display='flex' gap={majorScale(2)}>
-                    {Actions}
+                    {Profile}
                 </Pane>
             </Pane>
         </Pane>
