@@ -56,7 +56,7 @@ export default function Index() {
             <Pane
                 width='100%'
                 maxWidth={1120}
-                minHeight='100vh'
+                minHeight='calc(100vh - 92px)'
                 display='flex'
                 flexWrap='wrap'
                 alignItems='center'

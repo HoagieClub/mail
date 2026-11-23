@@ -153,13 +153,13 @@ export default function ProductSpec() {
                             title: 'Email templates',
                             body: 'Start from a template instead of a blank email.',
                             img: '/assets/templates.webp',
-                            alt: 'Start from a template instead of a blank email.',
+                            alt: 'The Send an Email form with a row of color coded email template cards below the body content field',
                         },
                         {
                             title: 'HoagieCalendar integration',
                             body: 'Connect Hoagie Mail to HoagieCalendar.',
                             img: '/assets/calendar.webp',
-                            alt: 'Connect Hoagie Mail to HoagieCalendar.',
+                            alt: 'The email editor with a checked Post on HoagieCalendar option above the Send Email button.',
                         },
                     ].map((item) => (
                         <Pane
@@ -174,13 +174,13 @@ export default function ProductSpec() {
                         >
                             <Pane
                                 display='flex'
-                                flexWrap='wrap'
                                 flexDirection='column'
                                 gap={majorScale(1)}
                             >
                                 <Text size={300}>{item.body}</Text>
                                 <Pane
                                     display='flex'
+                                    flexWrap='wrap'
                                     justifyContent='space-between'
                                 >
                                     <Heading display='inline' size={800}>
@@ -201,7 +201,6 @@ export default function ProductSpec() {
                                     width: '100%',
                                     height: 'auto',
                                     display: 'block',
-                                    marginTop: 'auto',
                                 }}
                             ></Image>
                         </Pane>

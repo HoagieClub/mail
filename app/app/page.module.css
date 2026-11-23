@@ -13,6 +13,6 @@
 /* shows keyboard users which category card they're on.
  :focus-visible keeps the ring off when someone clicks with a mouse */
 .card:has(input:focus-visible) {
-    outline: 2px solid #3366ff;
+    outline: 2px solid #E77500;
     outline-offset: 2px;
 }
