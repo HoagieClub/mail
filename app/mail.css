@@ -2,7 +2,7 @@
 @import 'tailwindcss/utilities' layer(utilities);
 
 body {
-    background: #ffe3c6;
+    background: #fff8f0;
 }
 
 .checkmark {
@@ -74,4 +74,12 @@ body {
     100% {
         box-shadow: inset 0px 0px 0px 30px #de7548;
     }
+}
+
+#email-header-input,
+#sender-name-input,
+#schedule-select-field {
+    height: 44px;
+    border-radius: 8px;
+    background: #fff;
 }
